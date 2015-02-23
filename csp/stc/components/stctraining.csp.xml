@@ -97,6 +97,11 @@
 
         <button class="btn btn-success btn-small" type="submit" ng-show="!$parent.menu.readOnlyMode" ng-bind="btnSubmitName|localize" ng-click="formatDate()" ng-disabled="formName.$pristine"></button>
    		<button class="btn btn-small btn-primary" type="button" ng-show="btnAdditionVisible && !$parent.menu.readOnlyMode" ng-click="btnAdditionAction()" ng-bind="btnAdditionName|localize"></button>
+ 		<div style="display: inline-block;">
+ 			<label ng-show="training.id" class="checkbox" style="margin-top: 6px; margin-left: 6px;">
+				<input type="checkbox" ng-model="training.isCertificatesDone" ng-disabled="menu.readOnlyMode">{{'Сертификаты выданы'|localize}}
+			</label> 
+		</div>
     </div>
     <div class="span6">
         <div class="control-group">

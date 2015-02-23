@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Stc.Data.MailingItemApprovedStudent">
+<Super>MailingItemApproved</Super>
+<TimeCreated>63492,82697.289485</TimeCreated>
+
+<Property name="Student">
+<Type>Person</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="City">
+<Type>Region</Type>
+<Required>1</Required>
+</Property>
+
+<Index name="StudentCityIdx">
+<Properties>Student,City</Properties>
+<Unique>1</Unique>
+</Index>
+
+<Method name="ConvertToProxyObject">
+<FormalSpec>fullInfo:%Boolean=1</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+
+	set proxy.id = ..%Id()
+	set proxy.studentId = ..Student.%Id()
+	set proxy.type = "student"
+	set proxy.fullName = ..Student.FullName
+	set proxy.email = ..Student.Email
+	set proxy.company = ..Student.Company.ShortName.Value
+	set proxy.position = ""
+	set proxy.city = ..City.Name.Value
+	set proxy.lastUpdated = ..LastUpdated
+	if (fullInfo){
+		set proxy.group = ..MGroup.ConvertToProxyObject()
+	}
+	
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>MailingItemApprovedStudent</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	#dim item As MailingItemApprovedStudent = ""
+	
+	if (data.id = ""){
+		set item = ..%New()
+		set item.AccessCode = $SYSTEM.Util.CreateGUID()
+		set item.MGroup = ##class(Stc.Data.MailingGroup).GetStudentsGroup()
+		set item.Student = ##class(Person).%OpenId(data.studentId)
+	}
+	else{
+		set item = ..%OpenId(data.id)
+	}	
+	
+	set item.City = ##class(Region).%OpenId(data.cityId)
+	set item.LastUpdated = $ZDT($ZTS, 3)
+	
+	set st = item.%Save()
+	quit item
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DefaultData>MailingItemApprovedStudentDefaultData</DefaultData>
+<Data name="MailingItemApprovedStudentDefaultData">
+<Subscript>"MailingItemApprovedStudent"</Subscript>
+<Value name="1">
+<Value>Student</Value>
+</Value>
+<Value name="2">
+<Value>City</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

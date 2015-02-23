@@ -1,4 +1,32 @@
 <cspapp>/stc
+Mobile-$$$Рейтинг курсов.pivot.DFI
+Mobile- Students by Organizations.pivot.DFI
+Mobile- Students by Organizations Top 5.pivot.DFI
+Mobile-CoursesThisYear.pivot.DFI
+Mobile-Money.dashboard.DFI
+Mobile-Money and Regions.pivot.DFI
+Mobile-Money by Years.pivot.DFI
+Mobile-Money by courses.pivot.DFI
+Mobile-Money organization years.pivot.DFI
+Mobile-Student by Courses.dashboard.DFI
+Mobile-Students by Countries.dashboard.DFI
+Mobile-Students by Countries.pivot.DFI
+Mobile-Students by Organizations.dashboard.DFI
+Mobile-Students by Years.dashboard.DFI
+Mobile-Students by years.pivot.DFI
+Mobile-StudentsAndCoursesByYears.pivot.DFI
+Mobile-StudentsByCourses.pivot.DFI
+Mobile-StudentsByCoursesAndYears.pivot.DFI
+Mobile-ThisYear.dashboard.DFI
+Mobile-Организации деньги.pivot.DFI
+Mobile-Организации деньги и люди.pivot.DFI
+Mobile-Организации оплата 80 20.pivot.DFI
+Mobile-Организации по оплате.pivot.DFI
+Mobile-Рейтинг курсов.dashboard.DFI
+Mobile-Рейтинг преподавателей.dashboard.DFI
+Mobile-Рейтинг преподавателей.pivot.DFI
+Mobile-деньги и люди.pivot.DFI
+OffendingMDX.pivot.DFI
 STCTables-CompanyYears_StudentsCount.pivot.DFI
 STCTables-CompanyYears_TrainingsCount.pivot.DFI
 STCTables-CourseTotal_Students.pivot.DFI
@@ -22,3 +50,4 @@ StcDashboards-OrdersApproved.dashboard.DFI
 StcDashboards-TeacherStudents.dashboard.DFI
 StcDashboards-TeacherTrainings.dashboard.DFI
 StcDashboards-TrainingPointsMap.dashboard.DFI
+StcDashboards-TrainingPointsMapYandex.dashboard.DFI

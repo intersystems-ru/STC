@@ -198,6 +198,16 @@ Access code to training for teacher</Description>
 <Type>%String</Type>
 </Property>
 
+<Property name="CreatedTS">
+<Type>%TimeStamp</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="IsCertificatesDone">
+<Type>%Boolean</Type>
+<InitialExpression>0</InitialExpression>
+</Property>
+
 <Index name="AccessCodeIdx">
 <Properties>AccessCode</Properties>
 <Unique>1</Unique>
@@ -274,6 +284,7 @@ Convert to proxyObject (for JSON)</Description>
 	set proxy.dateStart = $ZDATE(..DateStart, 3)
 	set proxy.dateFinish = $ZDATE(..DateFinish, 3)
 	set proxy.isCompleted = ..IsCompleted	
+	set proxy.isCertificatesDone = ..IsCertificatesDone
 	
 	set proxy.timeStart = $e(##class(%Library.Time).LogicalToDisplay(..TimeStart), 1, 5)
 	set proxy.timeFinish = $e(##class(%Library.Time).LogicalToDisplay(..TimeFinish), 1, 5)
@@ -347,6 +358,7 @@ Create or save modified training</Description>
 	
 	if (data.id = ""){
 		set tr = ..%New()
+		set tr.CreatedTS = $ZDT($ZTS, 3)
 		set tr.CuratorFullName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.curator.fullName, "I","UTF8"),"Stc.Data.Localization.Translation;PersonLTextValue")
 		set tr.CuratorEmail = data.curator.email
 		set tr.CuratorPhone = data.curator.phone
@@ -365,6 +377,8 @@ Create or save modified training</Description>
 	set tr.CuratorEmail = data.curator.email
 	set tr.CuratorPhone = data.curator.phone
 	set tr.CuratorPhoneSecret = data.curator.phoneSecret
+	set tr.IsCertificatesDone = data.isCertificatesDone = $$$YES
+		
 		
 	set tr.DateFinish = $ZDATEH(data.dateFinish, 15)
 	set tr.DateStart = $ZDATEH(data.dateStart, 15)
@@ -636,6 +650,12 @@ Add person to training, subgroup is detirmining automatically</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="GetAccessCodeForFeedbackList">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	quit $REPLACE($SYSTEM.Encryption.Base64Encode($SYSTEM.Encryption.MD5Hash(..AccessCode_..Teacher.Email)), "/", "")
+]]></Implementation>
+</Method>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
 <DataLocation>^Stc.Data.TrainingD</DataLocation>
@@ -733,6 +753,12 @@ Add person to training, subgroup is detirmining automatically</Description>
 </Value>
 <Value name="28">
 <Value>IsOrdersAutoMailing</Value>
+</Value>
+<Value name="29">
+<Value>CreatedTS</Value>
+</Value>
+<Value name="30">
+<Value>IsCertificatesDone</Value>
 </Value>
 </Data>
 </Storage>

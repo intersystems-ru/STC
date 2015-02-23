@@ -69,9 +69,10 @@ In order to execute a real task, override this method in a subclass.]]></Descrip
 			} 
 			
 			set emailList = $LISTFROMSTRING(##class(Stc.Data.Settings).GetMailingOperatorAddresses(), ",")
+			set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
 			for i=1:1:$LISTLENGTH(emailList){
 				set email = $LIST(emailList, i)
-				do ##class(Stc.Data.MailingJournal).Create(email, "Оператор", subject, msg)
+				do ##class(Stc.Data.MailingJournal).Create(email, "Оператор", subject, msg, "Оповещение", grNumber)
 			}
 		}
 		
@@ -96,10 +97,12 @@ In order to execute a real task, override this method in a subclass.]]></Descrip
 	set list = ##class(%ListOfObjects).%New()
 	set haveBeenNotifiedId = $LISTFROMSTRING($GET(^Stc.Data.OrderNotification("orders")), ",")
 	
+	set currTS = $ZDT($ZTS, 3)
+	
 	&sql(DECLARE Cur1 CURSOR FOR 
 		 	 SELECT ID
 		 	 FROM Stc_Data.Order
-		 	 WHERE OrderStatus->Code = 'New')	
+		 	 WHERE OrderStatus->Code = 'New' AND {fn TIMESTAMPDIFF(SQL_TSI_HOUR, CreatedTS, :currTS)} <= 24)	
 		
 	&sql(OPEN Cur1)
 	for{	
@@ -124,10 +127,12 @@ In order to execute a real task, override this method in a subclass.]]></Descrip
 	set list = ##class(%ListOfObjects).%New()
 	set haveBeenNotifiedId = $LISTFROMSTRING($GET(^Stc.Data.OrderNotification("students")), ",")
 	
+	set currTS = $ZDT($ZTS, 3)
 	&sql(DECLARE Cur2 CURSOR FOR 
 		 	 SELECT ID
 		 	 FROM Stc_Data.OrderNewStudent
-		 	 WHERE Training->IsCompleted = 0)	
+		 	 WHERE Training->IsCompleted = 0 AND {fn TIMESTAMPDIFF(SQL_TSI_HOUR, CreatedTS, :currTS)} <= 24)	
+		
 		
 	&sql(OPEN Cur2)
 	for{	

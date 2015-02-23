@@ -2,14 +2,9 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/createorder.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span2">
-	</div>
-	<div class="span8">
-	
+	<div class="span8 offset2">
 	<div class="row-fluid">
-	<div class="span2">
-	</div>
-	<div class="span8">
+	<div class="span8 offset2">
 
 		<accordion close-others="false">
 			<accordion-group id="gcalendar" heading="{{'Календарь ближайших курсов'|localize}}" is-open="ordForm.calendarOpen">
@@ -60,15 +55,9 @@
 		</accordion>
 		<stcalert data="ordForm.alert"/>
 	</div >
-	<div class="span2">
 	</div >
-	</div >
-
-	</div >
-	<div class="span2">
 	</div >
 </div >
-
 </br>
 ]]></CSP>
 </Export>

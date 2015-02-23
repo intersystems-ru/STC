@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Mobile-Students by Organizations.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="Students by Organizations" folderName="Mobile" title="Organizations" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2015-01-27T11:33:19.869Z" createdBy="_SYSTEM" category="" bookCover="" scheme="" worklistCount="2" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="Виджет1" type="pivot" subtype="pivot" subtypeClass="lineChart" title="" dataSource="Mobile/ Students by Organizations.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="5" rowSpanL="5" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="applyFilter" target="" targetProperty="[CompanyType].[H1].[Name]" location="widget" type="auto" controlClass="" label="Тип организации" title="" value="&amp;[CF9E764F-0F6C-4361-BC14-A695775399AB00]" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="[Year].[H1].[Year]" location="widget" type="auto" controlClass="" label="Год" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+  </widget>
+  <widget name="Виджет2" type="pivot" subtype="columnChart" subtypeClass="barChart" title="" dataSource="Mobile/ Students by Organizations Top 5.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="5" colSpanL="4" rowSpanL="5" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="applyFilter" target="" targetProperty="[CompanyType].[H1].[Name]" location="widget" type="auto" controlClass="" label="Тип организации" title="" value="&amp;[CF9E764F-0F6C-4361-BC14-A695775399AB00]" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="[Company].[H1].[CompanyShortName]" location="widget" type="auto" controlClass="" label="Организация" title="" value="&amp;[23925736-6423-11E3-9AA9-010509E30100].%Not" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+  </widget>
+</dashboard>
+</Document></Export>

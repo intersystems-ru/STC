@@ -30,7 +30,7 @@ controllersModule.controller('AllTrainingsCtrl', function($scope, $filter, $loca
         $scope.training.columns = [
                           {name: 'Курс', sqlName: 'Course->Name->Value', isSorted: false, isSortable: true, isDown: false, isSearched: true, isSearchable: true},
                           {name: 'Город', sqlName: 'City->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Дата начала / окончания', sqlName: 'DateStart', isSorted: true, isSortable: true, isDown: false,  isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '200px'}},
+                          {name: 'Дата начала / окончания', sqlName: 'DateStart', isSorted: true, isSortable: true, isDown: false,  isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '225px'}},
                           {name: 'Подгруппы', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '85px'}},
                           {name: 'Слушатели', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '85px'}},
                           {name: 'Отзывы', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '60px'}},
@@ -63,11 +63,15 @@ controllersModule.controller('AllTrainingsCtrl', function($scope, $filter, $loca
                                             return 'label ' + (item.isCompleted == 0 ? 'label-info' : 'label-success');
                                         },
                                         calculate: function(item){
+	                                        item.isCertificatesDone = item.isCertificatesDone==0 ? false : true;
                                             item.isStudentsAutoMailing = item.isStudentsAutoMailing==0 ? false : true;
                                             item.isTeacherAutoMailing = item.isTeacherAutoMailing==0 ? false : true;
                                             item.isCuratorAutoMailing = item.isCuratorAutoMailing==0 ? false : true;
                                             item.isFeedBackAutoMailing = item.isFeedBackAutoMailing==0 ? false : true;
                                             item.status = item.isCompleted == 1 ? $filter('localize')('Завершено') : $filter('localize')('Не завершено');
+                                            if (!item.isCertificatesDone){
+	                                        	item.status += '*';
+	                                        }
                                         }}];
 
         $scope.training.status = UtilsSrvc.getPropertyValue($scope.pageStore, 'trainings.status', 'All');
@@ -77,11 +81,15 @@ controllersModule.controller('AllTrainingsCtrl', function($scope, $filter, $loca
         $scope.training.selectedItems = [];
         $scope.training.multiSelectMode = false;
         $scope.training.forciblyUpdate = 0;
+        
+        $scope.statuses = [{id: 'completed', name: $filter('localize')('Завершённые обучения')}, {id: 'not-completed', name: $filter('localize')('Незавершённые обучения')}];
+        $scope.certStatuses = [{id: 'done', name: $filter('localize')('Сертификаты выданы')}, {id: 'not-done', name: $filter('localize')('Сертификаты не выданы')}];
+   		$scope.training.refresh();
     };
  
     // Загрузка
     $scope.training.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
-        TrainingSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, $scope.training.status).then(
+        TrainingSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {status: $scope.training.selectedStatus, certStatus: $scope.training.selectedCertStatus}).then(
             function(data){
                 $scope.training.pageTotal = Math.ceil(data.itemsTotal / pageSize);
                 $scope.training.itemsTotal = data.itemsTotal;
@@ -97,12 +105,10 @@ controllersModule.controller('AllTrainingsCtrl', function($scope, $filter, $loca
             });
     };
     
-    // При смене статуса подгружать соответствующие записи
-    $scope.$watch('training.status', function(){
-        $scope.training.forciblyUpdate++;
-        $scope.pageStore.trainings.status = $scope.training.status;
-    });
-
+	$scope.training.refresh = function(){
+		$scope.training.forciblyUpdate++;
+	}
+	
     // Открыть обучение для просмотра на другой странице
     $scope.training.open = function(item){
         $location.path('/training/' + item.id);

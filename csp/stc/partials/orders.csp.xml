@@ -3,9 +3,7 @@
 <CSP name="stc/partials/orders.csp" application="/csp/stc/" default="1"><![CDATA[
 
 <div class="row-fluid" style="padding-bottom: 5px;">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<span ng-bind="'Заявки'|localize" style="font-weight: bold;"></span>
 		<div class="btn-group pull-right">
 			<button type="button" class="btn btn-mini btnRadio" ng-model="order.status" btn-radio="'All'"       ng-bind="'Все'|localize"></button>
@@ -14,14 +12,10 @@
 			<button type="button" class="btn btn-mini btnRadio" ng-model="order.status" btn-radio="'Closed'"    ng-bind="'Закрытые'|localize"></button>
 		</div>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 			grid="pageStore.orders.grid"
 		    table-class="table table-bordered table-hover"
@@ -51,8 +45,6 @@
 		    forcibly-update="order.forciblyUpdate"
 		/>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid" ng-show="order.selectedItems.length==0 || order.items.length==0" style="text-align: center;">
@@ -61,9 +53,7 @@
 
 
 <div class="row-fluid" ng-hide="order.selectedItems.length==0 || order.items==0">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		 <tabset>
 			<tab heading="{{'Информация'|localize}}">
 				<div class="row-fluid">
@@ -111,18 +101,12 @@
 			</tab>
 		</tabset>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="order.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>
 

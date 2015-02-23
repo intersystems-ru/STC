@@ -2,22 +2,16 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/companies.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid" style="padding-bottom: 5px;">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<span ng-bind="'Организации'|localize" style="font-weight: bold;"></span>
 		<div class="btn-group pull-right">
 			<button type="button" class="btn btn-mini btnRadio" ng-model="company.status" btn-radio="'All'" ng-bind="'Все'|localize"></button>
 			<button type="button" class="btn btn-mini btnRadio" ng-model="company.status" btn-radio="1"     ng-bind="'Университеты'|localize"></button>
 		</div>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 <div class="row-fluid">
-    <div class="span1">
-	</div>
-	<div class="span10">
+    <div class="span10 offset1">
 	    <stcgrid
 	    	grid="pageStore.companies.grid"
 		    table-class="table table-bordered table-hover"
@@ -52,8 +46,6 @@
 		    forcibly-update="company.forciblyUpdate"
 		/>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid" ng-show="company.items.length==0 || company.selectedItems.length==0" style="text-align: center;">
@@ -61,9 +53,7 @@
 </div>	
 
 <div class="row-fluid" ng-hide="company.items.length==0 || company.selectedItems.length==0">
-	 <div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		 <tabset>
 			<tab heading="{{'Информация'|localize}}">
 				<div class="row-fluid">
@@ -93,17 +83,11 @@
 			</tab>
 		</tabset>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 </br>
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="company.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>]]></CSP>
 </Export>

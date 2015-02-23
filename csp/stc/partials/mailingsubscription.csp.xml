@@ -3,11 +3,8 @@
 <CSP name="stc/partials/mailingsubscription.csp" application="/csp/stc/" default="1"><![CDATA[
 <stcalert data="mitemForm.confirmAlert"/>
 
-
 <div class="row-fluid" ng-hide="mitemForm.isConfirmation">
-	<div class="span4">
-	</div>
-	<div class="span4">
+	<div class="span4 offset4">
 		<div class="accordion">
 			<div class="accordion-group">
 				<div class="accordion-heading">
@@ -19,7 +16,7 @@
 							<div class="control-group">
 						        <label class="control-label" ng-bind="('Ф.И.О.'|localize) + '*'"></label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="mitemForm.mitem.fullName" required></input>
+						            <input class="span12" type="text" ng-model="mitemForm.mitem.fullName" ng-disabled="mitemForm.mitem.type=='student'" required></input>
 						        </div>
 						    </div>
 							<div class="control-group">
@@ -31,19 +28,19 @@
 						    <div class="control-group">
 						        <label class="control-label" ng-bind="('Город'|localize) + ''"></label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="mitemForm.mitem.city"></input>
+						            <input class="span12" type="text" ng-model="mitemForm.mitem.city" ng-disabled="mitemForm.mitem.type=='student'"></input>
 						        </div>
 						    </div>
 						    <div class="control-group">
 						        <label class="control-label" ng-bind="('Организация'|localize) + ''"></label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="mitemForm.mitem.company"></input>
+						            <input class="span12" type="text" ng-model="mitemForm.mitem.company" ng-disabled="mitemForm.mitem.type=='student'"></input>
 						        </div>
 						    </div>
 							<div class="control-group">
 						        <label class="control-label" ng-bind="('Должность'|localize) + ''"></label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="mitemForm.mitem.position"></input>
+						            <input class="span12" type="text" ng-model="mitemForm.mitem.position" ng-disabled="mitemForm.mitem.type=='student'"></input>
 						        </div>
 						    </div>
 						   	<div class="control-group" ng-show="mitemForm.mitem.id">
@@ -54,8 +51,9 @@
 						    </div>
 						    <div class="control-group">
 						        <div class="controls">
-						            <button type="submit" class="btn btn-primary btn-small" ng-bind="mitemForm.actionName|localize" ng-disabled="form.$pristine"></button>
+						            <button type="submit" class="btn btn-primary btn-small" ng-bind="mitemForm.actionName|localize" ng-disabled="form.$pristine" ng-hide="mitemForm.mitem.id && mitemForm.mitem.type=='student'"></button>
 						            <button type="button" class="btn btn-small" ng-click="mitemForm.clear()" ng-bind="'Очистить'|localize" ng-hide="mitemForm.mitem.id"></button>
+						            &nbsp;
 						            <button type="button" class="btn btn-small btn-danger pull-right" ng-click="mitemForm.removeSubscription()" ng-show="mitemForm.mitem.id" ng-bind="'Отменить подписку'|localize" ng-show="mitemForm.removeBtnVisible"></button>
 						        </div>
 						    </div>    		    		    
@@ -65,8 +63,6 @@
 			</div>
 		</div>
 		<stcalert data="mitemForm.alert"/>
-	</div>
-	<div class="span4">
 	</div>
 </div>]]></CSP>
 </Export>

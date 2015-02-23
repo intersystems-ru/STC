@@ -11,9 +11,7 @@ var callbackYmap = function(){};
 
 <div class="row-fluid">
 	<div class="row-fluid">
-		<div class="span1">
-		</div>
-		<div class="span4">
+		<div class="span4 offset1">
 			<accordion close-others="false">
 			    <accordion-group is-open="true" heading="{{ordForm.orderCaption}}">
 	    			<form class="form" ng-submit="ordForm.submit()" style="margin: 0 0 10px 0;">
@@ -25,10 +23,33 @@ var callbackYmap = function(){};
 							company-exist="false"
 						/>
 						<div>
+						<div class="row-fluid">
+							<div class="control-group">
+					            <label class="control-label">
+					            	<span></span>
+					            	<label class="checkbox">
+							    		<input type="checkbox" ng-model="ordForm.order.mailingOn">{{'Оповещать об обучениях InterSystems в этом городе'|localize}}
+							    	</label>
+					            </label>
+					            <div class="controls">
+					                <input class="span12" 
+					                	   style="margin-bottom: 0;"
+					                	   type="text" 
+					                	   title="{{'Город, Регион, Страна'|localize}}" 
+					                	   ng-model="ordForm.order.city" 
+					                	   ng-change="loadCities(ordForm.order.city)" 
+					                	   placeholder="{{'Поиск'|localize}}" 
+					                	   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+					                	   ng-disabled="!ordForm.order.mailingOn"
+					                	   ng-required="ordForm.order.mailingOn"></input>
+					                <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
+					            </div>
+					        </div>
+					    </div>
 							<div class="control-group">
 						        <div class="controls">
-						            <button type="submit" class="btn btn-success btn-small" ng-bind="'Зарегистрироваться'|localize"      ng-click="ordForm.formatData()" ng-disabled="ordForm.btnDisabled"></button>
-						            <button type="button" class="btn btn-small"             ng-bind="'Очистить'|localize"     ng-click="ordForm.clear()"      ng-show="ordForm.btnClearShow"></button>
+						            <button type="submit" class="btn btn-success btn-small" ng-bind="'Зарегистрироваться'|localize" ng-click="ordForm.formatCity()"></button>
+						            <button type="button" class="btn btn-small" ng-bind="'Очистить'|localize" ng-click="ordForm.clear()" ng-show="ordForm.btnClearShow"></button>
 						        </div>
 						    </div>
 						</div>
@@ -43,7 +64,7 @@ var callbackYmap = function(){};
 					<p>
 						<a ng-href="{{'http://' + ordForm.training.course.programUrl}}" class="cellLink" target="_blank" ng-bind="'Программа курса »'"></a>
                         &nbsp;&nbsp;&nbsp;
-						<a ng-href="{{ordForm.training.urlAddGoogleCalendarEvent}}" class="cellLink" target="_blank" ng-bind="'Копировать мой календарь »'"></a></p>
+						<a ng-href="{{ordForm.training.urlAddGoogleCalendarEvent}}" class="cellLink" target="_blank" ng-bind="'Копировать в мой календарь »'"></a></p>
 					<br>
 					<p><span ng-bind="'Город'|localize"></span>: <span ng-bind="ordForm.training.city.name + ', ' + ordForm.training.city.parentName + ', ' + ordForm.training.city.greatParentName"></span></p>
 					<p>
@@ -55,7 +76,7 @@ var callbackYmap = function(){};
 						<span ng-bind="', время'|localize"></span>: <span ng-bind="ordForm.training.timeStart + ' - ' + ordForm.training.timeFinish"></span>
 					</p>
 				
-					<p><span ng-bind="'Преподаватель'|localize"></span>: <span ng-bind="ordForm.training.teacher.lastName + ' ' + ordForm.training.teacher.firstName + ', ' + ordForm.training.teacher.email"></span></p>
+					<p><span ng-bind="'Преподаватель'|localize"></span>: <span ng-bind="ordForm.training.teacher.lastName + ' ' + ordForm.training.teacher.firstName + ' ' + ordForm.training.teacher.middleName + ', ' + ordForm.training.teacher.email"></span></p>
 					<!--<p><span class="unselectable" style="color: white;" ng-bind="'Преподаватель:'|localize"></span> <span ng-bind="ordForm.training.teacher.email"></span></p>-->
 			
 					<div ng-hide="ordForm.training.curator.fullName==''">
@@ -71,24 +92,20 @@ var callbackYmap = function(){};
 			
 					<p ng-hide="ordForm.training.otherInfo==''"><span ng-bind="'Примечание'|localize"></span>: <span ng-bind="ordForm.training.otherInfo"></span></p>
 					
-					<div class="row-fluid" id="map" style="height: 330px; border: 1px solid rgb(204, 204, 204);"></div>
+					<div class="row-fluid" id="map" style="height: 420px; border: 1px solid rgb(204, 204, 204);"></div>
 				</accordion-group>
 			</accordion>
 		</div>
-		<div class="span1">
-		</div >
 	</div >
 </div >
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="ordForm.alert"/>
 	</div>
-	<div class="span1">
-	</div>
 </div>
+
+<br>
 
 ]]></CSP>
 </Export>

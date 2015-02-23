@@ -6,10 +6,94 @@ MailingItem. Dirty, for spam</Description>
 <Super>%Persistent,MailingItem</Super>
 <TimeCreated>63388,39362.069005</TimeCreated>
 
+<Property name="FullName">
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="300"/>
+</Property>
+
+<Property name="Email">
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="300"/>
+</Property>
+
+<Property name="Company">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Position">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="City">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
 <Index name="AccessCodeIdx">
 <Properties>AccessCode</Properties>
 <Unique>1</Unique>
 </Index>
+
+<Method name="ConvertToProxyObject">
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.fullName = ..FullName
+	set proxy.email = ..Email
+	set proxy.company = ..Company
+	set proxy.position = ..Position
+	set proxy.city = ..City
+	set proxy.lastUpdated = ..LastUpdated
+	set proxy.group = ..MGroup.ConvertToProxyObject()
+	
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st=$$$OK]]></FormalSpec>
+<ReturnType>MailingItem</ReturnType>
+<Implementation><![CDATA[
+	#dim item As MailingItem = ""
+	
+	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
+	"ID="_data.id_
+	"; FullName="_$ZCONVERT(data.fullName, "I","UTF8")_
+	"; Email="_$ZCONVERT(data.email, "I","UTF8")_
+	"; Company="_$ZCONVERT(data.company, "I","UTF8")_
+	"; Position="_$ZCONVERT(data.position, "I","UTF8")_
+	"; MGroup="_data.group.id)
+	
+	if (data.id = ""){
+		set item = ..%New()
+		set item.AccessCode = $SYSTEM.Util.CreateGUID()
+	}
+	else{
+		set item = ..%OpenId(data.id)
+	}
+	
+	set item.MGroup = ##class(Stc.Data.MailingGroup).%OpenId(data.group.id,,.st)
+	set item.FullName = $ZCVT(data.fullName, "I", "UTF8")
+	if ($FIND(data.email, "@") > 0){
+		set item.Email = $ZCONVERT(data.email, "I","UTF8")
+	}
+	
+	set item.Company = $ZCVT(data.company, "I", "UTF8")
+	set item.Position = $ZCVT(data.position, "I", "UTF8")
+	set item.City = $ZCVT(data.city, "I", "UTF8")
+	set item.LastUpdated = $ZDT($ZTS, 3)
+	
+	set st = item.%Save()
+	
+	quit item
+]]></Implementation>
+</Method>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
@@ -43,6 +127,9 @@ MailingItem. Dirty, for spam</Description>
 </Value>
 <Value name="8">
 <Value>MGroup</Value>
+</Value>
+<Value name="9">
+<Value>City</Value>
 </Value>
 </Data>
 </Storage>

@@ -2,22 +2,120 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/mailingjournal.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid" style="padding-bottom: 5px;">
-	<div class="span1">
+	<div class="span10 offset1">
+		<span ng-bind="'Журнал рассылок'|localize" style="font-weight: bold;"></span>
+		&nbsp;
+		<i class="iSwitcher" ng-click="" ng-bind="'(обновить)'|localize"></i>
+		<button type="button" class="btn btn-small btn-danger pull-right" style="width: 190px;" title="{{'Прекратить рассылку писем'|localize}}" ng-click="changeMailingStatus('Off')" ng-show="mailingStatus=='On'"><i class="icon-ban-circle"></i>&nbsp;&nbsp;{{'Отключить рассылку'|localize}}</button>
+		<button type="button" class="btn btn-small btn-success pull-right" style="width: 190px;" title="{{'Возобновить рассылку писем'|localize}}" ng-click="changeMailingStatus('On')" ng-show="mailingStatus=='Off'"><i class="icon-ok"></i>&nbsp;&nbsp;{{'Включить рассылку'|localize}}</button>
 	</div>
-	<div class="span10">
+</div>
+<div class="row-fluid">
+	<div class="span10 offset1">
+	 	<tabset>
+	    	<tab heading="{{'Сгруппированные письма'|localize}}">
+				<stcgrid
+					grid="grMailTable.grid"
+				    table-class="table table-bordered table-hover"
+				    caption=""
+				    columns="grMailTable.columns"
+				    items="grMailTable.items"
+				    properties="grMailTable.properties"
+				    update-items="grMailTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+
+				    page-curr="grMailTable.pageCurr"
+				    page-total="grMailTable.pageTotal"
+				    page-size="grMailTable.pageSize"
+				    navigator-visible="true"
+				    search-hide="true"
+
+				    selectable="true"
+				    selected-items="grMailTable.selectedItems"
+				    multi-select-mode="grMailTable.multiSelectMode"
+
+				    action-column-visible="true"
+				    action-column-icon="'icon-ellipsis-horizontal'"
+				    
+				    first-row-action-icon="'icon-remove'"
+			    	first-row-action-title="'Удалить всю группу из очереди'|localize"
+			    	first-row-action-method="grMailTable.remove(item)"
+
+			        forcibly-update="grMailTable.forciblyUpdate"
+			    />
+			    <br>
+				<div class="row-fluid" ng-show="grMailTable.selectedItems.length==0" style="text-align: center;">
+					<i>{{'Выберите элемент для отображения подробной информации и фильтрации писем во вкладке "Все письма".'|localize}}</i>
+				</div>
+				<div class="row-fluid" ng-hide="grMailTable.selectedItems.length==0">
+					<div style="border: 1px solid rgb(206, 206, 206); padding: 10px; border-radius: 4px;">
+						<div class="row-fluid" style="margin-bottom: 10px;" ng-bind-html-unsafe="'<b>' +('Тема письма'|localize) + ': </b>' + grMailTable.selectedItems[0].subject"></div>
+						<b ng-bind="('Содержание письма'|localize) + ':'"></b>
+						<div class="row-fluid" ng-bind-html-unsafe="grMailTable.selectedItems[0].message"></div>
+					</div>
+				</div>
+			</tab>
+			<tab heading="{{allMailTable.tabCaption|localize}}" select="grMailTable.selectTab()">
+				<stcgrid
+					grid="allMailTable.grid"
+				    table-class="table table-bordered table-hover"
+				    caption=""
+				    columns="allMailTable.columns"
+				    items="allMailTable.items"
+				    properties="allMailTable.properties"
+				    update-items="allMailTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+
+				    page-curr="allMailTable.pageCurr"
+				    page-total="allMailTable.pageTotal"
+				    page-size="allMailTable.pageSize"
+				    navigator-visible="true"
+
+				    selectable="true"
+				    selected-items="allMailTable.selectedItems"
+				    multi-select-mode="allMailTable.multiSelectMode"
+
+				    action-column-visible="true"
+			    	action-column-icon="'icon-ellipsis-horizontal'"
+			    	
+			    	first-row-action-icon="'icon-remove'"
+			    	first-row-action-title="'Удалить из очереди'|localize"
+			    	first-row-action-method="allMailTable.remove(item)"
+
+			        forcibly-update="allMailTable.forciblyUpdate"
+			    />
+			    <br>
+				<div class="row-fluid" ng-show="allMailTable.selectedItems.length==0" style="text-align: center;">
+					<i ng-bind="'Выберите элемент для отображения подробной информации.'|localize"></i>
+				</div>
+				<div class="row-fluid" ng-hide="allMailTable.selectedItems.length==0">
+					<div style="border: 1px solid rgb(206, 206, 206); padding: 10px; border-radius: 4px;">
+						<p><b ng-bind="('Получатель'|localize) + ':'"></b> <span ng-bind="allMailTable.selectedItems[0].recipient.fullName + '; ' + allMailTable.selectedItems[0].sendedStatus"></span></p>
+						<div class="row-fluid" style="margin-bottom: 10px;" ng-bind-html-unsafe="'<b>' +('Тема письма'|localize) + ': </b>' + allMailTable.selectedItems[0].subject"></div>
+						<b ng-bind="('Содержание письма'|localize) + ':'"></b>
+						<div class="row-fluid" ng-bind-html-unsafe="allMailTable.selectedItems[0].message"></div>
+					</div>
+				</div>
+			</tab>
+		</tabset>
+	</div>
+</div>
+<br>
+<div class="row-fluid">
+	<div class="span10 offset1">
+		<stcalert data="alert"/>
+	</div>
+</div>
+<!--
+<div class="row-fluid" style="padding-bottom: 5px;">
+	<div class="span10 offset1">
 		<span ng-bind="'Журнал рассылок'|localize" style="font-weight: bold;"></span>
 		&nbsp;
 		<i class="iSwitcher" ng-click="mailTable.forciblyUpdate = mailTable.forciblyUpdate + 1" ng-bind="'(обновить)'|localize"></i>
 		<button type="button" class="btn btn-small btn-danger pull-right" style="width: 190px;" title="{{'Прекратить рассылку писем'|localize}}" ng-click="mailTable.changeMailingStatus('Off')" ng-show="mailTable.mailingStatus=='On'"><i class="icon-ban-circle"></i>&nbsp;&nbsp;{{'Отключить рассылку'|localize}}</button>
 		<button type="button" class="btn btn-small btn-success pull-right" style="width: 190px;" title="{{'Возобновить рассылку писем'|localize}}" ng-click="mailTable.changeMailingStatus('On')" ng-show="mailTable.mailingStatus=='Off'"><i class="icon-ok"></i>&nbsp;&nbsp;{{'Включить рассылку'|localize}}</button>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 			grid="mailTable.grid"
 		    table-class="table table-bordered table-hover"
@@ -46,20 +144,14 @@
 	        forcibly-update="mailTable.forciblyUpdate"
 	    />
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid" ng-hide="mailTable.selectedItems.length==0">
-	<div class="span1">
-	</div>
-	<div class="span10" style="border: 1px solid rgb(206, 206, 206); padding: 10px; border-radius: 4px;">
+	<div class="span10 offset1" style="border: 1px solid rgb(206, 206, 206); padding: 10px; border-radius: 4px;">
 		<p><b ng-bind="('Получатель'|localize) + ':'"></b> <span ng-bind="mailTable.selectedItems[0].recipient.fullName + '; ' + mailTable.selectedItems[0].sendedStatus"></span></p>
 		<div class="row-fluid" style="margin-bottom: 10px;" ng-bind-html-unsafe="'<b>' +('Тема письма'|localize) + ': </b>' + mailTable.selectedItems[0].subject"></div>
 		<b ng-bind="('Содержание письма'|localize) + ':'"></b>
 		<div class="row-fluid" ng-bind-html-unsafe="mailTable.selectedItems[0].message"></div>
-	</div>
-	<div class="span1">
 	</div>
 </div>
 
@@ -68,12 +160,10 @@
 </div>	
 <br>
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="mailTable.alert"/>
 	</div>
-	<div class="span1">
-	</div>
-</div>]]></CSP>
+</div>
+-->
+]]></CSP>
 </Export>

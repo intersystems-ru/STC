@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Stc.Data.MailingItemApprovedSubscriber">
+<Super>MailingItemApproved</Super>
+<TimeCreated>63492,82696.872876</TimeCreated>
+
+<Property name="FullName">
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="300"/>
+</Property>
+
+<Property name="Email">
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="300"/>
+</Property>
+
+<Property name="Company">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Position">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="City">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Index name="MGroupEmailIdx">
+<Properties>MGroup,Email</Properties>
+<Unique>1</Unique>
+</Index>
+
+<Method name="ConvertToProxyObject">
+<FormalSpec>fullInfo:%Boolean=1</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.type = "subscriber"
+	set proxy.fullName = ..FullName
+	set proxy.email = ..Email
+	set proxy.company = ..Company
+	set proxy.position = ..Position
+	set proxy.city = ..City
+	set proxy.lastUpdated = ..LastUpdated
+	if (fullInfo){
+		set proxy.group = ..MGroup.ConvertToProxyObject()
+	}
+	
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="GetByEmail">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>email:%String</FormalSpec>
+<ReturnType>MailingItemApproved</ReturnType>
+<Implementation><![CDATA[
+	set id = ""
+	
+	&sql(SELECT ID INTO :id FROM Stc_Data.MailingItemApprovedSubscriber WHERE Email = :email)
+	
+	quit ..%OpenId(id)
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st=$$$OK]]></FormalSpec>
+<ReturnType>MailingItem</ReturnType>
+<Implementation><![CDATA[
+	#dim item As MailingItem = ""
+	
+	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
+	"ID="_data.id_
+	"; FullName="_$ZCONVERT(data.fullName, "I","UTF8")_
+	"; Email="_$ZCONVERT(data.email, "I","UTF8")_
+	"; Company="_$ZCONVERT(data.company, "I","UTF8")_
+	"; Position="_$ZCONVERT(data.position, "I","UTF8")_
+	"; MGroup="_data.group.id)
+	
+	if (data.id = ""){
+		set item = ..%New()
+		set item.AccessCode = $SYSTEM.Util.CreateGUID()
+	}
+	else{
+		set item = ..%OpenId(data.id)
+	}
+	
+	set item.MGroup = ##class(Stc.Data.MailingGroup).%OpenId(data.group.id,,.st)
+	set item.FullName = $ZCVT(data.fullName, "I", "UTF8")
+	if ($FIND(data.email, "@") > 0){
+		set item.Email = $ZCONVERT(data.email, "I","UTF8")
+	}
+	
+	set item.Company = $ZCVT(data.company, "I", "UTF8")
+	set item.Position = $ZCVT(data.position, "I", "UTF8")
+	set item.City = $ZCVT(data.city, "I", "UTF8")
+	set item.LastUpdated = $ZDT($ZTS, 3)
+	
+	set st = item.%Save()
+	
+	quit item
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DefaultData>MailingItemApprovedSubscriberDefaultData</DefaultData>
+<Data name="MailingItemApprovedSubscriberDefaultData">
+<Subscript>"MailingItemApprovedSubscriber"</Subscript>
+<Value name="1">
+<Value>FullName</Value>
+</Value>
+<Value name="2">
+<Value>Email</Value>
+</Value>
+<Value name="3">
+<Value>Company</Value>
+</Value>
+<Value name="4">
+<Value>Position</Value>
+</Value>
+<Value name="5">
+<Value>City</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/services/RegionSrvc.js" application="/csp/four/" default="1"><![CDATA[
+<CSP name="stc/js/services/RegionSrvc.js" application="/csp/stc/" default="1"><![CDATA[
 'use strict';
 //dddв
 
@@ -12,7 +12,7 @@ servicesModule.factory('RegionSrvc', function(DALSrvc) {
 	return {
 	    /* Все города по начальным буквам */
         getAllCitiesStartsWith: function(startsWith){
-            return DALSrvc.getPromise('get', StcAppSetting.user + '/json/citiesStartsWith/' + startsWith, null);
+            return DALSrvc.getPromise('get', StcAppSetting.user + '/json/city/' + startsWith, null);
         }
     }
 });

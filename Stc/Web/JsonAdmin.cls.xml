@@ -300,7 +300,7 @@ Method="POST" Url="/json/order/:id/status/:status"</Description>
 		if (orderStatus = "approved"){
 			set order.OrderStatus = ##class(Stc.Data.OrderStatus).CodeIdxOpen("Approved")
 			set mail = ##class(Stc.Utils.Email).GetMailForOrderApply(order)
-			do ##class(Stc.Data.MailingJournal).Create(order.Email, order.LastName_" "_order.FirstName, mail.subject, mail.message)
+			do ##class(Stc.Data.MailingJournal).Create(order.Email, order.LastName_" "_order.FirstName, mail.subject, mail.message, "Одобрение заявки", ##class(Stc.Data.MailingJournal).GetValidGroupNumber())
 		}
 		elseif (orderStatus = "closed"){
 			set order.OrderStatus = ##class(Stc.Data.OrderStatus).CodeIdxOpen("Closed")
@@ -529,6 +529,10 @@ Method="DELETE" Url="/json/company/:id"</Description>
 		set st = ex.AsStatus()
 	}
 
+	if (st = $$$OK) {
+		do ##class(Stc.Data.Training).BuildCubes()
+	}
+	
 	quit st
 ]]></Implementation>
 </Method>
@@ -557,6 +561,7 @@ Method="POST" Url="/json/company/order"</Description>
       	// Создание контакта компании
       	set data.company.contact.company = ##class(%ZEN.proxyObject).%New()
       	set data.company.contact.company.id = company.%Id()
+      	set data.company.contact.id = $$$NULLOREF
       	  	
 		set company.Contact = ##class(Stc.Data.Person).Save(data.company.contact, .st)
 		if $$$ISERR(st) $$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("createCompanyContact", " | "_st))
@@ -831,8 +836,17 @@ Method="DELETE" Url="/json/training/:id"</Description>
 			&sql(SELECT COUNT(ID) INTO :certs FROM Stc_Data.Certificate WHERE Training = :id)
 		}
 		
-		if (sgroups > 0) || (certs > 0) $$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("deleteTrainingImpossible"))
-	
+		if (sgroups > 0) || (certs > 0) {
+			$$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("deleteTrainingImpossible"))
+		}
+		
+		set SQLCODE = ""
+		&sql(DELETE FROM Stc_Data.MailingTrainingGroup WHERE Training = :id)
+		
+		if (SQLCODE '= 0) && (SQLCODE '= 100){
+			$$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("DeleteMailingTrainingGroupError", " SQLCODE="_SQLCODE))
+		}	
+		
 		set st = ##class(Stc.Data.Training).Delete(id)
 		
 		if $$$ISERR(st) $$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("deleteTraining", "| "_st))
@@ -929,9 +943,22 @@ Method="POST" Url="/json/training/grid"</Description>
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
       	      	
       	set whereRequired = ""
-      	if (params.status '= "All"){
-	      	set whereRequired = "IsCompleted = '"_..ParseParameter(params.status)_"'"
-	    }
+      	if (params.other.status = "completed"){
+      		set whereRequired = " AND IsCompleted = 1 "
+      	}
+      	elseif (params.other.status = "not-completed"){
+      		set whereRequired = whereRequired_" AND IsCompleted = 0 "
+      	}
+      	
+      	if (params.other.certStatus = "done"){
+      		set whereRequired = whereRequired_" AND IsCertificatesDone = 1 "
+      	}
+      	elseif (params.other.certStatus = "not-done"){
+      		set whereRequired = whereRequired_" AND IsCertificatesDone = 0 "
+      	}
+	    
+	    // without " AND"
+	    set whereRequired = $E(whereRequired, 5, *)
 	    
       	$$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Stc_Data.Training", "Stc.Data.Training", params, whereRequired))
 	}
@@ -1012,22 +1039,23 @@ Method="POST" Url="/json/training/mail/send"</Description>
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
 		set data.subject = $ZCVT(data.subject, "I", "UTF8")
 		set data.message = $ZCVT(data.message, "I", "UTF8")
+		set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
 		
 		if (data.isSubscribers){
 			for i=1:1:data.contacts.Count(){
 				set mItem = ##class(Stc.Data.MailingItemApproved).%OpenId(data.contacts.GetAt(i).id)
 				if $ISOBJECT(mItem){
 					set msg = $REPLACE(data.message, "%AccessCode", $system.Encryption.Base64Encode(mItem.AccessCode))
-					do ##class(Stc.Data.MailingJournal).Create(mItem.Email,  mItem.FullName, data.subject, msg)
+					do ##class(Stc.Data.MailingJournal).Create(mItem.Email,  mItem.FullName, data.subject, msg, "ГР: "_mItem.MGroup.Name, grNumber)
 				}
 				else{
-					do ##class(Stc.Data.MailingJournal).Create(data.contacts.GetAt(i).email,"", data.subject, data.message)
+					do ##class(Stc.Data.MailingJournal).Create(data.contacts.GetAt(i).email,"", data.subject, data.message, "Рассылка из обучения", grNumber)
 				}
 			}
 		}
 		else{
 			for i=1:1:data.contacts.Count(){
-				do ##class(Stc.Data.MailingJournal).Create(data.contacts.GetAt(i).email, $ZCVT(data.contacts.GetAt(i).name, "I", "UTF8"), data.subject, data.message)
+				do ##class(Stc.Data.MailingJournal).Create(data.contacts.GetAt(i).email, $ZCVT(data.contacts.GetAt(i).name, "I", "UTF8"), data.subject, data.message, "Рассылка из обучения", grNumber)
 			}
 		}
 		
@@ -1157,6 +1185,7 @@ Method="GET" Url="/json/training/:id/mailing/group"</Description>
 		&sql(DECLARE MGCur CURSOR FOR 
 			 	 SELECT ID
 			 	 FROM Stc_Data.MailingGroup
+			 	 WHERE AccessCode <> 'Students'
 			 	 ORDER BY Name)	
 			
 		&sql(OPEN MGCur)
@@ -1471,9 +1500,17 @@ Method="POST" Url="/json/training/oredeNewStudent"</Description>
 		set st = training.%Save()
 		$$$THROWONERROR(st, st)
 		
+		
+		if $ISOBJECT(order.CityForMailing){
+			set proxy = ##class(%ZEN.proxyObject).%New()
+			set proxy.studentId = person.%Id()
+			set proxy.cityId = order.CityForMailing.%Id()
+			do ##class(Stc.Data.MailingItemApprovedStudent).Save(proxy, .stMI)
+		}
+		
 		set mail = ##class(Stc.Utils.Email).GetMailForTrainingRegistration(training)
 		
-		do ##class(Stc.Data.MailingJournal).Create(orderEmail, orderFullName, mail.subject, mail.message)
+		do ##class(Stc.Data.MailingJournal).Create(orderEmail, orderFullName, mail.subject, mail.message, "Добавление слушателя", ##class(Stc.Data.MailingJournal).GetValidGroupNumber())
 		
 		set trId = training.%Id()
 			
@@ -2365,6 +2402,9 @@ Method="GET" Url="/json/settings/mail/preview/:type"</Description>
 				set mail = ##class(Stc.Utils.Email).GetMailForConfirmationSubscription(mItem)
 			}
 		}
+		elseif (type = "listOfFeedbacks"){
+			set mail = ##class(Stc.Utils.Email).GetMailForListOfTrainingFeedBacks(tr)
+		}
 		
 		set proxy = ##class(%ZEN.proxyObject).%New()
 		set proxy.preview = mail.subject_"<br><br>"_mail.message
@@ -2532,6 +2572,13 @@ Method="DELETE" Url="/json/mailing/group/:id"</Description>
 			$$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("DeleteMailingApprovedItemsError", " SQLCODE="_SQLCODE))
 		}
 		
+		set SQLCODE = ""
+		&sql(DELETE FROM Stc_Data.MailingTrainingGroup WHERE MGroup = :id)
+		
+		if (SQLCODE '= 0) && (SQLCODE '= 100){
+			$$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("DeleteMailingTrainingGroupError", " SQLCODE="_SQLCODE))
+		}
+		
 		$$$THROWONERROR(st, ##class(Stc.Data.MailingGroup).Delete(id))
 		
 		TCOMMIT
@@ -2584,7 +2631,7 @@ Method="POST" Url="/json/mailing/group/item"</Description>
 		
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
       	
-      	do ##class(Stc.Data.MailingItemApproved).Save(data, .st)
+      	do ##class(Stc.Data.MailingItemApprovedSubscriber).Save(data, .st)
       	if $$$ISERR(st) $$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus($CASE(data.id = "", 1:"createMailingItem",:"saveMailingItem"), "| "_st)) 
 		
 		TCOMMIT
@@ -2653,13 +2700,13 @@ Method="POST" Url="/json/mailing/mail/send"</Description>
 		
 		set data.subject = $ZCVT(data.subject, "I", "UTF8")
 		set data.message = $ZCVT(data.message, "I", "UTF8")
-		
+		set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
 		for i=1:1:data.contacts.Count(){
 			set mItem = ##class(Stc.Data.MailingItemApproved).%OpenId(data.contacts.GetAt(i).id)
 			if '$ISOBJECT(mItem) continue
 					
 			set msg = $REPLACE(data.message, "%UnsubscribeUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/mailing/subscription/"_$system.Encryption.Base64Encode(mItem.AccessCode))
-			do ##class(Stc.Data.MailingJournal).Create(data.contacts.GetAt(i).email, $ZCVT(data.contacts.GetAt(i).name, "I", "UTF8"), data.subject, msg)	
+			do ##class(Stc.Data.MailingJournal).Create(data.contacts.GetAt(i).email, $ZCVT(data.contacts.GetAt(i).name, "I", "UTF8"), data.subject, msg, "ГР: "_mItem.MGroup.Name, grNumber)	
 		}
 		
 		TCOMMIT
@@ -2689,7 +2736,81 @@ Method="POST" Url="/json/mailing/journal/grid"</Description>
 	try{
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
       	
-		$$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Stc_Data.MailingJournal", "Stc.Data.MailingJournal", params))
+      	set where = ""
+      	if params.other.groupNumber > 0 {
+	      	set where = "GroupNumber = '"_params.other.groupNumber_"'"
+      	}
+      	
+		$$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Stc_Data.MailingJournal", "Stc.Data.MailingJournal", params, where))
+    }
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingJournalPartsForGrid">
+<Description>
+Get mail journal
+Method="POST" Url="/json/mailing/journal/parts/grid"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+      	
+      	set proxyResult = ##class(%ZEN.proxyObject).%New()
+		set proxyResult.children = ##class(%ZEN.proxyObject).%New()
+		set proxyResult.children.items = ##class(%ListOfObjects).%New()
+	    
+      	set rowCount = 0
+      	&sql(DECLARE MJCur3 CURSOR FOR 
+		 	 SELECT mj.GroupNumber,
+		 	 		mj.CreatedTS, 
+		 	 		mj.Type, 
+		 	 		mj.Subject, 
+		 	 		mj.Message, 
+		 	 		COUNT(mj.ID) As RecipientCount, 
+		 	 		(SELECT COUNT(mj2.ID) FROM Stc_Data.MailingJournal mj2 WHERE mj.GroupNumber = mj2.GroupNumber AND IsSended = 1) As SendedCount
+		 	 FROM Stc_Data.MailingJournal as mj
+		 	 WHERE GroupNumber > 0
+		 	 GROUP BY GroupNumber
+		 	 ORDER BY GroupNumber DESC)	
+		
+		&sql(OPEN MJCur3)
+		for  
+		{	
+			&sql(FETCH MJCur3 INTO :grNumber, :createdTS, :type, :subj, :msg, :recCount, :sendCount) 
+			quit:(SQLCODE '= 0)
+			set rowCount = rowCount + 1
+			
+			if (rowCount > params.last) quit
+			
+			if (rowCount >= params.first){
+				set proxy = ##class(%ZEN.proxyObject).%New()
+				set proxy.id = grNumber
+				set proxy.groupNumber = grNumber
+				set proxy.createdTS = createdTS
+				set proxy.type = type
+				set proxy.subject = subj
+				set proxy.message = msg
+				set proxy.recipientsCount = recCount
+				set proxy.sendedCount = sendCount
+				do proxyResult.children.items.Insert(proxy)
+			}	
+		}
+		
+		&sql(CLOSE MJCur3)
+		
+		
+		&sql(SELECT COUNT(DISTINCT GroupNumber) INTO :rowCount FROM Stc_Data.MailingJournal WHERE GroupNumber > 0) 
+			
+		set proxyResult.children.itemsTotal = rowCount
+		do proxyResult.%ToJSON()
     }
 	catch ex {
 		set st = ex.AsStatus()
@@ -2746,6 +2867,25 @@ Method="DELETE" Url="/json/mailing/journal/:id"</Description>
 <Implementation><![CDATA[
 	set st = ##class(Stc.Data.MailingJournal).%DeleteId(id, 4)
    	quit:$$$ISERR(st) ##class(Stc.Utils.Msg).GetErrorStatus("deleteMailingJournalItem", "| "_st) 
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="DeleteMailingJournalPart">
+<Description>
+Delete mailing journal item
+Method="DELETE" Url="/json/mailing/journal/part/:groupNumber"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>grNumber:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set SQLCODE = ""
+	&sql(DELETE FROM Stc_Data.MailingJournal WHERE GroupNumber = :grNumber)
+	
+	if (SQLCODE '= 0) && (SQLCODE '= 100){
+		quit ##class(Stc.Utils.Msg).GetErrorStatus("Bad sql code. ", "| SQLCODE="_SQLCODE)
+	}
 	
 	quit $$$OK
 ]]></Implementation>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Stc.DeepSee.FeedBackCube">
+<Description>
+</Description>
+<ProcedureBlock>1</ProcedureBlock>
+<Super>%DeepSee.CubeDefinition</Super>
+<TimeCreated>63584,56275.532248</TimeCreated>
+<DependsOn>Stc.Data.FeedBack</DependsOn>
+
+<Parameter name="DOMAIN">
+</Parameter>
+
+<XData name="Cube">
+<Description>
+Cube definition from Architect.</Description>
+<XMLNamespace>http://www.intersystems.com/deepsee</XMLNamespace>
+<Data><![CDATA[
+<cube xmlns="http://www.intersystems.com/deepsee" name="FeedBackCube" displayName="FeedBackCube" disabled="false" abstract="false" sourceClass="Stc.Data.FeedBack" countMeasureName="%COUNT" bucketSize="8" bitmapChunkInMemory="false" precompute="0">
+  <dimension name="Name" disabled="false" hasAll="false" allCaption="All Name" allDisplayName="Name" type="data" hidden="false" showHierarchies="default">
+    <hierarchy name="H1" disabled="false">
+      <level sourceProperty="Training.Course" name="Course" disabled="false" list="false" useDisplayValue="true" useAsFilter="true">
+        <property sourceProperty="Training.Course.Name.Value" name="Value" disabled="false" hidden="false" isName="true" isDescription="false" isReference="false" useDisplayValue="false"></property>
+      </level>
+    </hierarchy>
+  </dimension>
+  <dimension name="Teacher" disabled="false" hasAll="false" allCaption="All Teacher" allDisplayName="Teacher" type="data" hidden="false" showHierarchies="default">
+    <hierarchy name="H1" disabled="false">
+      <level sourceProperty="Training.Teacher" name="Teacher" disabled="false" list="false" useDisplayValue="true" useAsFilter="true">
+        <property sourceProperty="Training.Teacher.LastName.Value" name="Value" disabled="false" hidden="false" isName="true" isDescription="false" isReference="false" useDisplayValue="false"></property>
+      </level>
+    </hierarchy>
+  </dimension>
+  <measure sourceProperty="Rating" name="Rating" displayName="Суммарная оценка" disabled="false" aggregate="SUM" type="integer" hidden="false" searchable="false"></measure>
+  <measure sourceProperty="Rating" name="RatingAvg" displayName="Средняя оценка" disabled="false" aggregate="AVG" type="integer" hidden="false" searchable="false"></measure>
+  <listing name="FeedBackListing" disabled="false" listingType="table" fieldList="Training-&gt;Course-&gt;Name-&gt;Value,Training-&gt;DateStart,Training-&gt;Teacher-&gt;FullName,Author,AboutTeacher,WhatHear,WhatImprovements,WhatLiked,Rating"></listing>
+</cube>
+]]></Data>
+</XData>
+</Class>
+</Export>

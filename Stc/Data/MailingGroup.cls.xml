@@ -137,6 +137,28 @@ Get special group for subscribers</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="GetStudentsGroup">
+<Description>
+Get special group for students</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>MailingGroup</ReturnType>
+<Implementation><![CDATA[
+	if (..AccessCodeIdxExists("Students")){
+		quit ..AccessCodeIdxOpen("Students")
+	}
+	
+	set gr = ..%New()
+	set gr.Name = "Все слушатели"
+	set gr.Description = "Все слушатели из базы данных"
+	set gr.AccessCode = "Students"
+	set gr.MailSubject = ##class(Stc.Data.Localization.LText).Create("")
+	set gr.MailMessage = ##class(Stc.Data.Localization.LText).Create("")
+	do gr.%Save()
+	
+	quit gr
+]]></Implementation>
+</Method>
+
 <Method name="GetMailingItemsContacts">
 <ClassMethod>1</ClassMethod>
 <FormalSpec>grId:%String</FormalSpec>
@@ -145,22 +167,21 @@ Get special group for subscribers</Description>
 	set contacts = ##class(%ListOfObjects).%New()
 	
 	&sql(DECLARE MItemCur CURSOR FOR 
-			 	 SELECT ID, FullName, Email 
+			 	 SELECT ID 
 			 	 FROM Stc_Data.MailingItemApproved
 			 	 WHERE MGroup = :grId
-			 	 ORDER BY FullName)	
+			 	 ORDER BY ItemFullName)	
 			
 	&sql(OPEN MItemCur)
 	for  
 	{	
-		&sql(FETCH MItemCur INTO :id, :fullName, :email) 
+		&sql(FETCH MItemCur INTO :id) 
 		quit:(SQLCODE '= 0)
 		
-		set item = ##class(%ZEN.proxyObject).%New()
-		set item.id = id
-		set item.name = fullName
-		set item.email = email
-		do contacts.Insert(item)	
+		set itemObj = ##class(MailingItemApproved).%OpenId(id)
+		set itemObjProxy = itemObj.ConvertToProxyObject($$$NO)
+		set itemObjProxy.name = itemObj.ItemFullName
+		do contacts.Insert(itemObjProxy)	
 	}
 	&sql(CLOSE MItemCur)
 	
@@ -177,11 +198,12 @@ Get special group for subscribers</Description>
 	set group = ..%OpenId(grId)
 	
 	set mail = ##class(%ZEN.proxyObject).%New()
-	set mail.subject = group.MailSubject.Value
+	set mail.subject = ##class(Stc.Utils.Email).GetMailMessageWithTrainingData(group.MailSubject.Value, tr)
 	set mail.message = ##class(Stc.Utils.Email).GetMailMessageWithTrainingData(group.MailMessage.Value, tr)
 	
 	set mail.message = $REPLACE(mail.message, "%JoinUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/order")
 	set mail.message = $REPLACE(mail.message, "%UnsubscribeUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/mailing/subscription/%AccessCode")
+	set mail.message = $REPLACE(mail.message, "%ListOfStudentsUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/students/"_tr.AccessCode)
 	
 	quit mail
 ]]></Implementation>

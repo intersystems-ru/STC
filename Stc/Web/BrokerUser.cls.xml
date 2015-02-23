@@ -84,6 +84,9 @@ Public request processor for users</Description>
 	<!-- Schedule, course and trainings -->
 	<Route Method="GET" Url="/json/schedule" Call="Stc.Web.JsonUser:GetSchedule"/>
 	
+	<!-- Get feed Backs of trainings BY AccessCode-->
+	<Route Method="POST" Url="/json/training/feedback/grid" Call="Stc.Web.JsonUser:GetTrainingFeedBacksForGridByAccessCode"/>	
+	
 	
 	<!-- Report, students of training -->
 	<Route Method="GET" Url="/text/:lang/students/:trainingAccessCode" Call="Stc.Web.Report:Students"/>

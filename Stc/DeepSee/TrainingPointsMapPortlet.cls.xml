@@ -1735,7 +1735,7 @@ Callback for geocoder API.</Description>
 	};
 	
 	var changeTraining = function(id){
-		window.open('/csp/stc/stc/index.csp#/training?id='+id,  'trEdit');
+		window.open('/csp/stc/stc/index.csp#/training/'+id,  'trEdit');
 	};
 	
 	 var findScoreCardWidgetByName = function(name)

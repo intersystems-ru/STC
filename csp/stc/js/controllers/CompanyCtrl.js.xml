@@ -118,6 +118,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, $wind
 		CompanySrvc.get(id).then(
                 function(data){
 	                data.status = data.status == 1; 
+	                data.isUnknownCity = data.isUnknownCity == 1; 
                     $scope.compForm.company = data;
                 },
                 function(response){

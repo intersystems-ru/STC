@@ -104,11 +104,11 @@ controllersModule.controller('AllMailingGroupsCtrl', function($scope, $location,
     // Инициализация таблицы с участниками группы
     $scope.mitemTable.init = function(){
         $scope.mitemTable.columns = [
-                          {name: 'Ф.И.О.', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
-                          {name: 'Email', sqlName: 'Email', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Город', sqlName: 'City', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Организация', sqlName: 'Company', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Должность', sqlName: 'Position', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false},
+                          {name: 'Ф.И.О.', sqlName: 'ItemFullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Email', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Город', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Организация', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Должность', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false},
                           {name: 'Послед. изменение', sqlName: 'LastUpdated', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, captionStyle: {width: '190px'}}];
         
         $scope.mitemTable.properties = [{name:'fullName'}, 
@@ -165,11 +165,21 @@ controllersModule.controller('AllMailingGroupsCtrl', function($scope, $location,
 
     // Добавить участника - переход на страницу
     $scope.mitemTable.add = function(){
+        if ($scope.groupTable.selectedItems[0].code == 'Students'){
+	    	alert('Элемент рассылки создается при добавлении слушателя из завяки (если слушатель желает получать оповещения).');
+	    	return;
+	    }
+	    
         $location.path('/mailing/group/' + $scope.groupTable.selectedItems[0].id + '/item');
     };
 
     // Изменить участника - переход на страницу
     $scope.mitemTable.edit = function(item){
+	    if (item.type == 'student'){
+	    	$location.path('/person/' + item.studentId);
+	    	return;
+	    }
+	    
         $location.path('/mailing/group/' + $scope.groupTable.selectedItems[0].id + '/item/' + item.id);
     };
     
@@ -191,7 +201,7 @@ controllersModule.controller('AllMailingGroupsCtrl', function($scope, $location,
                 });
         }
 
-        UtilsSrvc.openMessageBox($filter('localize')('Удаление участника группы') + " '" + item.fullName + "'", "Удалить участника из списка?", remove);
+        UtilsSrvc.openMessageBox($filter('localize')('Удаление участника группы') + " '" + $scope.groupTable.selectedItems[0].name + "'", "Удалить участника '" + item.fullName + "' из списка?", remove);
     };
     
     $scope.groupTable.init();

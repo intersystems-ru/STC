@@ -2,9 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/persons.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 			grid="pageStore.persons.grid"
 		    table-class="table table-bordered table-hover"
@@ -39,18 +37,12 @@
 		    forcibly-update="personTable.forciblyUpdate"
 		/>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="personTable.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>
 
@@ -65,9 +57,7 @@
 </div>	
 
 <div class="row-fluid" ng-hide="personTable.selectedItems.length==0 || other.allEmpty">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<tabset>
 			<tab heading="{{('Обучения'|localize) + ' (' + trainingTable.items.length + ')'}}" active="trainingTable.active" ng-hide="$parent.trainingTable.items.length==0">
 				<stcgrid
@@ -178,17 +168,11 @@
 		    </tab>
 		</tebset>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="other.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>]]></CSP>
 </Export>

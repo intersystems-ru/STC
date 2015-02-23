@@ -90,7 +90,8 @@ controllersModule.controller('MailingGroupCtrl', function($scope, $filter, $rout
               '%Curator.Email, %Curator.PhoneSecret, %Curator.PhonePublic - email, личный|публичный телефон;<br>' +
               '%OtherInfo - дополнительная информация об обучении;<br>' + 
               '%JoinUrl - ссылка на страницу для регистрации;<br>'+
-              '%UnsubscribeUrl - сслыка на отмену подписки.<br>';
+              '%ListOfStudentsUrl - ссылка на страницу со списком слушателей;<br>' +
+              '%UnsubscribeUrl - ссылка на отмену подписки.<br>';
          
 		UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
     };

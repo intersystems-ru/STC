@@ -92,7 +92,7 @@ controllersModule.controller('AllOrdersCtrl', function($scope, $cookieStore, $lo
 	    $scope.order.forciblyUpdate++;
         $scope.pageStore.orders.status = $scope.order.status;
     });
-
+ 
     $scope.$watch('order.selectedItems[0]', function(){
 	    $scope.order.contactType = 'order';
     }, true);

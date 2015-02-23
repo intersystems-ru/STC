@@ -11,33 +11,6 @@ MailingItem (subscriber)</Description>
 <Required>1</Required>
 </Property>
 
-<Property name="FullName">
-<Type>%String</Type>
-<Required>1</Required>
-<Parameter name="MAXLEN" value="300"/>
-</Property>
-
-<Property name="Email">
-<Type>%String</Type>
-<Required>1</Required>
-<Parameter name="MAXLEN" value="300"/>
-</Property>
-
-<Property name="Company">
-<Type>%String</Type>
-<Parameter name="MAXLEN" value="500"/>
-</Property>
-
-<Property name="Position">
-<Type>%String</Type>
-<Parameter name="MAXLEN" value="500"/>
-</Property>
-
-<Property name="City">
-<Type>%String</Type>
-<Parameter name="MAXLEN" value="500"/>
-</Property>
-
 <Property name="LastUpdated">
 <Type>%TimeStamp</Type>
 <Required>1</Required>
@@ -48,9 +21,11 @@ MailingItem (subscriber)</Description>
 <Required>1</Required>
 </Property>
 
-<Method name="ConvertToProxyObject">
-<ReturnType>%ZEN.proxyObject</ReturnType>
-<Implementation><![CDATA[
+<UDLText name="T">
+<Content><![CDATA[
+/*
+Method ConvertToProxyObject() As %ZEN.proxyObject
+{
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
 	set proxy.fullName = ..FullName
@@ -62,14 +37,10 @@ MailingItem (subscriber)</Description>
 	set proxy.group = ..MGroup.ConvertToProxyObject()
 	
 	quit proxy
-]]></Implementation>
-</Method>
+}
 
-<Method name="Save">
-<ClassMethod>1</ClassMethod>
-<FormalSpec><![CDATA[data:%RegisteredObject,&st=$$$OK]]></FormalSpec>
-<ReturnType>MailingItem</ReturnType>
-<Implementation><![CDATA[
+ClassMethod Save(data As %RegisteredObject, ByRef st = {$$$OK}) As MailingItem
+{
 	#dim item As MailingItem = ""
 	
 	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
@@ -102,7 +73,9 @@ MailingItem (subscriber)</Description>
 	set st = item.%Save()
 	
 	quit item
-]]></Implementation>
-</Method>
+}
+*/
+]]></Content>
+</UDLText>
 </Class>
 </Export>

@@ -2,9 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/training.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 	 	<tabset>
 	 		<!-- ============================================ ОБУЧЕНИЕ ==================================================-->
 	    	<tab heading="{{'Обучение'|localize}}" select="pageStore.training.tabSgActive=false">
@@ -58,13 +56,14 @@
 					    </div>
 				    </div>
 				    <div class="row-fluid" ng-hide="menu.readOnlyMode">
-						<div class="span5">
+						<div class="span8">
 							<div class="input-append">
 								<input class="mailInput" id="appendedInputButton" placeholder="{{'sample@mail.com'}}" type="email" ng-model="mailing.single">
 								<button class="btn btn-small" type="submit" ng-click="mailing.sendEmail(true)" ng-bind="'Отправить на адрес'|localize"></button>
 							</div>
+							<button class="btn btn-small" type="button" title="{{('Сформировать ссылку'|localize)}}" ng-click="linkBuilderIsVisible = true;" style="margin-bottom: 10px;"><i class="icon-link"></i></button>
 						</div>
-						<div class="span7">
+						<div class="span4">
 							<button class="btn btn-success btn-small pull-right"  type="submit" ng-click="mailing.sendEmail(false)" ng-bind="'Отправить'|localize"></button>
 							<label ng-hide="menu.readOnlyMode" class="checkbox pull-right"  style="padding-top: 3px; margin-right: 25px;">
 					    		<input type="checkbox" ng-click="mailing.changeStatus()" ng-model="mailing.selectedGroup.isAutoMailing" ng-disabled="mailing.selectedGroup.mailingIsCompleted==1">{{('Авторассылка'|localize) }}
@@ -357,17 +356,13 @@
 	    	</tab>
 	    </tabset>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 
 
 
 <div class="row-fluid" ng-show="pageStore.training.tabSgActive && sgroup.selectedItems.length!=0">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 			 <tabset>
 			 	<!-- ============================================ ИНФОРМАЦИЯ ==================================================-->
 				<tab heading="{{'Информация'|localize}}">
@@ -504,16 +499,12 @@
 				</tab>
 			</tabset>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 </br>
 
 
 <div class="row-fluid" ng-show="pageStore.training.tabFeedBacksActive && feedBack.items.length!=0 && feedBack.selectedItems.length!=0">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		 <tabset>
 		 	<!-- ============================================ ПОДРОБНОСТИ ОТЗЫВА ==================================================-->
 			<tab heading="{{'Информация'|localize}}">
@@ -526,18 +517,12 @@
 			</tab>
 		</tabset>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="other.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>
 
@@ -637,5 +622,11 @@
 		<button class="btn" data-dismiss="modal" aria-hidden="true" ng-click="other.modalChangeCompanyVisible=false" ng-bind="'Отмена'|localize"></button>
 	</form>
   </div>
-</div>]]></CSP>
+</div>
+
+
+
+
+
+<linkbuilder is-visible="linkBuilderIsVisible"/>]]></CSP>
 </Export>

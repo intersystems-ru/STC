@@ -197,8 +197,9 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
                 $scope.training.data = data;
                 $scope.training.data.notCorrectAddress = data.address.title;
 
-        		    $scope.training.dateStart = data.dateStart;
-        		    $scope.training.dateFinish = data.dateFinish;
+        		$scope.training.dateStart = data.dateStart;
+        		$scope.training.dateFinish = data.dateFinish;
+        		$scope.training.data.isCertificatesDone = data.isCertificatesDone == 1;
         		
                 if (data.isCompleted == 0){
                     $scope.training.btnAdditionName = 'Завершить';

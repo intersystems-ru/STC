@@ -228,13 +228,13 @@ Checking before deletion</Description>
 <FormalSpec>id</FormalSpec>
 <ReturnType>%String</ReturnType>
 <Implementation><![CDATA[
-	set fullName = "-"
+	set (lastName, firstName) = ""
 	
-	&sql(SELECT LastName->Value || ' ' || FirstName->Value INTO :fullName
+	&sql(SELECT LastName->Value, FirstName->Value INTO :lastName, :firstName
 	     FROM Stc_Data.Person
 	     WHERE ID = :id)
 	
-	quit fullName
+	quit lastName_" "_firstName
 ]]></Implementation>
 </Method>
 

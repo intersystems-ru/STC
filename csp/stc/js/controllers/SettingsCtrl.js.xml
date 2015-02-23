@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/js/controllers/SettingsCtrl.js" application="/csp/stc/" default="1"><![CDATA[
 'use strict';
-//=
+//=    
 
 /*===========================================================================================
 SettingsCtrl - all settings for google, mail
@@ -19,6 +19,7 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
                       operators: {items:[{email:{}}]},
                       reminder: {},
                       feedback: {},
+                      listOfFeedbacks: {},
                       teacher: {},
                       curator: {},
                       registration: {},
@@ -186,10 +187,16 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
             case 'confirmsubscription':{
               msg += '%ActivationUrl - ссылка для активации подписки.';
               break;
+            }
+            case 'listOfFeedbacks':{
+              msg += trainingVariables + '<br>' + 
+                     '%NumberOfNewestFeedbacks - количество новых отзывов.' + '<br>' +
+                     '%ListOfFeedbacksUrl - ссылка на страницу с отзывами.';
+              break;
             } 
         }
         
-		UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
+		    UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
     };
 
     // Show preview for mail tab as html
@@ -206,7 +213,7 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
 
     
     // Load all settings
-	$scope.page.google.load('settings');
+	  $scope.page.google.load('settings');
     $scope.page.google.load('calendar');
     $scope.page.mail.load('settings');
     $scope.page.mail.load('operators');
@@ -217,7 +224,8 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
     $scope.page.mail.load('curator');
     $scope.page.mail.load('orders');
     $scope.page.mail.load('orderapply');
-    $scope.page.mail.load('confirmsubscription'); 
+    $scope.page.mail.load('confirmsubscription');
+    $scope.page.mail.load('listOfFeedbacks'); 
 });
 
 ]]></CSP>

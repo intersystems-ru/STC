@@ -2,9 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/trainingstudents.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<accordion close-others="false">
 		    <accordion-group is-open="true" heading="{{'Информация о курсе'|localize}}">
 				<div class="row-fluid">
@@ -49,10 +47,8 @@
 		
 
 		<br>
-		<stcalert data="page.alert" span-right="1" span-middle="10" span-left="1"/>
-	</div >
-	<div class="span1">
-	</div >
+		<stcalert data="page.alert"/>
+	</div>
 </div >
 
 ]]></CSP>

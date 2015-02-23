@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="StcDashboards-TrainingPointsMapYandex.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="TrainingPointsMapYandex" folderName="StcDashboards" title="Карта точек обучения (Яндекс)" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="%DeepSee_PortalEdit" timeCreated="2013-07-04T05:29:56.446Z" createdBy="ilson" category="" bookCover="" scheme="" worklistCount="0" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="TrainingPointsMapWYandex" type="portlet" subtype="Stc.DeepSee.TrainingPointsMapPortletYandexVersion" subtypeClass="" title="$$$Карта точек обучения/Stc" dataSource="TrainingPointsKPI.kpi" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="6" rowSpanL="10" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="applyFilter" target="" targetProperty="Year" location="widget" type="auto" controlClass="" label="$$$Год/Stc" title="" value="2014" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="Status" location="widget" type="dropdown" controlClass="" label="$$$Статус/Stc" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="Course" location="widget" type="auto" controlClass="" label="$$$Курс/Stc" title="" value="" text="" size="30" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="Teacher" location="widget" type="auto" controlClass="" label="$$$Преподаватель/Stc" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="Company" location="widget" type="auto" controlClass="" label="$$$Организация/Stc" title="" value="" text="" size="15" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="CompanyType" location="widget" type="dropdown" controlClass="" label="$$$Тип организации/Stc" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <property name="drillUpButtonPosition">top</property>
+    <property name="getAdditionInfoForObjectById"></property>
+    <property name="latitude">50.74</property>
+    <property name="longitude">90.6</property>
+    <property name="mapType">Дорожная карта:yandex#map</property>
+    <property name="onaddplacemark">
+    	/* Set hint content */
+    	placemark.properties.set("hintContent", placemark.data.Course + ' (' + placemark.data.StudentsCount + ')');
+    	/*placemark.properties.set("iconContent", placemark.data.StudentsCount);*/
+    </property>
+    <property name="onaddpolygon">
+    	/* Set hint content */
+    	polygon.properties.set("hintContent", polygon.data.Course + ' (' + polygon.data.StudentsCount + ')');
+    </property>
+    <property name="onclickplacemark">   
+    	    	
+    	zenThis.openBallonAtPlacemark(placemark);
+    </property>
+    <property name="onclickpolygon"><![CDATA[       	
+    	if(!zenThis.lastPolygon){     		
+        	zenThis.lastPolygon = [];
+    	}    	 				  		
+     
+     	zenThis.drillDown(polygon.data.Name, position, polygon.data.DefaultZoom, {Guid: polygon.data.Guid, Level: polygon.data.Level});   		  		
+     
+     	if (zenThis.lastPolygon.length > 0){
+		 	zenThis.lastPolygon[zenThis.lastPolygon.length - 1].options.set('visible', false);
+     	}
+     	
+     	zenThis.currPolygon = new ymaps.Polygon(
+     		polygon.geometry.getCoordinates(), 
+     		{
+	     		hintContent: polygon.data.Name
+	     	}, 
+     		{
+	     		fill: false,
+        	 	zIndex: 1,
+        	 	strokeColor: polygon.options.get('fillColor'),
+        	 	strokeWidth: 4,
+        	 	strokeOpacity: 0.9
+    		});
+
+     	zenThis.lastPolygon.push(zenThis.currPolygon);
+     	zenThis.getMapObject().geoObjects.add(zenThis.currPolygon);
+     ]]></property>
+    <property name="oncontextmenuplacemark">
+    	console.log('oncontextmenuplacemark');
+    </property>
+    <property name="oncontextmenupolygon"><![CDATA[
+    	var content = '<div style="font-size: 12px; font-family:arial;"><span style="font-weight: bold;">' + polygon.data.Name + '</span><br>';    
+    	
+    	zenThis.openBallonAtPosition(position, content + '</div>');
+    ]]></property>
+    <property name="ondrilldown">
+    	console.log("dash ondrilldown");
+    	
+   		if(!zenThis.lastGuid){ 
+    		zenThis.lastGuid = [];
+    		zenThis.lastLevel = [];
+    		zenThis.currGuid = '';
+    		zenThis.currName = '';
+    		zenThis.currLevel = '';
+   		}
+   		
+   		zenThis.lastLevel.push(zenThis.currLevel);  
+   		zenThis.lastGuid.push(zenThis.currGuid);
+   		
+   		zenThis.currLevel = data.Level;
+   		zenThis.currGuid = data.Guid;
+   		
+   		zenThis.getSliderData().setGuid(data.Guid);
+   		zenPage.dashboardEventHandler(zenThis, 'click', zenThis.currGuid, 'applyFilter', '*', 'ParentGuid');  
+    </property>
+    <property name="ondrillup"><![CDATA[
+    if (zenThis.lastGuid){  
+		zenThis.currGuid = zenThis.lastGuid.pop();
+		zenThis.currLevel = zenThis.lastLevel.pop();
+  		zenThis.currPolygon = zenThis.lastPolygon.pop();
+  		
+  		zenThis.getSliderData().setGuid(zenThis.currGuid);	
+		zenPage.dashboardEventHandler(zenThis,'click', zenThis.currGuid, 'applyFilter', '*', 'ParentGuid');          
+	
+	  	if (zenThis.lastPolygon.length > 0){
+		   	zenThis.lastPolygon[zenThis.lastPolygon.length - 1].options.set('visible', true);
+        }
+            
+		if (zenThis.currPolygon){          
+			zenThis.getMapObject().geoObjects.remove(zenThis.currPolygon);
+		}
+	}
+    ]]></property>
+    <property name="placemarkDataProperties">ID,Course,CourseDescription,PlacemarkPreset,City,Street,Room,DateStart,DateFinish,Teacher,StudentsCount,SubGroupsCount,Latitude,Longitude,IsCompleted</property>
+    <property name="placemarkIcon">http://i.imgur.com/pBB7MYT.png</property>
+    <property name="placemarkIconSize"></property>
+    <property name="placemarkLatitudeProperty">Latitude</property>
+    <property name="placemarkLongitudeProperty">Longitude</property>
+    <property name="placemarkSpecialIcon">http://i.imgur.com/bFJRQfv.png</property>
+    <property name="placemarkSpecialProperty"></property>
+    <property name="placemarkTitleProperty">Course</property>
+    <property name="polygonColorProperty"></property>
+    <property name="polygonCoordsJsFile"></property>
+    <property name="polygonCoordsProperty"></property>
+    <property name="polygonDataProperties"></property>
+    <property name="polygonFillOpacity">0.6</property>
+    <property name="polygonHoverOpacity">0.4</property>
+    <property name="polygonLoadBordersMethod"></property>
+    <property name="polygonSaveBordersMethod"></property>
+    <property name="polygonStrokeOpacity">1</property>
+    <property name="polygonStrokeWeight">1</property>
+    <property name="polygonTitleProperty">Course</property>
+    <property name="zoom">3</property>
+  </widget>
+  <widget name="TrainingStudents" type="scoreCardWidget" subtype="regular" subtypeClass="" title="$$$Слушатели выбранного обучения/Stc" dataSource="TrainingStudentsKPI.kpi" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="6" colSpanL="4" rowSpanL="10" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="applyFilter" target="" targetProperty="Training" location="widget" type="hidden" controlClass="" label="Training" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <override name="scoreCard">{width:386,selectedSeries:-1,columns:[{align:'left',display:'itemNo',headerAlign:'left',label:'№',_type:'scoreCardColumn'},{align:'left',dataValue:'FullName',headerAlign:'left',label:'ФИО',_type:'scoreCardColumn'},{align:'left',dataValue:'Company',headerAlign:'left',label:'Организация',width:'112.5',_type:'scoreCardColumn'},{align:'left',dataValue:'Email',headerAlign:'left',label:'Email',_type:'scoreCardColumn'},{align:'left',dataValue:'Phone',headerAlign:'left',label:'Телефон',_type:'scoreCardColumn'}],_type:'scoreCard'}</override>
+  </widget>
+</dashboard>
+</Document></Export>

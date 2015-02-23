@@ -9,7 +9,7 @@ filterModule.filter('convertCacheDate', function($filter) {
 
         try{
 	        //if (isUTC){
-	        	return $filter('date')(new Date(input.replace(/-/g,"/")+' UTC'), filterParams)
+	        	
 	        //}
 	        
             var dateTime = input.split(' ');
@@ -19,8 +19,9 @@ filterModule.filter('convertCacheDate', function($filter) {
             	result = $filter('date')(new Date(date[0], date[1]-1, date[2]), filterParams);
             }
             else{
-                var time = dateTime[1].split(':');
-                result = $filter('date')(new Date(date[0], date[1]-1, date[2], time[0], time[1], time[2]), filterParams);
+                //var time = dateTime[1].split(':');
+                //result = $filter('date')(new Date(date[0], date[1]-1, date[2], time[0], time[1], time[2]), filterParams);
+            	return $filter('date')(new Date(input.replace(/-/g,"/")+' UTC'), filterParams)
             }
         }
         catch (ex){

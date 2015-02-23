@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Mobile-ThisYear.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="ThisYear" folderName="Mobile" title="$$$В этом году/Stc" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2015-02-19T15:25:31.725Z" createdBy="_SYSTEM" category="" bookCover="" scheme="" worklistCount="0" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="Виджет1" type="pivot" subtype="pivot" subtypeClass="lineChart" title="$$$Слушателей на курсах в этом году" dataSource="Mobile/CoursesThisYear.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="3" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет2" type="pivot" subtype="pivot" subtypeClass="lineChart" title="$$$Слушатели по странам/Stc" dataSource="Mobile/Students by Countries.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="3" colSpanL="3" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="applyFilter" target="" targetProperty="[Year].[H1].[Year]" location="widget" type="auto" controlClass="" label="Страна" title="" value="&amp;[NOW]" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+  </widget>
+  <widget name="Виджет3" type="pivot" subtype="pivot" subtypeClass="lineChart" title="$$$Организации в этом году/Stc" dataSource="Mobile/Организации деньги и люди.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="4" homeColL="0" colSpanL="6" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="applyFilter" target="" targetProperty="[Year].[H1].[Year]" location="widget" type="auto" controlClass="" label="Год" title="" value="&amp;[NOW]" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+    <control name="" action="applyFilter" target="" targetProperty="[CompanyType].[H1].[Name]" location="widget" type="auto" controlClass="" label="Тип организации" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+  </widget>
+</dashboard>
+</Document></Export>

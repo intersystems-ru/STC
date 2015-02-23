@@ -14,6 +14,13 @@ Name</Description>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
+<Property name="Description">
+<Description>
+Description</Description>
+<Type>Stc.Data.Localization.LText</Type>
+<Required>1</Required>
+</Property>
+
 <Property name="Hours">
 <Description>
 Duration (in hours)</Description>
@@ -66,6 +73,105 @@ Currency</Description>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
+<Property name="YandexPlacemarkPreset">
+<Type>%String</Type>
+<InitialExpression>"islands#blackIcon"</InitialExpression>
+</Property>
+
+<Method name="RecalcYandexPresets">
+<Description>
+do ##class(Stc.Data.Course).RecalcYandexPresets()</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set presets = $LB("islands#redIcon",
+			     "islands#greenIcon",
+				 "islands#blueIcon", 
+			     "islands#orangeIcon", 
+			     "islands#yellowIcon",
+				 "islands#brownIcon",
+				 "islands#oliveIcon",
+				 "islands#violetIcon",
+				 "islands#pinkIcon",
+				 "islands#grayIcon",		
+				 "islands#lightBlueIcon",
+				 "islands#blackIcon")
+		
+	set presetsCount = $LL(presets)
+				 
+	&sql(DECLARE CourseCur CURSOR FOR 
+	 	 SELECT Course, Count(Course) As CourseCount
+		 FROM Stc_Data.Training
+		 GROUP BY Course
+		 ORDER BY CourseCount DESC)	
+	
+	&sql(OPEN CourseCur)
+	for  
+	{	
+		&sql(FETCH CourseCur INTO :courseId, :count) 
+		quit:(SQLCODE '= 0)
+		
+		if (%ROWCOUNT > presetsCount)
+		{
+			set newPreset = $LIST(presets, presetsCount)
+		}
+		else
+		{
+			set newPreset = $LIST(presets, %ROWCOUNT) 
+		}
+		
+		//w !, ":newPreset="_newPreset
+		&sql(UPDATE Stc_Data.Course 
+			 SET YandexPlacemarkPreset = :newPreset 
+			 WHERE ID = :courseId AND (YandexPlacemarkPreset IS NULL OR YandexPlacemarkPreset <> :newPreset))
+	}
+	
+	&sql(CLOSE CourseCur)
+		
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="UpdateOld">
+<Description>
+do ##class(Stc.Data.Course).UpdateOld()</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		TSTART
+				
+		&sql(DECLARE Course1Cur CURSOR FOR 
+		 	 SELECT ID
+			 FROM Stc_Data.Course)	
+		
+		&sql(OPEN Course1Cur)
+		for  
+		{	
+			&sql(FETCH Course1Cur INTO :id) 
+			quit:(SQLCODE '= 0)
+
+			set course = ..%OpenId(id)
+			set course.Description = ##class(Stc.Data.Localization.LText).Create("")
+			do course.Description.SetValues(course.Name.%Id())
+			$$$THROWONERROR(st, course.%Save())
+		}
+		
+		&sql(CLOSE Course1Cur)
+		
+		TCOMMIT
+	}
+	catch(ex){
+		TROLLBACK
+		set st = ex.AsStatus()
+	}
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+
 <Method name="ConvertToProxyObject">
 <Description>
 Convert to proxyObject (for JSON)</Description>
@@ -76,6 +182,7 @@ Convert to proxyObject (for JSON)</Description>
 	
 	set proxy.id = ..%Id()
 	set proxy.name = ..Name.Value
+	set proxy.description = ..Description.Value
 	
 	if (shortInfo = 1) quit proxy
 	
@@ -102,10 +209,12 @@ Create or save modified course</Description>
 	if (data.id = ""){
 		set course = ..%New()
 		set course.Name = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.name, "I","UTF8"))
+		set course.Description = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.description, "I","UTF8"))
 	}
 	else{
 		set course = ..%OpenId(data.id)
 		set course.Name.Value = $ZCONVERT(data.name, "I","UTF8")
+		set course.Description.Value = $ZCONVERT(data.description, "I","UTF8")
 	}
 	
 	set course.Hours = $ZCONVERT(data.hours, "I","UTF8")
@@ -152,6 +261,12 @@ Create or save modified course</Description>
 </Value>
 <Value name="8">
 <Value>Currency</Value>
+</Value>
+<Value name="9">
+<Value>YandexPlacemarkPreset</Value>
+</Value>
+<Value name="10">
+<Value>Description</Value>
 </Value>
 </Data>
 <Data name="Teachers">

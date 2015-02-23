@@ -24,6 +24,7 @@ directivesModule.directive('stcgrid', function(){
             pageSize: '=',
             pageTotal: '=',
             navigatorVisible: '@',
+            searchHide: '=',
             
             selectable: '=',
             selectedItems: '=',

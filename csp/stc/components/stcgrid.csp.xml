@@ -35,7 +35,7 @@
                     </form>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <form ng-submit="search()" style="margin: 0px; display: inline;">
-                        <div class="input-append" style="margin-bottom: 0px;">
+                        <div ng-hide="searchHide" class="input-append" style="margin-bottom: 0px;">
                             <input type="text" class="gridInput" ng-model="searchText" style="width:120px;" placeholder="{{'Поиск в столбце'|localize}}" ng-disabled="!searchedColumn.name">
                             <div class="btn-group dropup" style="cursor: pointer;">
                                 <button type="submit" class="btn btn-mini" ng-disabled="!searchedColumn.name">&nbsp;&nbsp;&nbsp;<i class="icon-search"></i>&nbsp;&nbsp;&nbsp;</button>

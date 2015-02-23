@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Mobile-Students by Years.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="Students by Years" folderName="Mobile" title=" Students by Years" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2014-12-13T14:44:15.701Z" createdBy="_SYSTEM" category="" bookCover="" scheme="" worklistCount="0" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="Виджет1" type="pivot" subtype="lineChart" subtypeClass="lineChart" title="Слушателей за годы" dataSource="StudentsByYears.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет2" type="pivot" subtype="barChartStacked" subtypeClass="barChart" title="Курсы по годам" dataSource="Mobile/StudentsAndCoursesByYears.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="4" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет3" type="pivot" subtype="barChart" subtypeClass="barChart" title="Курсы в этом году" dataSource="Mobile/CoursesThisYear.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="6" homeColL="0" colSpanL="6" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет4" type="pivot" subtype="pieChart" subtypeClass="pieChart" title="Каким курсам учим " dataSource="Mobile/StudentsByCourses.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="4" homeColL="6" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет5" type="pivot" subtype="barChart" subtypeClass="barChart" title="Количество обученных за годы" dataSource="StudentsByYears.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет6" type="pivot" subtype="pivot" subtypeClass="lineChart" title="Слушатели за годы" dataSource="StudentsByYears.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="7" colSpanL="3" rowSpanL="5" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="showListing" target="" targetProperty="Students" location="widget" type="auto" controlClass="" label="" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+  </widget>
+</dashboard>
+</Document></Export>

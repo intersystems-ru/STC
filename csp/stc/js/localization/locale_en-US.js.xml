@@ -445,7 +445,10 @@ localizationModule.constant('StcDictionary', {
 	'Шаблон: Слушатель - подтверждение регистрации' : 'Pattern: Student - confirmation registration',
 	'Дата отправки':'',
 	'В очереди':'In the queue',
-	'Написать письмо':'Create mail'
+	'Написать письмо':'Create mail',
+	'Все письма выбранной группы':'All mails of selected group',
+	'Все письма':'All mails',
+	'Сгруппированные письма':'Grouped mails'
 
   },
   getTranslate: function(word){

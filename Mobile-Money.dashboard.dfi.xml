@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Mobile-Money.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="Money" folderName="Mobile" title="$$$Деньги/Stc" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2015-01-29T14:59:04.969Z" createdBy="_SYSTEM" category="" bookCover="" scheme="" worklistCount="2" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="Виджет1" type="pivot" subtype="pivot" subtypeClass="lineChart" title="Организации" dataSource="Mobile/Организации по оплате.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="5" rowSpanL="3" showToolbar="true" theme="" dataColorList="">
+    <control name="" action="showListing" target="" targetProperty="Students" location="widget" type="auto" controlClass="" label="" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen=""></control>
+  </widget>
+  <widget name="Виджет2" type="pivot" subtype="columnChart" subtypeClass="barChart" title="Крупнейшие заказчики обучения" dataSource="Mobile/Организации оплата 80 20.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="5" colSpanL="5" rowSpanL="3" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет3" type="pivot" subtype="barChartStacked" subtypeClass="barChart" title="За какие курсы платят" dataSource="Mobile/Money by courses.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="3" homeColL="6" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет4" type="pivot" subtype="columnChartStacked" subtypeClass="barChart" title="Деньги за обучение по годам" dataSource="Mobile/Money by Years.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="3" homeColL="2" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет5" type="pivot" subtype="pivot" subtypeClass="lineChart" title="Деньги по странам и партнерам" dataSource="Mobile/Money and Regions.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="3" homeColL="0" colSpanL="2" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет6" type="pivot" subtype="columnChartStacked" subtypeClass="barChart" title="" dataSource="Mobile/Money organization years.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="7" homeColL="6" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+</dashboard>
+</Document></Export>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/directives/stccompany.js" application="/csp/four/" default="1"><![CDATA[
+<CSP name="stc/js/directives/stccompany.js" application="/csp/stc/" default="1"><![CDATA[
 'use strict';
-//dddd
+//ddd
 
 directivesModule.directive('stccompany', function(){
     return {
@@ -15,8 +15,27 @@ directivesModule.directive('stccompany', function(){
             requiredAll: '=',
             disableShortName: '='       
         },
-        controller: function($scope){
-           
+        controller: function($scope, RegionSrvc){
+            $scope.cities = [];
+            
+            // Подгружать города по набору
+            $scope.loadCities = function(startsWith){       
+                if(!startsWith || startsWith.length == 0)
+                    $scope.cities = [];
+                
+                if (!startsWith || startsWith.length != 2)
+                    return;  
+
+                RegionSrvc.getAllCitiesStartsWith(startsWith).then(
+                    function(data){
+                        $scope.cities = data;
+                    },
+                    function(response){
+                        $scope.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+                    }); 
+            };
+
+            $scope.loadCities();
 	   	}
     }
 });

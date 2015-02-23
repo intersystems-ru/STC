@@ -20,7 +20,7 @@ Working with email</Description>
 	set patternMsg = $REPLACE(patternMsg, "%Country.Name", tr.City.ParentRegion.ParentRegion.Name.Value)
 	set patternMsg = $REPLACE(patternMsg, "%Street", tr.Street.Value)
 	set patternMsg = $REPLACE(patternMsg, "%Room", tr.Room)
-	set patternMsg = $REPLACE(patternMsg, "%Teacher.FullName", tr.Teacher.FullName)
+	set patternMsg = $REPLACE(patternMsg, "%Teacher.FullName", tr.Teacher.LastName.Value_" "_tr.Teacher.FirstName.Value_" "_tr.Teacher.MiddleName.Value)
 	set patternMsg = $REPLACE(patternMsg, "%Teacher.Email", tr.Teacher.Email)
 	set patternMsg = $REPLACE(patternMsg, "%Teacher.Phone", $SELECT(tr.Teacher.Phone="":"-", tr.Teacher.Phone'="":tr.Teacher.Phone))
 	set patternMsg = $REPLACE(patternMsg, "%Curator.FullName", $SELECT(tr.CuratorFullName.Value="":"-", tr.CuratorFullName.Value'="":tr.CuratorFullName.Value))
@@ -38,6 +38,7 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("students")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
 	quit mail
 ]]></Implementation>
@@ -49,6 +50,7 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("orders")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
 	set mail.message = $REPLACE(mail.message, "%JoinUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/order")
 	quit mail
@@ -61,6 +63,7 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("teacher")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
 	set mail.message = $REPLACE(mail.message, "%ListOfStudentsUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/students/"_tr.AccessCode)
 	quit mail
@@ -73,6 +76,7 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("curator")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
 	set mail.message = $REPLACE(mail.message, "%ListOfStudentsUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/students/"_tr.AccessCode)
 	quit mail
@@ -85,8 +89,35 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("feedback")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
 	set mail.message = $REPLACE(mail.message, "%FeedBackUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/feedback/"_$p(tr.AccessCode,"-",1)_"-"_$p(tr.AccessCode,"-",5))	
+	quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForListOfTrainingFeedBacks">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Stc.Data.Training</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set mail = ..GetEmailPattern("listOfFeedbacks")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+	set mail.message = $REPLACE(mail.message, "%ListOfFeedbacksUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/feedbacks/"_tr.GetAccessCodeForFeedbackList())	
+	
+	set nowTime = $ZDT($ZTS, 3)
+	set trId = tr.%Id()
+	
+	set timeOut = ##class(Stc.Data.Settings).GetMailingHoursTimeoutListOfFeedbacks()
+	
+	&sql(SELECT COUNT(ID) INTO :numberOfNewestFeedBacks
+		 FROM Stc_Data.Feedback 
+		 WHERE Training = :trId AND {fn TIMESTAMPDIFF(SQL_TSI_HOUR, CreatedTS, :nowTime)} <= :timeOut)
+
+	set mail.subject = $REPLACE(mail.subject, "%NumberOfNewestFeedbacks", numberOfNewestFeedBacks)
+	set mail.message = $REPLACE(mail.message, "%NumberOfNewestFeedbacks", numberOfNewestFeedBacks)	
+	
 	quit mail
 ]]></Implementation>
 </Method>
@@ -97,6 +128,7 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("registration")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
 	quit mail
 ]]></Implementation>
@@ -108,6 +140,7 @@ Working with email</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set mail = ..GetEmailPattern("orderapply")
+	set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
 	set mail.message = $REPLACE(mail.message, "%Course.Name", ord.Course.Name.Value)
 	quit mail
 ]]></Implementation>
@@ -173,6 +206,10 @@ Get email pattern from ^CacheMsg</Description>
 		set proxy.subject = ##class(Stc.Utils.Msg).GetMsg("mail_Subject_Confirmation-Subscription")
 		set proxy.message = ##class(Stc.Utils.Msg).GetMsg("mail_Message_Confirmation-Subscription")
 	}
+	elseif (type = "listOfFeedbacks"){
+		set proxy.subject = ##class(Stc.Utils.Msg).GetMsg("mail_Subject_Training-ListOfFeedBacks")
+		set proxy.message = ##class(Stc.Utils.Msg).GetMsg("mail_Message_Training-ListOfFeedBacks")
+	}
 	
 	quit proxy
 ]]></Implementation>
@@ -227,6 +264,10 @@ Get email pattern from ^CacheMsg</Description>
 		do ##class(Stc.Utils.Msg).SetMsg("mail_Subject_Confirmation-Subscription", subject)
 		do ##class(Stc.Utils.Msg).SetMsg("mail_Message_Confirmation-Subscription", message)
 	}
+	elseif (type = "listOfFeedbacks"){
+		do ##class(Stc.Utils.Msg).SetMsg("mail_Subject_Training-ListOfFeedBacks", subject)
+		do ##class(Stc.Utils.Msg).SetMsg("mail_Message_Training-ListOfFeedBacks", message)
+	}
 	
 	quit $$$OK
 ]]></Implementation>
@@ -256,13 +297,14 @@ Get email pattern from ^CacheMsg</Description>
 	    do mail.To.Insert(email)
 	    
     	set auth=##class(%Net.Authenticator).%New()
-   		set auth.MechanismList = "LOGIN"
+   		//set auth.MechanismList = "LOGIN"
   		set auth.UserName = ##class(Stc.Data.Settings).GetEmailSMTPUser()
   		set auth.Password = ##class(Stc.Data.Settings).GetEmailSMTPPassword()
-  	
+  		
   		set smtp = ##class(%Net.SMTP).%New()
     	set smtp.smtpserver = ##class(Stc.Data.Settings).GetEmailSMTPServer()
-    	set smtp.port = ##class(Stc.Data.Settings).GetEmailSMTPPort()
+    	set smtp.port = 465
+  		set smtp.SSLConfiguration = "MAILRU"
   		set smtp.authenticator = auth
   	
     	$$$THROWONERROR(st, smtp.Send(mail))

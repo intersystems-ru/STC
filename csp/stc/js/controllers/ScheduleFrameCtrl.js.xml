@@ -8,10 +8,13 @@
 ===========================================================================================*/
 
 controllersModule.controller('ScheduleFrameCtrl', function($scope, $window, $filter, CourseTeacherSrvc, TrainingSrvc, YandexSrvc, UtilsSrvc){
-    $scope.menu.hideNavBar = true;
-    $("#divContainer").css("padding", "0");
-    $("body").css("padding", "0");
-	  
+    console.log('ScheduleFrameCtrl loading')
+    
+    if ($scope.menu) {
+	    $scope.menu.hideNavBar = true;
+    	$("#divContainer").css("padding", "0");
+    	$("body").css("padding", "0");
+    } 
     $scope.page = {};
     $scope.page.courses = [];
 
@@ -89,132 +92,6 @@ controllersModule.controller('ScheduleFrameCtrl', function($scope, $window, $fil
     
     $scope.page.loadSchedule();
 
-    /*
-    $scope.page = {trainingTable: {}, 
-                   courseTable: {}};
-	
-
-	
-    $scope.page.init = function(){
-        $scope.page.trainingTable.grid = {};
-        $scope.page.trainingTable.columns = [
-                          {name: 'Название',       sqlName: 'Course->Name->Value', isSorted: false,  isSortable: true,  isDown: false,  isSearched: false,  isSearchable: true},
-                          {name: 'Город / Дата',   sqlName: 'DateStart'          , isSorted: true ,  isSortable: true,  isDown: false,  isSearched: false,  isSearchable: true},
-                          {name: 'Регистрация',    sqlName: ''                   , isSorted: false , isSortable: false, isDown: false,  isSearched: false,  isSearchable: false, captionStyle: {textAlign: 'center'}}];
-                            
-        $scope.page.trainingTable.properties = [
-                                      {name: 'course.name'}, 
-                                      {name: 'cityDate', 
-                                      			calculate: function(item){
-	                                      			item.cityDate = item.city.name + '\n' + $filter('convertCacheDate')(item.dateStart, $filter('localize')('d MMMM y'));
-	                                      		} 
-	                                     },
-                                      {name: 'registration', cellSelectable: true, cellStyle: {textAlign: 'center', verticalAlign: 'middle'},
-                                                calculate: function(item){
-                                                     item.registration = $filter('localize')('Перейти') + ' »';
-                                                },
-                                                getCssClass: function(item){ 
-                                                        return 'cellLink';
-                                                },
-                                                onClickCell: function(item){
-                                                     
-                                                     console.log(item); 
-                                                }}];
-
-        $scope.page.trainingTable.pageSize = 5;
-        $scope.page.trainingTable.pageCurr = 1;
-        $scope.page.trainingTable.itemsTotal = 0;
-        $scope.page.trainingTable.selectedItems = [];
-        $scope.page.trainingTable.multiSelectMode = false;
-        $scope.page.trainingTable.forciblyUpdate = 0;
-        $scope.page.trainingTable.forciblyUpdate++;
-
-
-        $scope.page.courseTable.grid = {};
-        $scope.page.courseTable.columns = [
-                          {name: 'Название',        sqlName: 'Name->Value', isSorted: true,  isSortable: true,  isDown: true,  isSearched: false, isSearchable: true},
-                          {name: 'Часы',            sqlName: '',            isSorted: false, isSortable: false, isDown: true,  isSearched: false, isSearchable: false},
-                          {name: 'Дни',             sqlName: '',            isSorted: false, isSortable: false, isDown: true,  isSearched: false, isSearchable: false},
-                          {name: 'Программа',       sqlName: '',            isSorted: false, isSortable: false, isDown: true,  isSearched: false, isSearchable: false},
-                          {name: 'Новое обучение',  sqlName: 'Price',       isSorted: false, isSortable: false, isDown: true,  isSearched: false, isSearchable: false}];
-        
-        $scope.page.courseTable.properties = [
-                                         {name:'name'}, 
-                                         {name:'hours'}, 
-                                         {name:'days'}, 
-                                         {name:'programUrlShort', cellSelectable: true,
-                                                    calculate: function(item){
-                                                        //var tail = (item.programUrl && item.programUrl.length > 25) ? '...':'';
-                                                        //item.programUrlShort = item.programUrl.substring(0,25) + tail + ' »';                                                
-                                                    	item.programUrlShort = $filter('localize')('Открыть') + ' »';
-                                                    },
-                                                    getCssClass: function(item){ 
-                                                        return 'cellLink';
-                                                    },
-                                                    onClickCell: function(item){
-                                                        console.log(item); 
-                                                    }},
-                                         {name:'createOrder', cellSelectable: true,
-                                                    calculate: function(item){
-                                                        item.createOrder = $filter('localize')('Подать заявку') + ' »';
-                                                    },
-                                                    getCssClass: function(item){ 
-                                                        return 'cellLink';
-                                                    },
-                                                    onClickCell: function(item){
-                                                        console.log(item); 
-                                                    }}];
-                                                                             
-        $scope.page.courseTable.pageSize = 10;
-        $scope.page.courseTable.pageCurr = 1;
-        $scope.page.courseTable.itemsTotal = 0;
-        $scope.page.courseTable.selectedItems = [];
-        $scope.page.courseTable.multiSelectMode = false;
-        $scope.page.courseTable.forciblyUpdate = 0;
-        $scope.page.courseTable.forciblyUpdate++;
-    };
-
-    // Загрузка
-    $scope.page.trainingTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
-        TrainingSrvc.getTrainings(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, 'All').then(
-            function(data){
-                $scope.page.trainingTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
-                $scope.page.trainingTable.itemsTotal = data.itemsTotal;
-                $scope.page.trainingTable.items = data.items;
-            },
-            function(response){
-                $scope.page.trainingTable.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
-            });
-    };
-
-    $scope.page.trainingTable.onSelectCell = function(item, property){
-        if (!item) return;
-
-        property.onClickCell(item);
-    };
-    
-
-     // Загрузить все курсы
-    $scope.page.courseTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
-        CourseTeacherSrvc.getAllCoursesFullInfo(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, 1).then(
-            function(data){
-                $scope.page.courseTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
-                $scope.page.courseTable.itemsTotal = data.itemsTotal;
-                $scope.page.courseTable.items = data.items;
-            },
-            function(response){
-                $scope.page.courseTable.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
-            });
-    };
-
-    $scope.page.courseTable.onSelectCell = function(item, property){
-        if (!item) return;
-
-        property.onClickCell(item);
-    };
-
-    $scope.page.init();
-    */
 });
     
 

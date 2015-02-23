@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="stc/schedule.csp" application="/csp/stc/" default="1"><![CDATA[
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+     
+    <script language="javascript" src="lib/angular/angular.min.js"></script>
+    
+    <script language="javascript">          
+        // Настройки приложения. Имена веб-приложений для REST, google календарь, язык
+        var StcAppSetting = {};
+        StcAppSetting.defaultApp = '#(##class(Stc.Data.Settings).GetWebAppNamespace())#';
+        StcAppSetting.admin = '#(##class(Stc.Data.Settings).GetWebAppAdmin())#';
+        StcAppSetting.user = '#(##class(Stc.Data.Settings).GetWebAppUser())#';
+        StcAppSetting.lang = 'ru-RU';
+    
+        var servicesModule     = angular.module('servicesModule', []);
+        var controllersModule  = angular.module('controllersModule', ['servicesModule']);
+        var localizationModule = angular.module('localizationModule', []);
+        var directivesModule   = angular.module('directivesModule', []);
+        var filterModule       = angular.module('filterModule', []);
+        var mainModule         = angular.module('mainModule', ['servicesModule', 'controllersModule', 'localizationModule', 'directivesModule', 'filterModule']);
+        document.write('<script language="javascript" src="js/localization/locale_' + StcAppSetting.lang + '.js"><\/script>'); 
+        
+        servicesModule.factory('CommonSrvc', function($http, $q, $filter) {  
+            return {
+                getRESTPromise: function(config){
+                      var deferred = $q.defer();
+                      $http(config).
+                          success(function(data, status, headers, config){
+                              deferred.resolve(data);
+                          }).
+                          error(function(data, status, headers, config){
+                              deferred.reject(data, status, headers, config);
+                          });
+                      return deferred.promise;
+                },
+                getSchedule: function(){
+                    return this.getRESTPromise({method: 'GET', url: StcAppSetting.user + '/json/schedule'});
+                },
+                getTwoDate: function(start, finish){
+                    var startText = $filter('convertCacheDate')(start, 'd MMMM y');
+                    var finishText = $filter('convertCacheDate')(finish, 'd MMMM y');   
+                    var startYearBorder = startText.indexOf(" ", 3);
+                    if (startYearBorder > 0){
+                        startText = startText.substring(0, startYearBorder);    
+                    }        
+                    return startText + ' - ' +  finishText;
+                }
+            }
+        });
+
+        directivesModule.directive('stcschedule', function(){
+            return {
+                replace: true,
+                restrict: 'E',
+                templateUrl: 'components/stcschedule.csp',
+                scope: {
+                    course: '='
+                },
+                controller: function($scope, $filter){           
+                    
+                    $scope.onClickTraining = function(tr){
+                        tr.detailsVisible = !tr.detailsVisible;
+                        if (tr.detailsVisible){
+                            tr.headStyle = {color : 'rgb(175, 5, 5)'}    
+                        }
+                        else{
+                            tr.headStyle = {};
+                        } 
+                    };  
+                }
+            }
+        });
+
+		filterModule.filter('convertCacheDate', function($filter) {
+		    return function(input, filterParams, isUTC) {
+		        var result;
+
+		        try{
+			        //if (isUTC){
+			        	
+			        //}
+			        
+		            var dateTime = input.split(' ');
+		            var date = dateTime[0].split('-');
+		            
+		            if (dateTime.length == 1){
+		            	result = $filter('date')(new Date(date[0], date[1]-1, date[2]), filterParams);
+		            }
+		            else{
+		                //var time = dateTime[1].split(':');
+		                //result = $filter('date')(new Date(date[0], date[1]-1, date[2], time[0], time[1], time[2]), filterParams);
+		            	return $filter('date')(new Date(input.replace(/-/g,"/")+' UTC'), filterParams)
+		            }
+		        }
+		        catch (ex){
+		            result = input;
+		        }
+
+		        return result;
+		    }
+		});
+
+
+        controllersModule.controller('ScheduleFrameCtrl', function($scope, $window, CommonSrvc){
+            $scope.courses = [];
+            
+            $scope.getUrlForCreateGoogleCalendarEvent = function(text, dates, location, details){
+                console.log(details);
+                return 'https://www.google.com/calendar/render?action=TEMPLATE&hl=ru' + 
+                                        '&text=' + text +
+                                        '&dates=' + dates +
+                                        '&location=' + location +
+                                        '&details=' +  
+                                                    '<a href="' + details.courseProgramUrl + '" target="_blank">Программа курса</a>%0A%0A' +
+                                                    '<a href="' + 'http://' + window.location.host + StcAppSetting.defaultApp + '/stc/index.csp%23/training/' + details.trainingId + '/order" target="_blank">Присоединиться</a>%0A%0A' +
+                                                    'Место проведения:' + '%0A' + 
+                                                    details.city + '%0A' +
+                                                    details.address + '%0A%0A' +
+                                                    'Время:' + '%0A' + 
+                                                    details.time + '%0A%0A' +
+                                                    'Преподаватель:' + '%0A' +
+                                                    details.teacher + '%0A%0A' + 
+                                                    'Контактное лицо:' + '%0A' +
+                                                    details.curator +
+                                                    (details.otherInfo == "" ? "" : '%0A%0AПримечание: %0A' + details.otherInfo) 
+                                                    '&sf=true&output=xml';
+            };
+
+            $scope.loadSchedule = function(){
+                CommonSrvc.getSchedule().then(
+                    function(data){
+                        $scope.courses = data.courses; 
+                        /*if (data.courses.length != 0){
+                            data.courses[0].style = {borderTop: 'none'};
+                  
+                            if (data.courses[0].trainings.length != 0){
+                                data.courses[0].trainings[0].detailsVisible = true;
+                                data.courses[0].trainings[0].headStyle = {color : 'rgb(175, 5, 5)'}; 
+                            }
+                        }*/
+
+                        var host_appName = window.location.host + StcAppSetting.defaultApp;
+
+                        for(var i=0; i < $scope.courses.length; i++){
+                            var course = $scope.courses[i];
+                            course.programUrl = 'http://' + course.programUrl; 
+                            course.urlCreateOrder = 'http://' + host_appName + '/stc/index.csp#/createorder?course=' + course.id;
+
+                            for (var t=0 ; t < course.trainings.length; t++){
+                                var training = course.trainings[t];
+
+                                training.yandexMapUrl = 'http://maps.yandex.ru/?ll=' + training.address.lng + ',' + training.address.lat + '&pt=' + training.address.lng + ',' + training.address.lat + '&l=map&z=15';
+                  
+                                training.dates = CommonSrvc.getTwoDate(training.dateStart, training.dateFinish);
+
+                                training.address = training.address.title;
+                                if (training.room != "" && training.room != "-"){
+                                    training.address += ', ауд. ' + training.room;
+                                }
+
+                                training.curatorInfo = training.curator.fullName;
+                                if (training.curator.phone != ""){
+                                    training.curatorInfo += ', ' + training.curator.phone;
+                                }
+
+                                if (training.curator.email != ""){
+                                    training.curatorInfo += ', ' + training.curator.email;
+                                }
+            
+                                training.urlJoin = 'http://' + host_appName + '/stc/index.csp#/training/' + training.id + '/order';
+                                training.urlAddGoogleCalendarEvent = $scope.getUrlForCreateGoogleCalendarEvent(
+                                                course.name + '. '+ training.city.name,
+                                                training.dateGoogleCalendar,
+                                                training.city.name + ', ' + training.address,
+                                                {
+                                                    trainingId: training.id,
+                                                    courseProgramUrl: course.programUrl,
+                                                    city: training.city.name + ', ' + training.city.parentName + ', ' + training.city.greatParentName,
+                                                    address: training.address,
+                                                    time: training.timeStart + ' - ' + training.timeFinish,
+                                                    teacher: training.teacher.lastName + ' ' + training.teacher.firstName +  ', ' + training.teacher.email,
+                                                    curator: training.curatorInfo,
+                                                    otherInfo: training.otherInfo   
+                                                });
+                                
+                            }
+                        } 
+                        
+                    },
+                    function(response){
+                        console.log(response);
+                    });
+            };
+
+            $scope.getStyle = function(idx){
+                if (idx == 0){
+                    return {borderTop: 'none'};
+                }
+                return {};
+            };
+            
+            $scope.loadSchedule();
+      });
+       
+    </script>
+  </head>
+  <body ng-app="mainModule" style="padding: 0;">
+    <div ng-controller="ScheduleFrameCtrl" style="width: 578px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #000;">
+        <p><b>Очные курсы обучения: программы курсов и ближайшие обучения.</b></p>
+        <p style="text-align: justify;">Очный курс может быть проведен как в офисе InterSystems, так и на вашем предприятии при регистрации слушателей от 3 человек. По результатам обучения слушателям выдается международный сертификат InterSystems.</p>
+        <p style="text-align: justify;">Если в ближайшее время желаемого курса нет, вы можете <a class="cellLink" href="http://classroom.intersystems.ru/csp/stc/stc/index.csp#/createorder" target="_blank">оформить заявку</a> на проведение любого курса, в том числе выездного в вашем городе. Также доступна <a class="cellLink" href="http://classroom.intersystems.ru/csp/stc/stc/index.csp#/mailing/subscription" target="_blank">подписка на анонсы</a>.</p>
+
+        <div style="height: 478px; overflow-x: auto; border: 1px solid #dddddd; border-top: 1px solid #dddddd; margin-top: 10px;">
+            <stcschedule ng-repeat="course in courses" course="course" ng-style="course.style"/>
+        </div>
+    </div>
+  </body>
+</html>
+]]></CSP>
+</Export>

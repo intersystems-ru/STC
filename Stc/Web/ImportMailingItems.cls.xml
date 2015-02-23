@@ -53,7 +53,7 @@
 			set data.group = group
 			
 			set existsApprovedId = ""
-			&sql(SELECT ID INTO :existsApprovedId FROM Stc_Data.MailingItemApproved WHERE MGroup = :group.id AND Email = :data.email)
+			&sql(SELECT ID INTO :existsApprovedId FROM Stc_Data.MailingItemApprovedSubscriber WHERE MGroup = :group.id AND Email = :data.email)
 			set data.id = existsApprovedId
 			
 			do ##class(Stc.Data.MailingItemApproved).Save(data, .st)

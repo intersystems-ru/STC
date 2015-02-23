@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Mobile-Students by Countries.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="Students by Countries" folderName="Mobile" title="Слушатели по странам и городам" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2015-01-28T12:14:12.211Z" createdBy="_SYSTEM" category="" bookCover="" scheme="" worklistCount="2" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="Виджет1" type="pivot" subtype="pivot" subtypeClass="lineChart" title="" dataSource="Mobile/Students by Countries.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+</dashboard>
+</Document></Export>

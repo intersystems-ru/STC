@@ -331,6 +331,10 @@ Private request processor for administrator</Description>
 	<!-- Get mailing journal -->
 	<Route Method="POST" Url="/json/mailing/journal/grid" Call="Stc.Web.JsonAdmin:GetMailingJournalItemsForGrid"/>
 	
+	<!-- Get mailing journal parts -->
+	<Route Method="POST" Url="/json/mailing/journal/parts/grid" Call="Stc.Web.JsonAdmin:GetMailingJournalPartsForGrid"/>
+	
+	
 	<!-- Get current mailing status -->
 	<Route Method="GET" Url="/json/mailing/status" Call="Stc.Web.JsonAdmin:GetMailingStatus"/>
 	
@@ -340,6 +344,8 @@ Private request processor for administrator</Description>
 	<!-- Delete mailing journal item -->
 	<Route Method="DELETE" Url="/json/mailing/journal/:id" Call="Stc.Web.JsonAdmin:DeleteMailingJournalItem"/>
 	
+	<!-- Delete mailing journal part -->
+	<Route Method="DELETE" Url="/json/mailing/journal/part/:groupNumber" Call="Stc.Web.JsonAdmin:DeleteMailingJournalPart"/>
 	
 	<!-- ================================================================================================================================== -->
 	<!-- MAIL                                                                                                                          MAIL -->

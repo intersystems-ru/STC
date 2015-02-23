@@ -32,7 +32,11 @@ In order to execute a real task, override this method in a subclass.]]></Descrip
 	
 	do ..MailingGroupsAutoMailing()
 	
-	job ##class(Stc.Data.MailingJournal).StartSending()
+	//job ##class(Stc.Data.MailingJournal).StartSending()
+	
+	do ..TeacherAccessToListOfFeedbacks()
+	
+	do ..CityStudentMailing()
 	
 	Quit $$$OK
 ]]></Implementation>
@@ -67,7 +71,7 @@ Send notification to all students in the training</Description>
 			
 			set contacts = ##class(Stc.Data.Training).GetStudentsContacts(trId)
 			
-			do ##class(Stc.Data.MailingJournal).CreateAll(contacts, mail.subject, mail.message)
+			do ##class(Stc.Data.MailingJournal).CreateAll(contacts, mail.subject, mail.message, "Слушатель, напоминание")
 			
 			if (contacts.Count() > 0) {
 				set tr.IsStudentsAutoMailing = $$$NO
@@ -95,6 +99,7 @@ Send notification to training teacher</Description>
 	set st = $$$OK
 	
 	try{
+		set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
 		set diffDays = ##class(Stc.Data.Settings).GetMailingTeacherDays()
 		
 		&sql(DECLARE Tr2Cur CURSOR FOR 
@@ -114,7 +119,7 @@ Send notification to training teacher</Description>
 				
 			set mail = ##class(Stc.Utils.Email).GetMailForTrainingTeacher(tr)
 				
-			do ##class(Stc.Data.MailingJournal).Create(tr.Teacher.Email, tr.Teacher.FullName, mail.subject, mail.message)
+			do ##class(Stc.Data.MailingJournal).Create(tr.Teacher.Email, tr.Teacher.FullName, mail.subject, mail.message, "Преподаватель, доступ к анкете", grNumber)
 			
 			set tr.IsTeacherAutoMailing = 0
 			do tr.%Save()						
@@ -140,6 +145,7 @@ Send notification to training curator</Description>
 	set st = $$$OK
 	
 	try{
+		set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
 		set diffDays = ##class(Stc.Data.Settings).GetMailingCuratorDays()
 			
 		&sql(DECLARE Tr3Cur CURSOR FOR 
@@ -159,7 +165,7 @@ Send notification to training curator</Description>
 			
 			set mail = ##class(Stc.Utils.Email).GetMailForTrainingCurator(tr)
 			
-			do ##class(Stc.Data.MailingJournal).Create(tr.CuratorEmail, tr.CuratorFullName.Value, mail.subject, mail.message)
+			do ##class(Stc.Data.MailingJournal).Create(tr.CuratorEmail, tr.CuratorFullName.Value, mail.subject, mail.message, "Куратор, список слушателей", grNumber)
 			
 			set tr.IsCuratorAutoMailing = 0
 			do tr.%Save()						
@@ -205,7 +211,7 @@ Send feedback link to students in the training</Description>
 					
 			set contacts = ##class(Stc.Data.Training).GetStudentsContacts(trId)
 			
-			do ##class(Stc.Data.MailingJournal).CreateAll(contacts, mail.subject, mail.message)
+			do ##class(Stc.Data.MailingJournal).CreateAll(contacts, mail.subject, mail.message, "Слушатель, доступ к анкете")
 			
 			if (contacts.Count() > 0) {
 				set tr.IsFeedBackAutoMailing = $$$NO
@@ -252,7 +258,7 @@ Send </Description>
 					
 			set contacts = ##class(Stc.Data.Order).GetContactsForCourse(tr.Course.%Id())
 			
-			do ##class(Stc.Data.MailingJournal).CreateAll(contacts, mail.subject, mail.message)
+			do ##class(Stc.Data.MailingJournal).CreateAll(contacts, mail.subject, mail.message, "Контакт из заявки")
 			
 			if (contacts.Count() > 0) {
 				set tr.IsOrdersAutoMailing = $$$NO
@@ -297,13 +303,14 @@ Send </Description>
 			
 			set mail = ##class(Stc.Data.MailingGroup).GetMail(mtg.MGroup.%Id(), mtg.Training.%Id())
 			set contacts = ##class(Stc.Data.MailingGroup).GetMailingItemsContacts(mtg.MGroup.%Id())
-			
+			set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
+	
 			for i=1:1:contacts.Count(){
 				set mItem = ##class(Stc.Data.MailingItemApproved).%OpenId(contacts.GetAt(i).id)
 				if '$ISOBJECT(mItem) continue
 					
 				set msg = $REPLACE(mail.message, "%AccessCode", $system.Encryption.Base64Encode(mItem.AccessCode))
-				do ##class(Stc.Data.MailingJournal).Create(contacts.GetAt(i).email, contacts.GetAt(i).name, mail.subject, msg)	
+				do ##class(Stc.Data.MailingJournal).Create(contacts.GetAt(i).email, contacts.GetAt(i).name, mail.subject, msg, "ГР: "_mItem.MGroup.Name, grNumber)	
 			}
 					
 			if (contacts.Count() > 0) {
@@ -317,6 +324,104 @@ Send </Description>
 	catch(ex){
 		set st = ex.AsStatus()
 		do ##class(Stc.Utils.Log).Create("Stc.Utils.TaskAutoMailing MailingGroupsAutoMailing() Catch", $System.Status.GetErrorText(st))
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="TeacherAccessToListOfFeedbacks">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
+		set nowTime = $ZDT($ZTS, 3)
+		set timeOut = ##class(Stc.Data.Settings).GetMailingHoursTimeoutListOfFeedbacks()
+		
+		&sql(DECLARE TrFbCur CURSOR FOR 
+				SELECT DISTINCT Training
+			 	FROM Stc_Data.FeedBack
+			 	WHERE {fn TIMESTAMPDIFF(SQL_TSI_HOUR, CreatedTS, :nowTime)} <= :timeOut)	
+			
+		&sql(OPEN TrFbCur)
+		for  
+		{	
+			&sql(FETCH TrFbCur INTO :trId) 
+			quit:(SQLCODE '= 0)
+			
+			do ##class(Stc.Utils.Log).Create("Stc.Utils.TaskAutoMailing TeacherAccessToListOfFeedbacks()", "Start; trID="_trId)
+							
+			set tr = ##class(Stc.Data.Training).%OpenId(trId)
+			set mail = ##class(Stc.Utils.Email).GetMailForListOfTrainingFeedBacks(tr)
+			
+			do ##class(Stc.Data.MailingJournal).Create(tr.Teacher.Email, tr.Teacher.FullName_"(Тест)", mail.subject, mail.message, "Преподаватель, доступ к новым отзывам", grNumber)							
+		}
+		&sql(CLOSE TrFbCur)
+	}
+	catch(ex){
+		set st = ex.AsStatus()
+		do ##class(Stc.Utils.Log).Create("Stc.Utils.TaskAutoMailing TeacherAccessToListOfFeedbacks() Catch", $System.Status.GetErrorText(st))
+	}
+]]></Implementation>
+</Method>
+
+<Method name="CityStudentMailing">
+<Description>
+Send new training registration link to students by training city</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set nowTime = $ZDT($ZTS, 3)
+		&sql(DECLARE TrCSCur CURSOR FOR 
+				SELECT ID, City
+			 	FROM Stc_Data.Training
+			 	WHERE IsCompleted = 0 AND {fn TIMESTAMPDIFF(SQL_TSI_MINUTE, CreatedTS, :nowTime)} <= 1440)	
+			
+		&sql(OPEN TrCSCur)
+		for  
+		{	
+			&sql(FETCH TrCSCur INTO :trId, :cityId) 
+			quit:(SQLCODE '= 0)
+			
+			do ##class(Stc.Utils.Log).Create("Stc.Utils.TaskAutoMailing CityStudentMailing()", "Start; TrID="_trId)
+			set grNumber = ##class(Stc.Data.MailingJournal).GetValidGroupNumber()
+		
+			set city = ##class(Stc.Data.Region).%OpenId(cityId)
+			#dim studentMGroup As Stc.Data.MailingGroup = ##class(Stc.Data.MailingGroup).GetStudentsGroup()
+			set mail = ##class(Stc.Data.MailingGroup).GetMail(studentMGroup.%Id(), trId)	
+				
+			&sql(DECLARE MIASCur CURSOR FOR 
+					SELECT AccessCode, Student
+			 		FROM Stc_Data.MailingItemApprovedStudent
+			 		WHERE City = :cityId AND Student NOT IN (SELECT Students 
+			 												 FROM Stc_Data.SubGroup_Students
+			 												 WHERE SubGroup IN (SELECT SubGroups
+			 												 					FROM Stc_Data.Training_SubGroups
+			 												 					WHERE Training = :trId)))	
+			
+			&sql(OPEN MIASCur)
+			for  
+			{	
+				&sql(FETCH MIASCur INTO :accessCode, :studentId) 
+				quit:(SQLCODE '= 0)
+				
+				set student = ##class(Stc.Data.Person).%OpenId(studentId)
+				set msg = $REPLACE(mail.message, "%AccessCode", $system.Encryption.Base64Encode(accessCode))
+				do ##class(Stc.Data.MailingJournal).Create(student.Email, student.FullName, mail.subject, msg, "Оповещение слушателей города - "_city.Name.Value, grNumber)						
+			}
+			&sql(CLOSE MIASCur)						
+		}
+		&sql(CLOSE TrCSCur)
+	}
+	catch(ex){
+		set st = ex.AsStatus()
+		do ##class(Stc.Utils.Log).Create("Stc.Utils.TaskAutoMailing CityStudentMailing() Catch", $System.Status.GetErrorText(st))
 	}
 	
 	quit st

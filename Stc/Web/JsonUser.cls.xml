@@ -92,36 +92,24 @@ Method="POST" Url="/json/orderNewStudent"</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set status = $$$OK
+	set st = $$$OK
 	
     try{
 	    TSTART
 	    
-	   	$$$THROWONERROR(status, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.order,1))
-       
-       	set order = ##class(Stc.Data.OrderNewStudent).Create(order, .status)
-       	if $$$ISERR(status) $$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("createDirtyOrder", "| "_status))
-       	/*
-       	#dim order As Stc.Data.OrderNewStudent
-       	set subject = "STC. Новая заявка на присоединение к курсу от слушателя - """_order.LastName.Value_""""
-       	set msg = "Город: "_order.Training.City.Name.Value_"<br>"_
-       			  "Курс: "_order.Training.Course.Name.Value_"<br>"_
-       			  "Дата начала: "_$ZD(order.Training.DateStart, 3)_"<br><br>"_
-       			  "Слушатель: "_order.LastName.Value_" "_order.FirstName.Value_" "_order.MiddleName.Value_", "_order.Email_", "_order.Phone_"<br>"_
-       	          "Организация: """_order.CompanyString_"""<br>"_
-       	          "Заявка создана: "_order.CreatedTS_"<br>"_
-       	          "<a href='http://"_$GET(^Settings("Stc", "DomainName"), "-")_$GET(^Settings("Stc", "WebApp"), "-")_"/stc/index.csp#/training?id="_order.Training.%Id()_"' target='_blank'>Страница обучения</a>"
-     
-     	do ##class(Stc.Web.JsonAdmin).SendEmailToOperators(subject, msg)
-     	*/
+	   	$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data,1))
+       	
+       	set order = ##class(Stc.Data.OrderNewStudent).Create(data, .st)
+       	$$$THROWONERROR(st, st)
+       	
        	TCOMMIT
    	}
    	catch ex {
 	   	TROLLBACK
-	   	set status = ex.AsStatus()
+	   	set st = ex.AsStatus()
 	}
 	
-	quit status
+	quit st
 ]]></Implementation>
 </Method>
 
@@ -163,7 +151,7 @@ Method="POST" Url="/json/mailing/subscription"</Description>
 		set group = ##class(Stc.Data.MailingGroup).GetAnnouncementGroup()
 		set groupId = group.%Id()
 		set existsApprovedId = ""
-		&sql(SELECT ID INTO :existsApprovedId FROM Stc_Data.MailingItemApproved WHERE Email = :data.email AND MGroup = :groupId)
+		&sql(SELECT ID INTO :existsApprovedId FROM Stc_Data.MailingItemApprovedSubscriber WHERE Email = :data.email AND MGroup = :groupId)
 		
 		if (existsApprovedId '= ""){
 			$$$ThrowStatus(##class(Stc.Utils.Msg).GetErrorStatus("SubscriptionAlreadyExists"))
@@ -183,7 +171,7 @@ Method="POST" Url="/json/mailing/subscription"</Description>
 		
 		set mail = ##class(Stc.Utils.Email).GetMailForConfirmationSubscription(item)
 		
-		do ##class(Stc.Data.MailingJournal).Create(item.Email, "", mail.subject, mail.message)
+		do ##class(Stc.Data.MailingJournal).Create(item.Email, "", mail.subject, mail.message, "Оформление подписки", ##class(Stc.Data.MailingJournal).GetValidGroupNumber())
 		
 		TCOMMIT
 	}
@@ -224,7 +212,7 @@ Method="POST" Url="/json/mailing/subscription/confirmation/:code"</Description>
 		
 		set dirtyItem = ##class(Stc.Data.MailingItemDirty).AccessCodeIdxOpen(code)
 		
-		set approvedItem = ##class(Stc.Data.MailingItemApproved).%New()
+		set approvedItem = ##class(Stc.Data.MailingItemApprovedSubscriber).%New()
 		set approvedItem.FullName = dirtyItem.FullName
 		set approvedItem.Email = dirtyItem.Email
 		set approvedItem.City = dirtyItem.City
@@ -269,7 +257,7 @@ Method="DELETE" Url="/json/mailing/subscription/:code"</Description>
 		}
 		
 		set item = ##class(Stc.Data.MailingItemApproved).AccessCodeIdxOpen(code)
-		do ##class(Stc.Utils.Log).Create("Json.Admin.DeleteMailingSubscription()", "FullName="_item.FullName_"; Email="_item.Email)
+		do ##class(Stc.Utils.Log).Create("Json.Admin.DeleteMailingSubscription()", "FullName="_item.ItemFullName)
 		kill item
 		
 		$$$THROWONERROR(st, ##class(Stc.Data.MailingItemApproved).AccessCodeIdxDelete(code))
@@ -312,7 +300,7 @@ Method="POST" Url="/json/mailing/subscription/:code"</Description>
 		set data.group = ##class(Stc.Data.MailingGroup).GetAnnouncementGroup().ConvertToProxyObject()
 		kill oldObj
 		
-		do ##class(Stc.Data.MailingItemApproved).Save(data, .st)
+		do ##class(Stc.Data.MailingItemApprovedSubscriber).Save(data, .st)
 		$$$THROWONERROR(st, st)
 		
 		TCOMMIT
@@ -479,13 +467,13 @@ Method="POST" Url="/json/training/:id/feedback/:code"</Description>
       	}
       	
       	do ##class(Stc.Utils.Log).Create("Stc.Web.JsonUser.SaveTrainingFeedBack", 
-			"Author="_$ZCONVERT(data.author, "I","UTF8")_
+			"Author="_data.author_
 			"TrainingId="_tr.%Id()_
 			"Rating="_data.rating_
-			"WhatLiked="_$ZCONVERT(data.whatLiked, "I","UTF8")_
-			"WhatImprovements="_$ZCONVERT(data.whatImprovements, "I","UTF8")_
-			"WhatHear="_$ZCONVERT(data.whatHear, "I","UTF8")_
-			"AboutTeacher="_$ZCONVERT(data.aboutTeacher, "I","UTF8"))
+			"WhatLiked="_data.whatLiked_
+			"WhatImprovements="_data.whatImprovements_
+			"WhatHear="_data.whatHear_
+			"AboutTeacher="_data.aboutTeacher)
 	
       	set fb = ##class(Stc.Data.FeedBack).%New()
       	set fb.Author = $ZCONVERT(data.author, "I","UTF8")
@@ -508,6 +496,35 @@ Method="POST" Url="/json/training/:id/feedback/:code"</Description>
 	}
 	
 	quit status
+]]></Implementation>
+</Method>
+
+<Method name="GetTrainingFeedBacksForGridByAccessCode">
+<Description>
+Get training feedbacks. grid. BY AccessCode
+Method="POST" Url="/json/training/feedback/grid" </Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+      	
+      	set tr = ##class(Stc.Data.Training).%OpenId(params.trainingId)
+      	if (tr.GetAccessCodeForFeedbackList() '= params.accessCode){
+      		$$$THROWONERROR(st, ##class(Stc.Utils.Msg).GetErrorStatus("error_FeedBack_WrongAccessCode"))
+      	}
+      	
+      	set whereRequired = "Training = '"_..ParseParameter(params.trainingId)_"'"
+      	
+      	$$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Stc_Data.FeedBack", "Stc.Data.FeedBack", params, whereRequired))
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
 ]]></Implementation>
 </Method>
 

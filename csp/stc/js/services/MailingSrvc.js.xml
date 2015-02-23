@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/js/services/MailingSrvc.js" application="/csp/stc/" default="1"><![CDATA[
 'use strict';
-//dd
+//ddff
 
 /*===========================================================================================
 Группы и участники рассылки
@@ -85,7 +85,7 @@ servicesModule.factory('MailingSrvc', function(DALSrvc) {
         getMailingStatus: function(){
             return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/mailing/status', null);
         },
-        getAllJournalItemsForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
+        getAllJournalPartsForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 
                        isDown: isDown, 
@@ -94,11 +94,27 @@ servicesModule.factory('MailingSrvc', function(DALSrvc) {
                        searchSqlName: searchSqlName, 
                        searchText: searchText};
 
+            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/mailing/journal/parts/grid', obj);
+        },
+        getAllJournalItemsForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
+            var first = pageSize * (pageCurr - 1) + 1;
+            var obj = {sqlName: sqlName, 
+                       isDown: isDown, 
+                       first: first, 
+                       last: first + pageSize - 1,
+                       searchSqlName: searchSqlName, 
+                       searchText: searchText,
+                       other: other};
+
             return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/mailing/journal/grid', obj);
         },
         removeJournalItem: function(id){
             return DALSrvc.getPromise('delete', StcAppSetting.admin + '/json/mailing/journal/' + id, null);
+        },
+        removeJournalPart: function(groupNumber){
+            return DALSrvc.getPromise('delete', StcAppSetting.admin + '/json/mailing/journal/part/' + groupNumber, null);
         }
+
     }
 });
   

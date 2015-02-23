@@ -24,6 +24,17 @@ Cube definition from Architect.</Description>
         <property sourceProperty="SubGroups.Payer.ShortName.Value" name="Value" displayName="Организация" disabled="false" hidden="false" isName="true" isDescription="false" isReference="true" useDisplayValue="false"></property>
       </level>
     </hierarchy>
+    <hierarchy name="H2" displayName="География" disabled="false">
+      <level sourceProperty="SubGroups.Payer.City.ParentRegion.ParentRegion.Name" name="Country" displayName="Страна" disabled="false" list="false" nullReplacement="- - -" useDisplayValue="true" useAsFilter="true">
+        <property sourceProperty="SubGroups.Payer.City.ParentRegion.ParentRegion.Name.Value" name="CountryName" disabled="false" hidden="false" isName="true" isDescription="false" isReference="true" useDisplayValue="false"></property>
+      </level>
+      <level sourceProperty="SubGroups.Payer.City.Name" name="City" displayName="Город" disabled="false" list="false" useDisplayValue="true" useAsFilter="true">
+        <property sourceProperty="SubGroups.Payer.City.Name.Value" name="CityName" disabled="false" hidden="false" isName="true" isDescription="false" isReference="true" useDisplayValue="false"></property>
+      </level>
+      <level sourceProperty="SubGroups.Payer.ShortName" name="ShortName" disabled="false" list="false" useDisplayValue="true" useAsFilter="true">
+        <property sourceProperty="SubGroups.Payer.ShortName.Value" name="Value" disabled="false" hidden="false" isName="true" isDescription="false" isReference="false" useDisplayValue="false"></property>
+      </level>
+    </hierarchy>
   </dimension>
   <dimension name="CompanyType" displayName="Тип организации" disabled="false" hasAll="false" allCaption="All Type" allDisplayName="Type" type="data" iKnowType="entity" hidden="false" showHierarchies="default">
     <hierarchy name="H1" disabled="false">
@@ -36,10 +47,14 @@ Cube definition from Architect.</Description>
     <hierarchy name="H1" disabled="false">
       <level name="Year" displayName="Год" disabled="false" timeFunction="Year" list="false" useDisplayValue="true" useAsFilter="true">
       </level>
+      <level name="Month" displayName="Месяц" disabled="false" timeFunction="MonthYear" list="false" useDisplayValue="true" useAsFilter="true">
+      </level>
     </hierarchy>
   </dimension>
   <measure sourceExpression="%cube.GetStudentsCount(%source.%ID)" name="Students" displayName="Слушатели" disabled="false" aggregate="SUM" type="integer" hidden="false" searchable="false" iKnowSource="string"></measure>
+  <measure sourceProperty="SubGroups.Amount" name="Amount" displayName="Оплата" disabled="false" aggregate="SUM" type="number" hidden="false" searchable="true"></measure>
   <relationship sourceProperty="Training" name="TrainingCubeRelation" disabled="false" relatedCube="TrainingCube" inverse="SubGroupCubeRelation" cardinality="one"></relationship>
+  <calculatedMember name="CountryName" disabled="false" dimension="Company" valueExpression="left([Company].[H2].[CountryNew].Members, 3)" hidden="false"></calculatedMember>
   <listing name="Students" displayName="Слушатели" disabled="false" listingType="table" fieldList="SubGroups-&gt;Students-&gt;Email" sql="SELECT stud.Students-&gt;FullName As &quot;$$$TEXT[&quot;Слушатели/Stc&quot;]&quot;,  stud.Students-&gt;Email As Email,  stud.Students-&gt;Phone as &quot;$$$TEXT[&quot;Телефон/Stc&quot;]&quot;,  sg.Training-&gt;DateFinish As &quot;$$$TEXT[&quot;Дата/Stc&quot;]&quot;,   sg.Training-&gt;Course-&gt;Name-&gt;Value As &quot;$$$TEXT[&quot;Курс/Stc&quot;]&quot;,   sg.Training-&gt;City-&gt;Name-&gt;Value As &quot;$$$TEXT[&quot;Город/Stc&quot;]&quot;   FROM Stc_Data.SubGroup_Students As stud   INNER JOIN Stc_Data.Training_SubGroups as sg ON sg.SubGroups=stud.SubGroup   WHERE stud.SubGroup IN (SELECT SubGroups FROM $$$SOURCE WHERE $$$RESTRICT)   ORDER BY &quot;$$$TEXT[&quot;Дата/Stc&quot;]&quot;, &quot;$$$TEXT[&quot;Курс/Stc&quot;]&quot;, &quot;$$$TEXT[&quot;Город/Stc&quot;]&quot;, &quot;$$$TEXT[&quot;Слушатели/Stc&quot;]&quot;"></listing>
 </cube>
 ]]></Data>

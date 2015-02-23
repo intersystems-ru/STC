@@ -24,17 +24,18 @@ Stc.DeepSee.KPI.TrainingPoints</Description>
 >
 <property name="ID"         columnNo="1"/>
 <property name="Course"     columnNo="2"/>
-<property name="City"       columnNo="3"/>
-<property name="Street"     columnNo="4"/>
-<property name="Room"       columnNo="5"/>
-<property name="DateStart"  columnNo="6"/>
-<property name="DateFinish" columnNo="7"/>
-<property name="Teacher"    columnNo="8"/>
-<property name="StudentsCount"   columnNo="9"/>
-<property name="SubGroupsCount"  columnNo="10"/>
-<property name="Latitude"    columnNo="11"/>
-<property name="Longitude"   columnNo="12"/>
-<property name="IsCompleted" columnNo="13"/>
+<property name="PlacemarkPreset" columnNo="3"/>
+<property name="City"       columnNo="4"/>
+<property name="Street"     columnNo="5"/>
+<property name="Room"       columnNo="6"/>
+<property name="DateStart"  columnNo="7"/>
+<property name="DateFinish" columnNo="8"/>
+<property name="Teacher"    columnNo="9"/>
+<property name="StudentsCount"   columnNo="10"/>
+<property name="SubGroupsCount"  columnNo="11"/>
+<property name="Latitude"    columnNo="12"/>
+<property name="Longitude"   columnNo="13"/>
+<property name="CourseDescription" columnNo="14"/>
 
 <filter name="Course" sql="SELECT Name->Value As Name FROM Stc_Data.Course ORDER BY Name"/>
 <filter name="CompanyType" sql="SELECT Name->Value As Name FROM Stc_Data.CompanyType"/>
@@ -143,6 +144,7 @@ Return an SQL statement to execute.</Description>
 SELECT
 tr.ID, 
 tr.Course->Name->Value As Course,
+tr.Course->YandexPlacemarkPreset As PlacemarkPreset,
 tr.City->Name->Value As City,
 tr.Street->Value As Street,
 tr.Room As Room,
@@ -153,8 +155,10 @@ tr.Teacher->FullName ||', '|| tr.Teacher->Email As Teacher,
 (SELECT COUNT(SubGroups) FROM Stc_Data.Training_SubGroups WHERE Training = tr.ID) As SubGroupsCount,
 tr.Latitude,
 tr.Longitude,
-tr.IsCompleted
-FROM Stc_Data.Training as tr :WHERECondition
+tr.Course->Description->Value As CourseDescription
+FROM Stc_Data.Training as tr 
+:WHERECondition
+ORDER BY  tr.Course->Name->Value, tr.DateStart DESC
 ]]]]><![CDATA[></xml>
 ]]></Data>
 </XData>

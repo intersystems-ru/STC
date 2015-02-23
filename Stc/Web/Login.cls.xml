@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Stc.Web.Login">
+<Super>%CSP.Page</Super>
+<TimeCreated>63424,84556.206459</TimeCreated>
+
+<Method name="OnPage">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	&html<<html>
+	<head>        
+		<title>Stc</title>
+        <script language="javascript" src="js/common.js"></script>
+        <script language="javascript">
+        	window.onload = function() {
+	        	StcAppSetting.setCookie('urlDataCookie', window.location.toString(), {expires: 10});
+  				window.document.forms['loginForm'].submit(); 
+			};
+       </script>
+    </head>
+	<body>
+        <div style="display: none;">
+            <form name="loginForm" class="form-signin" method="post" action="/csp/stc/stc/index.csp">
+                <p id="caption">System of training courses</p>
+                <input name="CacheLogin" value="1" type="hidden">
+                <input id="CacheUserName" type="text" class="input-block-level" name="CacheUserName" placeholder="Login" value="ilson">
+                <input type="password" class="input-block-level" name="CachePassword" placeholder="Password" value="podolko">
+                <button class="btn btn-small btn-primary" type="submit" style="font-size: 1em;">Login</button>
+            </form>
+        </div>
+	</body>
+	</html>>
+	
+	Quit $$$OK
+]]></Implementation>
+</Method>
+</Class>
+</Export>

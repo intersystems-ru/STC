@@ -68,8 +68,6 @@ Convert to proxyObject (for JSON)</Description>
 <StreamLocation>^Stc.Data.RegionS</StreamLocation>
 <ExtentSize>100000</ExtentSize>
 <Data name="RegionDefaultData">
-<Structure>listnode</Structure>
-<Subscript/>
 <Value name="1">
 <Value>%%CLASSNAME</Value>
 </Value>

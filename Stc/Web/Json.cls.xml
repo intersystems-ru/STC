@@ -76,6 +76,7 @@ Paged output of table, for any class with parameters, sorting and searching</Des
 		
 		set sql = sql_" ORDER BY "_..ParseParameter(params.sqlName)_" "_isDown
 		
+		set ^temp("sql") = sql
 			
 		set statement = ##class(%SQL.Statement).%New()	
 		$$$THROWONERROR(status, statement.%Prepare(sql))		

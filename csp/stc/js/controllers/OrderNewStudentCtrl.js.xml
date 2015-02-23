@@ -8,10 +8,11 @@
 Создание заявки для одного слушателя
 ===========================================================================================*/
 
-controllersModule.controller('OrderNewStudentCtrl', function($scope, $timeout, $filter, $routeParams, OrderSrvc, TrainingSrvc, CompanySrvc, UtilsSrvc){
+controllersModule.controller('OrderNewStudentCtrl', function($scope, $timeout, $filter, $routeParams, OrderSrvc, TrainingSrvc, RegionSrvc, CompanySrvc, UtilsSrvc){
     $scope.menu.hide = true;
-    $scope.ordForm = {order:{}};
-
+    $scope.ordForm = {order:{mailingOn: true}};
+    $scope.cities = [];
+ 
     /* Инициализация */
     $scope.ordForm.init = function(){
         $scope.ordForm.btnDisabled = false;
@@ -26,6 +27,7 @@ controllersModule.controller('OrderNewStudentCtrl', function($scope, $timeout, $
     $scope.ordForm.loadTraining = function(){
         TrainingSrvc.getForUser($scope.ordForm.order.trainingId).then(
             function(data){
+                $scope.ordForm.order.city = data.city;
                 $scope.ordForm.training = data;    
                 $scope.ordForm.training.dates = UtilsSrvc.getTwoDate(data.dateStart, data.dateFinish);
                 $scope.ordForm.training.urlAddGoogleCalendarEvent = TrainingSrvc.getUrlForCreateGoogleCalendarEvent(
@@ -45,7 +47,7 @@ controllersModule.controller('OrderNewStudentCtrl', function($scope, $timeout, $
 
                 $scope.menu.brandCaption = $filter('localize')('Форма регистрации на обучение компании InterSystems по курсу "') + data.course.name + '" ';
             	$scope.menu.appTitle = $scope.menu.brandCaption;
-            	
+            	 
             	callbackYmap = function() {
 				    var myMap = new ymaps.Map("map", {
 				            center: [data.address.lat, data.address.lng],
@@ -58,7 +60,7 @@ controllersModule.controller('OrderNewStudentCtrl', function($scope, $timeout, $
 				        }, {
 				            preset: 'islands#nightDotIcon',
 				            iconColor: '#0095b6'
-				        });	
+				        });	  
 						
 				    myMap.geoObjects.add(placemark);
 	           	};
@@ -84,23 +86,49 @@ controllersModule.controller('OrderNewStudentCtrl', function($scope, $timeout, $
     
     /* Стереть все */
     $scope.ordForm.clear = function(){
-        $scope.ordForm.order = {trainingId: $scope.ordForm.order.trainingId};
+        $scope.ordForm.order = {
+            mailingOn: true,
+            trainingId: $scope.ordForm.order.trainingId,
+            city: $scope.ordForm.training.city
+        };
         $scope.ordForm.btnDisabled = false;
+    };
+
+    $scope.ordForm.formatCity = function(){
+        if ($scope.ordForm.order.mailingOn && !$scope.ordForm.order.city.id){
+            $scope.ordForm.order.city = '';
+        }
     };
 
     /* Создать заявку */
     $scope.ordForm.submit = function(){
         OrderSrvc.createOrderNewStudent($scope.ordForm.order).then(
             function(data){
-                $scope.ordForm.alert = UtilsSrvc.getAlert('Готово!', 'Регистрация прошла успешно.', 'success', true);
+                $scope.ordForm.alert = UtilsSrvc.getAlert('Готово!', 'Ваша заявка принята к рассмотрению. На указанный Вами адрес электронной почты придет письмо-подтверждение.', 'info', true);
                 $scope.ordForm.btnDisabled = true;
                 $scope.ordForm.btnClearShow = true;
             },
             function(response){
-                $scope.ordForm.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+                $scope.ordForm.alert = UtilsSrvc.getAlert('Внимание!', response.data.replace(/ОШИБКА #5001: /g, "").replace(/Error #5001: /g, ""), 'error', true);
             });
     };
     
+    // Подгружать города по набору
+    $scope.loadCities = function(startsWith){       
+        if(!startsWith || startsWith.length == 0)
+            $scope.cities = [];
+        
+        if (!startsWith || startsWith.length != 2)
+            return;  
+
+        RegionSrvc.getAllCitiesStartsWith(startsWith).then(
+            function(data){
+                $scope.cities = data;
+            },
+            function(response){
+                $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
+            }); 
+    };
 
     $scope.ordForm.init();
     $scope.ordForm.loadTraining();

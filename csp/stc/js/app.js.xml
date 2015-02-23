@@ -34,10 +34,12 @@ mainModule.config(['$routeProvider', function($routeProvider) {
     
     $routeProvider.when('/courses', {templateUrl: 'partials/courses.csp', controller: 'AllCoursesCtrl'});
     $routeProvider.when('/course/:id', {templateUrl: 'partials/course.csp', controller: 'CourseCtrl'});
+    $routeProvider.when('/course', {templateUrl: 'partials/course.csp', controller: 'CourseCtrl'});
     $routeProvider.when('/trainings', {templateUrl: 'partials/trainings.csp', controller: 'AllTrainingsCtrl'});
     $routeProvider.when('/training/:id', {templateUrl: 'partials/training.csp', controller: 'TrainingCtrl'});
     $routeProvider.when('/feedback', {templateUrl: 'partials/feedback.csp', controller: 'FeedBackCtrl'});
     $routeProvider.when('/training/:id/feedback/:code', {templateUrl: 'partials/feedback.csp', controller: 'FeedBackCtrl'});
+    $routeProvider.when('/training/:id/feedbacks/:code', {templateUrl: 'partials/trainingfeedbacks.csp', controller: 'AllTrainingFeedBacksCtrl'});
     
     $routeProvider.when('/trainingstudents', {templateUrl: 'partials/trainingstudents.csp', controller: 'TrainingStudentsCtrl'});
     $routeProvider.when('/training/:id/students/:code', {templateUrl: 'partials/trainingstudents.csp', controller: 'TrainingStudentsCtrl'});

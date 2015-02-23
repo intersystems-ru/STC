@@ -2,9 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/mailinggroups.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 			grid="pageStore.mailingGroups.grid"
 		    table-class="table table-bordered table-hover"
@@ -39,17 +37,11 @@
 		    forcibly-update="groupTable.forciblyUpdate"
 		/>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid" ng-show="groupTable.alert.visible">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="groupTable.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>
 
@@ -58,9 +50,7 @@
 </div>	
 
 <div class="row-fluid" ng-show="groupTable.selectedItems.length!=0">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 			grid="pageStore.mailingItems.grid"
 		    table-class="table table-bordered table-hover"
@@ -95,33 +85,25 @@
 		    forcibly-update="mitemTable.forciblyUpdate"
 		/>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 
 <div class="row-fluid" ng-show="mitemTable.alert.visible">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="mitemTable.alert" style="padding-top: 10px;"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>
 
 <div class="row-fluid" ng-show="groupTable.selectedItems.length!=0">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<form id="importForm" enctype="multipart/form-data" method="post" target="updateFrame" accept-charset="windows-1251" action="Stc.Web.ImportMailingItems.cls">
 			<div class="row-fluid" style="display: flex;">
 				<button type="button" class="btn btn-small" ng-click="mitemTable.createMail()" style="margin-right: 6px;" ><i class="icon-envelope"></i>&nbsp;&nbsp;{{'Написать письмо'|localize}}</button>
 				<button type="button" class="btn btn-small" ng-click="groupTable.refresh(); mitemTable.refresh();" style="margin-right: 6px;" ><i class="icon-refresh"></i>&nbsp;&nbsp;{{'Обновить таблицы'|localize}}</button>
-				<button id="btnSubmit"type="submit" class="btn btn-success btn-small" style="margin-right: 6px;" 
+				<button ng-hide="groupTable.selectedItems[0].code=='Students'" id="btnSubmit"type="submit" class="btn btn-success btn-small" style="margin-right: 6px;" 
 						onclick="window.document.getElementById('ifUpload').style.display = 'none';"
 						disabled="1"><i class="icon-download-alt"></i>&nbsp;&nbsp;{{'Импортировать записи из файла'|localize}}</button>
 			
-				<span id="fileSpan" class="btn btn-default btn-file btn-primary btn-small">
+				<span id="fileSpan" ng-hide="groupTable.selectedItems[0].code=='Students'" class="btn btn-default btn-file btn-primary btn-small">
 			    	<i class="icon-file-text"></i>&nbsp;&nbsp;{{('Обзор'|localize) + '*'}} 
 			    	<input
 			    		id="inputFile" 
@@ -144,10 +126,10 @@
 			    			window.document.getElementById('btnSubmit').disabled=1;
 			    		}">
 				</span>
-				<div id="fileNameDefault" style="padding: 5px 0 0 10px;">{{'Выберите файл'|localize}}</div>
-				<div id="fileNameReal"    style="padding: 5px 0 0 10px; display: none;"></div>
+				<div id="fileNameDefault" ng-hide="groupTable.selectedItems[0].code=='Students'" style="padding: 5px 0 0 10px;">{{'Выберите файл'|localize}}</div>
+				<div id="fileNameReal"    ng-hide="groupTable.selectedItems[0].code=='Students'" style="padding: 5px 0 0 10px; display: none;"></div>
 			</div>
-			<div class="row-fluid" style="font-size: 0.9em; padding-top: 5px;">
+			<div class="row-fluid" ng-hide="groupTable.selectedItems[0].code=='Students'" style="font-size: 0.9em; padding-top: 5px;">
 				<i ng-bind="'* Формат файла .csv, 1 запись: ФИО;Email;Город;Организация;Должность'"></i>
 			</div>
 			
@@ -160,8 +142,6 @@
 				onload="window.document.getElementById('ifUpload').style.display = 'initial';">
 		</iframe>
 	</div>	
-	<div class="span1">
-	</div>
 </div>
 	
 

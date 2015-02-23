@@ -256,6 +256,7 @@ Write all messages into global</Description>
 	
 	
 	// Errors
+
 	set ^CacheMsg("Stc", "ru", "feedBackSpam") = "Слишком много отзывов для этого курса"
 	set ^CacheMsg("Stc", "en", "feedBackSpam") = "Too much feedbacks for this training"
 
@@ -389,6 +390,13 @@ Write all messages into global</Description>
 	
 	set ^CacheMsg("Stc", "ru", "NoPrivilege") = "Нет доступа!"
 	set ^CacheMsg("Stc", "en", "NoPrivilege") = "No privileges!"
+	
+	set ^CacheMsg("Stc", "ru", "copyOfOrderNewStudent") = "Вы уже зарегистрированы!"
+	set ^CacheMsg("Stc", "en", "copyOfOrderNewStudent") = "You are already registered!"
+	
+	
+	set ^CacheMsg("Stc", "ru", "createOrderNewStudent") = "Ошибка при создании заявки!"
+	set ^CacheMsg("Stc", "en", "createOrderNewStudent") = "Error creating order!"
 ]]></Implementation>
 </Method>
 

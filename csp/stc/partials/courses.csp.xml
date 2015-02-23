@@ -2,22 +2,16 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/courses.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid" style="padding-bottom: 5px;">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<span ng-bind="'Курсы'|localize" style="font-weight: bold;"></span>
 		<div class="btn-group pull-right">
 			<button type="button" class="btn btn-mini btnRadio" ng-model="courseTable.status" btn-radio="1"  ng-bind="'Используются'|localize"></button>
 			<button type="button" class="btn btn-mini btnRadio" ng-model="courseTable.status" btn-radio="0"  ng-bind="'Не используются'|localize"></button>
 		</div>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 			grid="pageStore.courses.grid"
 		    table-class="table table-bordered table-hover"
@@ -50,8 +44,6 @@
 		    second-row-action-method="courseTable.isInUseActionMethod(item)"
 		    forcibly-update="courseTable.forciblyUpdate"
 		/>
-	</div>	
-	<div class="span1">
 	</div>
 </div>
 <stcalert data="courseTable.alert"/>
@@ -61,9 +53,7 @@
 </div>	
 
 <div class="row-fluid" ng-show="courseTable.selectedItems.length!=0">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcgrid
 		    table-class="table table-bordered"
 		    caption="Преподаватели курса"
@@ -98,9 +88,7 @@
 			<i ng-bind="'Открыть программу курса'|localize"></i>
 		</a>
 	</div>
-	<div class="span1">
-	</div>
 </div>
 </br>
-<stcalert data="teacherTable.alert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>
+<stcalert data="teacherTable.alert"/>]]></CSP>
 </Export>

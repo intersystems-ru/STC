@@ -2,9 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/settings.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<tabset>
 	 		<!-- ============================================ MAIL ==================================================-->
 	    	<tab heading="{{'Почта'|localize}}" >
@@ -189,6 +187,43 @@
 				    			<button class="btn btn-small pull-right" style="margin-left: 5px;" type="button" title="Справка" ng-click="page.mail.showHelp('feedback')">&nbsp;<i class="icon-question"></i>&nbsp;</button>
 								<button class="btn btn-small pull-right" type="button" ng-bind="('Предварительный просмотр'|localize)" ng-click="page.mail.showPreview('feedback')"></button>
 								<stcalertlabel data="page.mail.feedback.alertLabel"></stcalertlabel>
+							</div>
+					    </form>
+				    </accordion-group>
+				    <br>
+				    <!--============================================= LIST OF FEEDBACKS =================================================================================-->
+				    <accordion-group heading="{{'Шаблон: Доступ к отзывам о курсе'|localize}}">
+					   <form name="form_mail_feedback" style="margin: 0 0 10px 0;" ng-submit="page.mail.save('listOfFeedbacks', form_mail_feedback)">
+							<div class="row-fluid" ng-show="page.mail.listOfFeedbacks.previewIsVisible">
+								<div ng-bind-html-unsafe="page.mail.listOfFeedbacks.preview"></div>
+								<button class="btn btn-small pull-right" ng-click="page.mail.listOfFeedbacks.previewIsVisible=false" ng-bind="('Назад'|localize)" type="button" ></button>
+							</div>
+							<div class="row-fluid" ng-hide="page.mail.listOfFeedbacks.previewIsVisible">
+							    <div class="span7">
+								    <div class="control-group">
+									    <label class="control-label" ng-bind="('Тема письма'|localize) + '*'"></label>
+									    <div class="controls">
+									    	<input class="span12" ng-model="page.mail.listOfFeedbacks.subject" type="text" required>
+									    </div>
+								    </div>
+							    </div>
+							    <div class="span5">
+							    </div>
+						    </div>
+						    <div class="row-fluid" ng-hide="page.mail.listOfFeedbacks.previewIsVisible">
+							    <div class="control-group">
+								    <label class="control-label" ng-bind="('Содержание'|localize) + '*'"></label>
+								    <div class="controls">
+								    	<textarea class="span12" rows="5" ng-model="page.mail.listOfFeedbacks.message" required></textarea>
+								    </div>
+							    </div>
+						    </div>
+						    <div class="row-fluid" ng-hide="page.mail.listOfFeedbacks.previewIsVisible">
+				    			<button class="btn btn-small btn-primary" ng-bind="('Сохранить'|localize)" type="submit"  ng-disabled="form_mail_listOfFeedbacks.$pristine"></button>
+				    			<button class="btn btn-small" ng-click="page.mail.cancel('listOfFeedbacks', form_mail_feedback)" ng-bind="('Отмена'|localize)" type="button" ></button>
+				    			<button class="btn btn-small pull-right" style="margin-left: 5px;" type="button" title="Справка" ng-click="page.mail.showHelp('listOfFeedbacks')">&nbsp;<i class="icon-question"></i>&nbsp;</button>
+								<button class="btn btn-small pull-right" type="button" ng-bind="('Предварительный просмотр'|localize)" ng-click="page.mail.showPreview('listOfFeedbacks')"></button>
+								<stcalertlabel data="page.mail.listOfFeedbacks.alertLabel"></stcalertlabel>
 							</div>
 					    </form>
 				    </accordion-group>
@@ -448,19 +483,13 @@
 			</tab>
 		</tabset>
 	</div>
-	<div class="span1">
-	</div>
 </div >
 
 <br>
 
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<stcalert data="page.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>]]></CSP>
 </Export>

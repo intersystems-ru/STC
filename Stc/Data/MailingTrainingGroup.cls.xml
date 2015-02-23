@@ -61,7 +61,8 @@
 	
 	&sql(DECLARE MGCur CURSOR FOR
 			SELECT ID
-			FROM Stc_Data.MailingGroup)	
+			FROM Stc_Data.MailingGroup
+			WHERE AccessCode <> 'Students')	
 		
 	&sql(OPEN MGCur)
 	for  

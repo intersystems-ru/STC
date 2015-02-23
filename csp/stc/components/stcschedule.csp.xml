@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="stc/components/stcschedule.csp" application="/csp/stc/" default="1"><![CDATA[
-<div class="row-fluid" style="margin: 0 0 13px 0; border-bottom: 1px solid #dddddd; border-radius: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #000;">
+<div class="row-fluid" style="margin: 0 0 30px 0; border-bottom: 1px solid #dddddd; border-radius: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #000;">
     <div class="row-fluid">
         <table class="table scheduleTable">
             <tr>
-                <td colspan="5" ng-style="course.style"><b ng-bind="course.name"></b></td>
+                <td colspan="5" class="scheduleCourseName" ng-style="course.style"><b ng-bind="course.description"></b></td>
             </tr>
             <tr>
-                <td ng-bind="'Продолжительность' + ': ' + course.days + ' д. (' + course.hours + ' ч.)'" colspan="3"></td>
+                <td ng-bind="'Продолжительность' + ': ' + course.days + ' д. (' + course.hours + ' ч.)'" colspan="4"></td>
                 <td class="cellLink" style="width: 115px; text-align: center;" title="Открыть программу курса">
                     <a ng-href="{{course.programUrl}}" class="cellLink" target="_blank" ng-bind="'Программа'"></a>
                 </td>
-                <td style="width: 125px; text-align: center;" title="Оформить заявку на новое обучение">
-                    <a ng-href="{{course.urlCreateOrder}}" class="cellLink" target="_blank"  ng-bind="'Оформить заявку'"></a>
-                </td>
             </tr>
             <tr>
-                <td style="border-left: none; height: 2px; padding: 0!important;" colspan="5"></td>
+                <td class="scheduleCourseName" style="border-left: none; height: 2px; padding: 0!important;" colspan="5"></td>
             </tr>
         </table>
     </div>
@@ -32,7 +29,7 @@
                     <td ng-bind="tr.city.name" style="width: 30%;"></td>
                     <td ng-bind="tr.dates" style="text-align: center;" colspan="2"></td>
                     <td style="width: 115px; text-align: center;">
-                    	<a ng-hide="tr.detailsVisible" href="" class="scheduleDetails" ng-bind="'Подробнее'" title="Показать дополнительную информацию"></a>
+                    	<a ng-hide="tr.detailsVisible" href="" class="scheduleDetails" ng-bind="'Регистрация'" title="Показать дополнительную информацию"></a>
                     	<a ng-show="tr.detailsVisible" href="" class="scheduleDetails" ng-bind="'Закрыть'"  title="Скрыть дополнительную информацию"></a>
                 	</td> 
                 </tr>
@@ -53,7 +50,7 @@
                 </tr>
                 <tr>
                     <td ng-bind="' '" style="width: 5%; border-top: none;"></td>
-                    <td ng-bind="'Преподаватель: ' + tr.teacher.lastName + ' ' + tr.teacher.firstName + ', ' + tr.teacher.email" style="border-top: none;"></td> 
+                    <td ng-bind="'Преподаватель: ' + tr.teacher.lastName + ' ' + tr.teacher.firstName +  ' ' + tr.teacher.middleName" style="border-top: none;"></td> 
                 </tr>
                 <tr ng-hide="tr.curatorFullName==''">
                     <td ng-bind="' '" style="width: 5%; border-top: none;"></td>
@@ -66,9 +63,9 @@
                 <tr>
                     <td ng-bind="' '" class="cellLink" style="width: 5%; border-top: none;"></td>
                     <td style="border-top: none;">
-                        <a ng-href="{{tr.urlJoin}}" class="cellLink" target="_blank" ng-bind="'Присоединиться'"></a>
+                        <a ng-href="{{tr.urlJoin}}" class="cellLink" target="_blank" ng-bind="'Записаться на курс'"></a>
                         &nbsp;&nbsp;&nbsp;
-                        <a ng-href="{{tr.urlAddGoogleCalendarEvent}}" class="cellLink" target="_blank" ng-bind="'Копировать мой календарь'"></a>
+                        <a ng-href="{{tr.urlAddGoogleCalendarEvent}}" class="cellLink" target="_blank" ng-bind="'Копировать в мой календарь'"></a>
                     </td> 
                 </tr>
             </table>

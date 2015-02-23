@@ -69,6 +69,15 @@ Timastamp of application creation</Description>
 <Required>1</Required>
 </Property>
 
+<Property name="Hash">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="CityForMailing">
+<Type>Region</Type>
+</Property>
+
 <Property name="Training">
 <Description>
 Training</Description>
@@ -123,23 +132,35 @@ Create application</Description>
 <FormalSpec><![CDATA[data:%RegisteredObject,&status]]></FormalSpec>
 <ReturnType>OrderNewStudent</ReturnType>
 <Implementation><![CDATA[
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Create", 
-	"; TrID="_data.trainingId_
-	"; LastName="_$ZCONVERT(data.contact.lastName, "I","UTF8")_
-	"; FirstName="_$ZCONVERT(data.contact.firstName, "I","UTF8")_
-	"; MiddleName="_$ZCONVERT(data.contact.lastName, "I","UTF8")_
-	"; Company="_$ZCONVERT(data.contact.company.notexist.name, "I","UTF8")_
+	set recordInfo =
+	"TrID="_data.trainingId_
+	"; LastName="_$ZCONVERT(data.contact.lastName, "I", "UTF8")_
+	"; FirstName="_$ZCONVERT(data.contact.firstName, "I", "UTF8")_
+	"; MiddleName="_$ZCONVERT(data.contact.lastName, "I", "UTF8")_
+	"; Company="_$ZCONVERT(data.contact.company.notexist.name, "I", "UTF8")_
 	"; Email="_data.contact.email_
 	"; Phone="_data.contact.phone_
-	"; Skype="_data.contact.skype)
+	"; Skype="_data.contact.skype 
+	
+	set recordHash = $SYSTEM.Encryption.MD5Hash(recordInfo)
+	
+	set SQLCODE = ""
+	&sql(SELECT ID FROM Stc_Data.OrderNewStudent WHERE Hash = :recordHash)
+	
+	if (SQLCODE = 0){
+		set status = ##class(Stc.Utils.Msg).GetErrorStatus("copyOfOrderNewStudent") 
+		quit $$$NULLOREF
+	}
+	
+	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Create", recordInfo)
 	
 	set order = ..%New()
-	
+	set order.Hash = recordHash
 	set order.Training = ##class(Stc.Data.Training).%OpenId(data.trainingId)
 	
 	if (order.Training.NewStudents.Count() > 30){
 		set status = ##class(Stc.Utils.Msg).GetErrorStatus("tooMuchOrderNewStudent") 
-		quit order
+		quit $$$NULLOREF
 	} 
 		
 	set order.FirstName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.contact.firstName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
@@ -165,9 +186,17 @@ Create application</Description>
 		}
 	} 
 
-	set order.CreatedTS = $ZDT($ZTS, 3)
+	if (data.mailingOn){
+		set order.CityForMailing = ##class(Stc.Data.Region).%OpenId(data.city.id)
+	}
+
+	set order.CreatedTS = $ZDT($ZTS, 3)	
 		
 	set status = order.%Save()
+	if $$$ISERR(status) {
+		set status = ##class(Stc.Utils.Msg).GetErrorStatus("createOrderNewStudent", "| "_status)
+		quit $$$NULLOREF
+	}
 		
 	quit order
 ]]></Implementation>
@@ -239,6 +268,12 @@ Delete application with localization</Description>
 </Value>
 <Value name="11">
 <Value>Training</Value>
+</Value>
+<Value name="12">
+<Value>Hash</Value>
+</Value>
+<Value name="13">
+<Value>CityForMailing</Value>
 </Value>
 </Data>
 </Storage>

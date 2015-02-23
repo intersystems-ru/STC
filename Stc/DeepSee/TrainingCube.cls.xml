@@ -21,7 +21,8 @@ Cube definition from Architect.</Description>
   <dimension name="Course" displayName="Курс" disabled="false" hasAll="false" allCaption="All Value" allDisplayName="Value" type="data" iKnowType="entity" hidden="false" showHierarchies="default">
     <hierarchy name="H1" disabled="false">
       <level sourceProperty="Course.Name" name="CourseName" displayName="Курс" disabled="false" list="false" useDisplayValue="true" useAsFilter="true">
-        <property sourceProperty="Course.Name.Value" name="Value" displayName="Курс" disabled="false" hidden="false" isName="true" isDescription="false" isReference="true" useDisplayValue="false"></property>
+        <property sourceProperty="Course.Name.Value" name="Value" displayName="Курс" disabled="false" hidden="false" isName="true" isReference="true" useDisplayValue="false"></property>
+        <property sourceProperty="Course.Description.Value" name="Description"  disabled="false" hidden="false" isName="false" isReference="false" useDisplayValue="false" isDescription="true"> </property>
       </level>
     </hierarchy>
   </dimension>
@@ -34,7 +35,7 @@ Cube definition from Architect.</Description>
   <dimension name="Teacher" displayName="Преподаватель" disabled="false" hasAll="false" allCaption="All Teacher" allDisplayName="Teacher" type="data" iKnowType="entity" hidden="false" showHierarchies="default">
     <hierarchy name="H1" disabled="false">
       <level sourceProperty="Teacher" name="TeacherFullName" displayName="Преподаватель" disabled="false" list="false" useDisplayValue="true" useAsFilter="true">
-        <property sourceProperty="Teacher.FullName" name="FullName" displayName="Преподаватель" disabled="false" hidden="false" isName="true" isDescription="false" isReference="true" useDisplayValue="false"></property>
+        <property sourceProperty="Teacher.FullName" name="FullName" displayName="Преподаватель" disabled="false" hidden="false" isName="true" isReference="true" useDisplayValue="false"></property>
       </level>
     </hierarchy>
   </dimension>

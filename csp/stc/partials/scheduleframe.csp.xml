@@ -6,9 +6,10 @@
 -->
 <div style="width: 578px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #000;">
 	<p><b>Очные курсы обучения: программы курсов и ближайшие обучения.</b></p>
+	<p style="text-align: justify;">Очный курс может быть проведен как в офисе InterSystems, так и на вашем предприятии при регистрации слушателей от 3 человек. По результатам обучения слушателям выдается международный сертификат InterSystems.</p>
 	<p style="text-align: justify;">Если в ближайшее время желаемого курса нет, вы можете <a class="cellLink" href="http://classroom.intersystems.ru/csp/stc/stc/index.csp#/createorder" target="_blank">оформить заявку</a> на проведение любого курса, в том числе выездного в вашем городе. Также доступна <a class="cellLink" href="http://classroom.intersystems.ru/csp/stc/stc/index.csp#/mailing/subscription" target="_blank">подписка на анонсы</a>.</p>
 
-	<div style="height: 198px; overflow-x: auto; border: 1px solid #dddddd; border-top: 1px solid #dddddd; margin-top: 10px;">
+	<div style="height: 478px; overflow-x: auto; border: 1px solid #dddddd; border-top: 1px solid #dddddd; margin-top: 10px;">
 	    <stcschedule ng-repeat="course in page.courses" course="course" ng-style="course.style"/>
 	</div>
 </div>]]></CSP>

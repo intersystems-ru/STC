@@ -97,6 +97,7 @@ controllersModule.controller('MainCtrl', function($scope, $window, $location, $c
 	            
 	            $scope.menu.admin = true;
                 $scope.menu.loginCaption = 'Выход';
+                $scope.menu.brandCaption = 'Система учёта курсов';
                 $cookies['admin'] = 'true';
                 
                 if ($location.path() == '/createorder'){
@@ -122,11 +123,6 @@ controllersModule.controller('MainCtrl', function($scope, $window, $location, $c
     
     $scope.menu.init();
     
-    if (urlData != ""){
-	    var newUrl = urlData.replace(/-q-/g, "?").replace(/-and-/g, "&").replace(/-eq-/g, "=");
-	    console.log(newUrl);
-	    $window.location = StcAppSetting.defaultApp + '/stc/index.csp#/' + newUrl;
-    }
 });
 
 ]]></CSP>

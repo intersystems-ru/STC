@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/company.csp" application="/csp/stc/" default="1"><![CDATA[
-<stcalert data="alert" span-right="1" span-middle="10" span-left="1"/>
-
 <div ng-show="compForm.visible">
 	<div class="row-fluid">
-		<div class="span1">
-		</div>
-		<div class="span10">
+		<div class="span10 offset1">
 			<div class="accordion">
 				<div class="accordion-group">
 					<div class="accordion-heading">
@@ -26,15 +22,11 @@
 			
 			<stcalert data="compForm.alert"/>			
 		</div>
-		<div class="span1">
-		</div>
 	</div>
 
 
 	<div class="row-fluid">
-		<div class="span1">
-		</div>
-		<div class="span10">
+		<div class="span10 offset1">
 			<div class="accordion">
 				<div class="accordion-group">
 					<div class="accordion-heading">
@@ -68,8 +60,6 @@
 					</div>
 				</div>
 			</div>		
-		</div>
-		<div class="span1">
 		</div>
 	</div>
 </div>]]></CSP>

@@ -15,6 +15,28 @@
                 <input class="span12" type="text" ng-model="company.fullName" ng-required="requiredAll"></input>
             </div>
         </div>
+        <div class="control-group" style="margin-bottom: 18px;">
+            <label class="control-label">
+                <span ng-bind="('Город'|localize) + '*'"></span>
+                <label class="checkbox" style="padding-left: 40px; font-size: 12px; display: inline-block; margin-bottom: 0px;">
+                    <input type="checkbox" ng-model="company.isUnknownCity">{{'Неизвестен'|localize}}
+                </label>
+            </label>
+            <div class="controls">
+                <input class="span12" 
+                       style="margin-bottom: 0;"
+                       type="text" 
+                       title="{{'Город, Регион, Страна'|localize}}" 
+                       ng-model="company.city" 
+                       ng-change="loadCities(company.city)" 
+                       placeholder="{{'Поиск'|localize}}" 
+                       typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+                       ng-required="!company.isUnknownCity"
+                       ng-disabled="company.isUnknownCity">
+                </input>
+            </div>
+        </div>
+
         <div class="control-group">
             <label class="control-label"><span ng-bind="'Юридический адрес'|localize"></span><span ng-show="requiredAll">*</span></label>
             <div class="controls">
@@ -26,22 +48,76 @@
             <div class="controls">
                 <input class="span12" type="text" ng-model="company.mailAddress" ng-required="requiredAll"></input>
             </div>
-        </div> 
+        </div>
+        
+        <label class="checkbox"  style="padding-top: 5px;" >
+            <input type="checkbox" ng-model="company.status">{{'Университет'|localize}}
+        </label>   
+    </div>
+
+
+    <div class="span6">
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="control-group" title="{{'Код причины постановки на учёт'|localize}}">
+                    <label class="control-label"><span ng-bind="'КПП'|localize"></span><span ng-show="requiredAll">*</span></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="company.kpp" ng-required="requiredAll"></input>
+                    </div>
+                </div>
+                <div class="control-group" title="{{'Идентификационный номер налогоплательщика'|localize}}">
+                    <label class="control-label"><span ng-bind="'ИНН'|localize"></span><span ng-show="requiredAll">*</span></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="company.inn" ng-required="requiredAll"></input>
+                    </div>
+                </div>
+                <div class="control-group" title="{{'Основной государственный регистрационный номер'|localize}}">
+                    <label class="control-label"><span ng-bind="'ОГРН'|localize"></span><span ng-show="requiredAll">*</span></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="company.ogrn" ng-required="requiredAll"></input>
+                    </div>
+                </div>
+            </div>
+            <div class="span6">
+                <div class="control-group" title="{{'Расчётный счёт'|localize}}">
+                    <label class="control-label"><span ng-bind="'Р/C'|localize"></span><span ng-show="requiredAll">*</span></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="company.settlementAccount" ng-required="requiredAll"></input>
+                    </div>
+                </div>
+                <div class="control-group" title="{{'Корреспондентский счёт'|localize}}">
+                    <label class="control-label"><span ng-bind="'К/C'|localize"></span><span ng-show="requiredAll">*</span></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="company.correspondentAccount" ng-required="requiredAll"></input>
+                    </div>
+                </div>
+                <div class="control-group" title="{{'Банковский идентификационный код'|localize}}">
+                    <label class="control-label"><span ng-bind="'БИК'|localize"></span><span ng-show="requiredAll">*</span></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="company.bic" ng-required="requiredAll"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="control-group">
             <label class="control-label" ng-bind="'Веб-сайт организации'|localize"></label>
             <div class="controls">
                 <input class="span12" type="text" ng-model="company.site"></input>
             </div>
-        </div>   
+        </div>  
+
         <div class="control-group">
             <label class="control-label" ng-bind="'Другая информация'|localize"></label>
             <div class="controls">
                 <textarea class="span12" rows="3" ng-model="company.otherInfo"></textarea>
             </div>
-        </div>  
+        </div>
+      
     </div>
+        
 
-
+<!--
     <div class="span6">
         <div class="control-group">
             <label class="control-label"><span ng-bind="'Код причины постановки на учёт'|localize"></span><span ng-show="requiredAll">*</span></label>
@@ -83,5 +159,8 @@
 			<input type="checkbox" ng-model="company.status">{{'Университет'|localize}}
 		</label>      
     </div>
-</div>]]></CSP>
+
+-->
+</div>
+]]></CSP>
 </Export>

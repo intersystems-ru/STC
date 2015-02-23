@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Mobile-Рейтинг курсов.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="Рейтинг курсов" folderName="Mobile" title="Рейтинг курсов" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2015-02-01T15:56:08.114Z" createdBy="_SYSTEM" category="" bookCover="" scheme="" worklistCount="2" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" companyName="" companyLogo="" companyStyle="">
+  <widget name="Виджет1" type="pivot" subtype="columnChart" subtypeClass="barChart" title="Рейтинг курсов по отзывам" dataSource="Mobile/$$$Рейтинг курсов.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="4" rowSpanL="8" showToolbar="true" theme="" dataColorList="">
+  </widget>
+  <widget name="Виджет2" type="pivot" subtype="pivot" subtypeClass="lineChart" title="Рейтинг курсов по отзывам" dataSource="Mobile/$$$Рейтинг курсов.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="4" colSpanL="4" rowSpanL="4" showToolbar="true" theme="" dataColorList="">
+  </widget>
+</dashboard>
+</Document></Export>

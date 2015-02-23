@@ -8,6 +8,10 @@
 <Type>%TimeStamp</Type>
 </Property>
 
+<Property name="CreatedTS">
+<Type>%TimeStamp</Type>
+</Property>
+
 <Property name="IsSended">
 <Type>%Boolean</Type>
 <Required>1</Required>
@@ -36,13 +40,38 @@
 <Parameter name="MAXLEN" value="9000"/>
 </Property>
 
+<Property name="Type">
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="GroupNumber">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
 <Index name="IsSendedIdx">
 <Properties>IsSended</Properties>
 </Index>
 
+<Index name="GroupNumberIndex">
+<Properties>GroupNumber</Properties>
+</Index>
+
+<Method name="GetValidGroupNumber">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[
+	set nextNum = $GET(^Stc.Data.MailingJournal.GroupNumber, 1) + 1
+	set ^Stc.Data.MailingJournal.GroupNumber = nextNum
+	quit nextNum
+]]></Implementation>
+</Method>
+
 <Method name="Create">
 <ClassMethod>1</ClassMethod>
-<FormalSpec>email:%String,recipientName:%String,subject:%String,message:%Text</FormalSpec>
+<FormalSpec>email:%String,recipientName:%String,subject:%String,message:%Text,type:%String="",grNumber:%Integer</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
 	set st = $$$OK
@@ -50,6 +79,9 @@
 	try{
 		set obj = ..%New()
 		
+		set obj.Type = type
+		set obj.GroupNumber = grNumber
+		set obj.CreatedTS = $ZDT($ZTS, 3)		
 		set obj.IsSended = $$$NO
 		set obj.Subject = subject
 		set obj.Message = message
@@ -63,7 +95,7 @@
 				&sql(SELECT LastName || ' ' || FirstName INTO :obj.RecipientName FROM Stc_Data.Order WHERE Email = :email)	
 				
 				if (obj.RecipientName = ""){
-					&sql(SELECT FullName INTO :obj.RecipientName FROM Stc_Data.MailingItemApproved WHERE Email = :email)	
+					&sql(SELECT FullName INTO :obj.RecipientName FROM Stc_Data.MailingItemApprovedSubscriber WHERE Email = :email)	
 			
 					if (obj.RecipientName = ""){
 						&sql(SELECT FullName INTO :obj.RecipientName FROM Stc_Data.MailingItemDirty WHERE Email = :email)	
@@ -76,6 +108,7 @@
 	}
 	catch(ex){
 		set st = ex.AsStatus()
+		do ##class(Stc.Utils.Log).Create("MailingJournal Catch block", $SYSTEM.Status.GetErrorText(st))
 	}
 	
 	quit $$$OK
@@ -84,12 +117,13 @@
 
 <Method name="CreateAll">
 <ClassMethod>1</ClassMethod>
-<FormalSpec>contacts:%ListOfObjects,subject:%String,message:%Text</FormalSpec>
+<FormalSpec>contacts:%ListOfObjects,subject:%String,message:%Text,type:%String=""</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	set grNumber = ..GetValidGroupNumber()
 	for i=1:1:contacts.Count(){
 		set contact = contacts.GetAt(i)
-		do ..Create(contact.email, contact.name, subject, message) 
+		do ..Create(contact.email, contact.name, subject, message, type, grNumber) 
 	}
 	
 	quit $$$OK
@@ -106,6 +140,7 @@
 	set proxy.sendedTS = ..SendedTS
 	set proxy.subject = ..Subject
 	set proxy.message = ..Message
+	set proxy.type = ..Type
 	
 	set proxy.recipient = ##class(%ZEN.proxyObject).%New()
 	set proxy.recipient.name = ..RecipientName
@@ -198,6 +233,15 @@
 </Value>
 <Value name="8">
 <Value>IsSended</Value>
+</Value>
+<Value name="9">
+<Value>Type</Value>
+</Value>
+<Value name="10">
+<Value>GeroupNumber</Value>
+</Value>
+<Value name="11">
+<Value>GroupNumber</Value>
 </Value>
 </Data>
 </Storage>

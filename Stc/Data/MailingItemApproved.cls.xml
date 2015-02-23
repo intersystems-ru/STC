@@ -6,26 +6,27 @@ MailingItem - Approved, not spam</Description>
 <Super>%Persistent,MailingItem</Super>
 <TimeCreated>63388,39489.590838</TimeCreated>
 
+<Property name="ItemFullName">
+<Type>%String</Type>
+<Calculated>1</Calculated>
+<SqlComputeCode>set {ItemFullName} = ##class({%%CLASSNAME}).GetItemFullNameById({%%ID})</SqlComputeCode>
+<SqlComputed>1</SqlComputed>
+</Property>
+
 <Index name="AccessCodeIdx">
 <Properties>AccessCode</Properties>
 <Unique>1</Unique>
 </Index>
 
-<Index name="MGroupEmailIdx">
-<Properties>MGroup,Email</Properties>
-<Unique>1</Unique>
-</Index>
-
-<Method name="GetByEmail">
+<Method name="GetItemFullNameById">
 <ClassMethod>1</ClassMethod>
-<FormalSpec>email:%String</FormalSpec>
-<ReturnType>MailingItemApproved</ReturnType>
+<FormalSpec>itemId:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
 <Implementation><![CDATA[
-	set id = ""
-	
-	&sql(SELECT ID INTO :id FROM Stc_Data.MailingItemApproved WHERE Email = :email)
-	
-	quit ..%OpenId(id)
+	set item = ##class(MailingItemApproved).%OpenId(itemId)
+	quit $CASE($CLASSNAME(item), "Stc.Data.MailingItemApprovedSubscriber": item.FullName,
+								 "Stc.Data.MailingItemApprovedStudent": item.Student.FullName,
+								 : "-")
 ]]></Implementation>
 </Method>
 
@@ -45,25 +46,10 @@ MailingItem - Approved, not spam</Description>
 <Value>AccessCode</Value>
 </Value>
 <Value name="3">
-<Value>FullName</Value>
-</Value>
-<Value name="4">
-<Value>Email</Value>
-</Value>
-<Value name="5">
-<Value>Company</Value>
-</Value>
-<Value name="6">
-<Value>Position</Value>
-</Value>
-<Value name="7">
 <Value>LastUpdated</Value>
 </Value>
-<Value name="8">
+<Value name="4">
 <Value>MGroup</Value>
-</Value>
-<Value name="9">
-<Value>City</Value>
 </Value>
 </Data>
 </Storage>

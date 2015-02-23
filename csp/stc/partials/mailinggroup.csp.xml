@@ -2,9 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="stc/partials/mailinggroup.csp" application="/csp/stc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span1">
-	</div>
-	<div class="span10">
+	<div class="span10 offset1">
 		<div class="accordion">
 			<div class="accordion-group">
 				<div class="accordion-heading">
@@ -26,7 +24,7 @@
 									<div class="control-group">
 										<label class="control-label" ng-bind="('Описание'|localize) + '*'"></label>
 										<div class="controls">
-											<textarea class="span12" rows="1" ng-model="groupForm.group.description" required></textarea>
+											<input class="span12" type="text" ng-model="groupForm.group.description" required></input>
 										</div>
 									</div>
 								</div>    		    		    
@@ -54,7 +52,7 @@
 										<button type="submit" class="btn btn-primary btn-small" ng-bind="groupForm.actionName|localize" ng-disabled="form.$pristine"></button>
 										<button type="button" class="btn btn-small" ng-click="groupForm.cancel()" ng-bind="'Назад'|localize"></button>
 										<button class="btn btn-small pull-right" style="margin-left: 5px;" type="button" title="{{'Справка'|localize}}" ng-click="groupForm.showHelp()">&nbsp;<i class="icon-question"></i>&nbsp;</button>
-										<button class="btn btn-small pull-right" type="button" ng-bind="('Предварительный просмотр'|localize)" ng-click="groupForm.loadPreview()"></button>
+										<button class="btn btn-small pull-right" type="button" ng-bind="('Предварительный просмотр'|localize)" ng-click="groupForm.loadPreview()" ng-disabled="!groupForm.group.id"></button>
 									</div>
 								</div>
 							</div>
@@ -64,8 +62,6 @@
 			</div>
 		</div>
 		<stcalert data="groupForm.alert"/>
-	</div>
-	<div class="span1">
 	</div>
 </div>]]></CSP>
 </Export>

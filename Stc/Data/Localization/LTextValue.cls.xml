@@ -55,11 +55,8 @@ Get value for language=lang for object with id=ltxt</Description>
 	set lang = $e(lang,1,2)
 	set value = "! no value for [ISO 639-1] lang="_lang
 	
-	&sql(SELECT Value INTO :value 
-	     FROM Stc_Data_Localization.LTextValue 
-	     WHERE LText = :ltxt AND Lang = :lang)
-	
-	quit value
+	set id = $O(^Stc.Data.LocaliB126.LTextValueI("KeyIdx",ltxt,lang,""))
+	quit $LISTGET(^Stc.Data.LocaliB126.LTextValueD(id), 4)
 ]]></Implementation>
 </Method>
 

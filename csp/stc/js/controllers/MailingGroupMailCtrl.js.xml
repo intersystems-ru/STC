@@ -88,8 +88,10 @@ controllersModule.controller('MailingGroupMailCtrl', function($scope, $filter, $
         if ($scope.mailForm.contacts.length == 0)
             return;
 
-        MailingSrvc.sendEMail({
-	        		contacts: $scope.mailForm.contacts, 
+		var resultContacts = $filter('filter')($scope.mailForm.contacts, { city: $scope.mailForm.cityFilter });
+		
+		MailingSrvc.sendEMail({
+	        		contacts: resultContacts, 
         			subject: $scope.mailForm.group.mailSubject, 
         			message: $scope.mailForm.group.mailMessage.replace(/\n/g, "<br>")
         		}).then(

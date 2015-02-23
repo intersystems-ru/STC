@@ -435,5 +435,20 @@ Mailing                                                                         
 <Implementation><![CDATA[	quit ..SetMailingData("OperatorAddresses", value)
 ]]></Implementation>
 </Method>
+
+<Method name="GetMailingHoursTimeoutListOfFeedbacks">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	quit ..GetMailingData("HoursTimeoutListOfFeedbacks")
+]]></Implementation>
+</Method>
+
+<Method name="SetMailingHoursTimeoutListOfFeedbacks">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>value</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ..SetMailingData("HoursTimeoutListOfFeedbacks", value)
+]]></Implementation>
+</Method>
 </Class>
 </Export>
