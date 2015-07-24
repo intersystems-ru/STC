@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/services/PersonSrvc.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/services/PersonSrvc.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //
 
@@ -9,7 +9,7 @@
 ===========================================================================================*/
 
 servicesModule.factory('PersonSrvc', function(DALSrvc) {
-	return {
+    return {
         save: function(person){
             return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/person', person);
         },
@@ -22,14 +22,15 @@ servicesModule.factory('PersonSrvc', function(DALSrvc) {
         deleteById: function(id){
             return DALSrvc.getPromise('delete', StcAppSetting.admin + '/json/person/' + id, null);
         },
-        getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
+        getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, type){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 
                        isDown: isDown, 
                        first: first, 
                        last: first + pageSize - 1,
                        searchSqlName: searchSqlName, 
-                       searchText: searchText};
+                       searchText: searchText,
+                       type: type};
 
             return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/person/grid', obj);
         },
@@ -42,7 +43,9 @@ servicesModule.factory('PersonSrvc', function(DALSrvc) {
         getFreeCourseTeachers: function(courseId, word){
             return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/person/free/course/' + courseId + '/teacher/' + word, null);
         },
-        
+        getTeacherStatistics: function(teachId, dateFrom, dateTo){
+            return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/teacher/' + teachId + '/statistics/datefrom/' + (dateFrom ? dateFrom : '0') + '/dateto/' + (dateTo ? dateTo : '0'), null);
+        },
         getTrainings: function(id){
             return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/person/' + id + '/training', null);
         },

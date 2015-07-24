@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/localization/filter.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/localization/filter.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //
 /*===========================================================================================
@@ -17,6 +17,5 @@ localizationModule.filter('localize', function(StcDictionary) {
 
 servicesModule.config(['$httpProvider', function ($httpProvider) {
   $httpProvider.defaults.headers.common['Accept-Language'] = StcAppSetting.lang.substring(0,2);
-  
 }]);]]></CSP>
 </Export>

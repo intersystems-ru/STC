@@ -44,17 +44,17 @@ Message pattern</Description>
 <Method name="ConvertToProxyObject">
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set proxy = ##class(%ZEN.proxyObject).%New()
-	set proxy.id = ..%Id()
-	set proxy.code = ..AccessCode
-	set proxy.name = ..Name
-	set proxy.description = ..Description
-	set proxy.mailSubject = ..MailSubject.Value
-	set proxy.mailMessage = ..MailMessage.Value
-	
-	&sql(SELECT COUNT(ID) INTO :proxy.itemsCount FROM Stc_Data.MailingItemApproved WHERE MGroup = :proxy.id)
-	
-	quit proxy
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    set proxy.id = ..%Id()
+    set proxy.code = ..AccessCode
+    set proxy.name = ..Name
+    set proxy.description = ..Description
+    set proxy.mailSubject = ..MailSubject.Value
+    set proxy.mailMessage = ..MailMessage.Value
+    
+    &sql(SELECT COUNT(ID) INTO :proxy.itemsCount FROM Stc_Data.MailingItemApproved WHERE MGroup = :proxy.id)
+    
+    quit proxy
 ]]></Implementation>
 </Method>
 
@@ -63,31 +63,31 @@ Message pattern</Description>
 <FormalSpec><![CDATA[data:%RegisteredObject,&st=$$$OK]]></FormalSpec>
 <ReturnType>MailingGroup</ReturnType>
 <Implementation><![CDATA[
-	#dim group As MailingGroup = ""
-	
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
-	"ID="_data.id_
-	"; Name="_$ZCONVERT(data.name, "I","UTF8")_
-	"; Descr="_$ZCONVERT(data.description, "I","UTF8"))
-	
-	if (data.id = ""){
-		set group = ..%New()
-		set group.AccessCode = $SYSTEM.Util.CreateGUID()
-		set group.MailSubject = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.mailSubject, "I", "UTF8"))
-		set group.MailMessage = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.mailMessage, "I", "UTF8"))
-	}
-	else{
-		set group = ..%OpenId(data.id)
-		set group.MailSubject.Value = $ZCONVERT(data.mailSubject, "I", "UTF8")
-		set group.MailMessage.Value = $ZCONVERT(data.mailMessage, "I", "UTF8")
-	}
-	
-	set group.Name = $ZCVT(data.name, "I", "UTF8")
-	set group.Description = $ZCVT(data.description, "I", "UTF8")
-	
-	set st = group.%Save()
-	
-	quit group
+    #dim group As MailingGroup = ""
+    
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
+    "ID="_data.id_
+    "; Name="_$ZCONVERT(data.name, "I","UTF8")_
+    "; Descr="_$ZCONVERT(data.description, "I","UTF8"))
+    
+    if (data.id = ""){
+        set group = ..%New()
+        set group.AccessCode = $SYSTEM.Util.CreateGUID()
+        set group.MailSubject = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.mailSubject, "I", "UTF8"))
+        set group.MailMessage = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.mailMessage, "I", "UTF8"))
+    }
+    else{
+        set group = ..%OpenId(data.id)
+        set group.MailSubject.Value = $ZCONVERT(data.mailSubject, "I", "UTF8")
+        set group.MailMessage.Value = $ZCONVERT(data.mailMessage, "I", "UTF8")
+    }
+    
+    set group.Name = $ZCVT(data.name, "I", "UTF8")
+    set group.Description = $ZCVT(data.description, "I", "UTF8")
+    
+    set st = group.%Save()
+    
+    quit group
 ]]></Implementation>
 </Method>
 
@@ -98,20 +98,20 @@ Delete group</Description>
 <FormalSpec>grId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set group = ..%OpenId(grId, 4)
+    set group = ..%OpenId(grId, 4)
 
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_grId_"; Name="_group.Name)
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(group.MailSubject.%Id())
-	quit:$$$ISERR(st) st
-		
-	set st = ##class(Stc.Data.Localization.LText).Delete(group.MailMessage.%Id())
-	quit:$$$ISERR(st) st
-	
-	set st = ..%DeleteId(grId, 4)
-	quit:$$$ISERR(st) ##class(Stc.Utils.Msg).GetErrorStatus("deleteMailingGroup", " | "_st) 
-	
-	quit $$$OK
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_grId_"; Name="_group.Name)
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(group.MailSubject.%Id())
+    quit:$$$ISERR(st) st
+        
+    set st = ##class(Stc.Data.Localization.LText).Delete(group.MailMessage.%Id())
+    quit:$$$ISERR(st) st
+    
+    set st = ..%DeleteId(grId, 4)
+    quit:$$$ISERR(st) ##class(Stc.Utils.Msg).GetErrorStatus("deleteMailingGroup", " | "_st) 
+    
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
@@ -121,19 +121,19 @@ Get special group for subscribers</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>MailingGroup</ReturnType>
 <Implementation><![CDATA[
-	if (..AccessCodeIdxExists("Announcement")){
-		quit ..AccessCodeIdxOpen("Announcement")
-	}
-	
-	set gr = ..%New()
-	set gr.Name = "Подписка на анонсы"
-	set gr.Description = "Подписка на анонсы"
-	set gr.AccessCode = "Announcement"
-	set gr.MailSubject = ##class(Stc.Data.Localization.LText).Create("")
-	set gr.MailMessage = ##class(Stc.Data.Localization.LText).Create("")
-	do gr.%Save()
-	
-	quit gr
+    if (..AccessCodeIdxExists("Announcement")){
+        quit ..AccessCodeIdxOpen("Announcement")
+    }
+    
+    set gr = ..%New()
+    set gr.Name = "Подписка на анонсы"
+    set gr.Description = "Подписка на анонсы"
+    set gr.AccessCode = "Announcement"
+    set gr.MailSubject = ##class(Stc.Data.Localization.LText).Create("")
+    set gr.MailMessage = ##class(Stc.Data.Localization.LText).Create("")
+    do gr.%Save()
+    
+    quit gr
 ]]></Implementation>
 </Method>
 
@@ -143,19 +143,41 @@ Get special group for students</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>MailingGroup</ReturnType>
 <Implementation><![CDATA[
-	if (..AccessCodeIdxExists("Students")){
-		quit ..AccessCodeIdxOpen("Students")
-	}
-	
-	set gr = ..%New()
-	set gr.Name = "Все слушатели"
-	set gr.Description = "Все слушатели из базы данных"
-	set gr.AccessCode = "Students"
-	set gr.MailSubject = ##class(Stc.Data.Localization.LText).Create("")
-	set gr.MailMessage = ##class(Stc.Data.Localization.LText).Create("")
-	do gr.%Save()
-	
-	quit gr
+    if (..AccessCodeIdxExists("Students")){
+        quit ..AccessCodeIdxOpen("Students")
+    }
+    
+    set gr = ..%New()
+    set gr.Name = "Все слушатели"
+    set gr.Description = "Все слушатели из базы данных"
+    set gr.AccessCode = "Students"
+    set gr.MailSubject = ##class(Stc.Data.Localization.LText).Create("")
+    set gr.MailMessage = ##class(Stc.Data.Localization.LText).Create("")
+    do gr.%Save()
+    
+    quit gr
+]]></Implementation>
+</Method>
+
+<Method name="GetOfficeGroup">
+<Description>
+Get special group for main company office</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>MailingGroup</ReturnType>
+<Implementation><![CDATA[
+    if (..AccessCodeIdxExists("Office")){
+        quit ..AccessCodeIdxOpen("Office")
+    }
+    
+    set gr = ..%New()
+    set gr.Name = "Офис"
+    set gr.Description = "Офис"
+    set gr.AccessCode = "Office"
+    set gr.MailSubject = ##class(Stc.Data.Localization.LText).Create("")
+    set gr.MailMessage = ##class(Stc.Data.Localization.LText).Create("")
+    do gr.%Save()
+    
+    quit gr
 ]]></Implementation>
 </Method>
 
@@ -164,28 +186,28 @@ Get special group for students</Description>
 <FormalSpec>grId:%String</FormalSpec>
 <ReturnType>%ListOfObjects</ReturnType>
 <Implementation><![CDATA[
-	set contacts = ##class(%ListOfObjects).%New()
-	
-	&sql(DECLARE MItemCur CURSOR FOR 
-			 	 SELECT ID 
-			 	 FROM Stc_Data.MailingItemApproved
-			 	 WHERE MGroup = :grId
-			 	 ORDER BY ItemFullName)	
-			
-	&sql(OPEN MItemCur)
-	for  
-	{	
-		&sql(FETCH MItemCur INTO :id) 
-		quit:(SQLCODE '= 0)
-		
-		set itemObj = ##class(MailingItemApproved).%OpenId(id)
-		set itemObjProxy = itemObj.ConvertToProxyObject($$$NO)
-		set itemObjProxy.name = itemObj.ItemFullName
-		do contacts.Insert(itemObjProxy)	
-	}
-	&sql(CLOSE MItemCur)
-	
-	quit contacts
+    set contacts = ##class(%ListOfObjects).%New()
+    
+    &sql(DECLARE MItemCur CURSOR FOR 
+                 SELECT ID 
+                 FROM Stc_Data.MailingItemApproved
+                 WHERE MGroup = :grId
+                 ORDER BY ItemFullName) 
+            
+    &sql(OPEN MItemCur)
+    for  
+    {   
+        &sql(FETCH MItemCur INTO :id) 
+        quit:(SQLCODE '= 0)
+        
+        set itemObj = ##class(MailingItemApproved).%OpenId(id)
+        set itemObjProxy = itemObj.ConvertToProxyObject($$$NO)
+        set itemObjProxy.name = itemObj.ItemFullName
+        do contacts.Insert(itemObjProxy)    
+    }
+    &sql(CLOSE MItemCur)
+    
+    quit contacts
 ]]></Implementation>
 </Method>
 
@@ -194,18 +216,18 @@ Get special group for students</Description>
 <FormalSpec>grId:%String,trId:%String</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set tr = ##class(Training).%OpenId(trId)
-	set group = ..%OpenId(grId)
-	
-	set mail = ##class(%ZEN.proxyObject).%New()
-	set mail.subject = ##class(Stc.Utils.Email).GetMailMessageWithTrainingData(group.MailSubject.Value, tr)
-	set mail.message = ##class(Stc.Utils.Email).GetMailMessageWithTrainingData(group.MailMessage.Value, tr)
-	
-	set mail.message = $REPLACE(mail.message, "%JoinUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/order")
-	set mail.message = $REPLACE(mail.message, "%UnsubscribeUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/mailing/subscription/%AccessCode")
-	set mail.message = $REPLACE(mail.message, "%ListOfStudentsUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/students/"_tr.AccessCode)
-	
-	quit mail
+    set tr = ##class(Training).%OpenId(trId)
+    set group = ..%OpenId(grId)
+    
+    set mail = ##class(%ZEN.proxyObject).%New()
+    set mail.subject = ##class(Stc.Utils.Email).GetMailMessageWithTrainingData(group.MailSubject.Value, tr)
+    set mail.message = ##class(Stc.Utils.Email).GetMailMessageWithTrainingData(group.MailMessage.Value, tr)
+    
+    set mail.message = $REPLACE(mail.message, "%JoinUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/order")
+    set mail.message = $REPLACE(mail.message, "%UnsubscribeUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/mailing/subscription/%AccessCode")
+    set mail.message = $REPLACE(mail.message, "%ListOfAttendeesUrl", "http://"_##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/students/"_tr.AccessCode)
+    
+    quit mail
 ]]></Implementation>
 </Method>
 

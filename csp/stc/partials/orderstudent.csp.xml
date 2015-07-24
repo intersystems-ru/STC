@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/orderstudent.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/orderstudent.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 
 <script type="text/javascript">
 var callbackYmap = function(){};
@@ -10,102 +10,158 @@ var callbackYmap = function(){};
 </div>
 
 <div class="row-fluid">
-	<div class="row-fluid">
-		<div class="span4 offset1">
-			<accordion close-others="false">
-			    <accordion-group is-open="true" heading="{{ordForm.orderCaption}}">
-	    			<form class="form" ng-submit="ordForm.submit()" style="margin: 0 0 10px 0;">
-						<stcperson
-							person="ordForm.order.contact"
-							companies="ordForm.companies"
-							company-switch-off="true"
-							web-site-off="true"
-							company-exist="false"
-						/>
-						<div>
-						<div class="row-fluid">
-							<div class="control-group">
-					            <label class="control-label">
-					            	<span></span>
-					            	<label class="checkbox">
-							    		<input type="checkbox" ng-model="ordForm.order.mailingOn">{{'Оповещать об обучениях InterSystems в этом городе'|localize}}
-							    	</label>
-					            </label>
-					            <div class="controls">
-					                <input class="span12" 
-					                	   style="margin-bottom: 0;"
-					                	   type="text" 
-					                	   title="{{'Город, Регион, Страна'|localize}}" 
-					                	   ng-model="ordForm.order.city" 
-					                	   ng-change="loadCities(ordForm.order.city)" 
-					                	   placeholder="{{'Поиск'|localize}}" 
-					                	   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
-					                	   ng-disabled="!ordForm.order.mailingOn"
-					                	   ng-required="ordForm.order.mailingOn"></input>
-					                <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
-					            </div>
-					        </div>
-					    </div>
-							<div class="control-group">
-						        <div class="controls">
-						            <button type="submit" class="btn btn-success btn-small" ng-bind="'Зарегистрироваться'|localize" ng-click="ordForm.formatCity()"></button>
-						            <button type="button" class="btn btn-small" ng-bind="'Очистить'|localize" ng-click="ordForm.clear()" ng-show="ordForm.btnClearShow"></button>
-						        </div>
-						    </div>
-						</div>
-					</form>
-			    </accordion-group>
-			</accordion>
-		</div>
-		<div class="span6">
-			<accordion close-others="false">
-			    <accordion-group is-open="true" heading="{{ordForm.trainingCaption}}">
-					<p><span ng-bind="'Курс'|localize"></span>: <span ng-bind="ordForm.training.course.name"></span></p>
-					<p>
-						<a ng-href="{{'http://' + ordForm.training.course.programUrl}}" class="cellLink" target="_blank" ng-bind="'Программа курса »'"></a>
+    <div class="row-fluid">
+        <div class="span4 offset1">
+            <accordion close-others="false">
+                <accordion-group is-open="true" heading="{{ordForm.orderCaption}}">
+                    <form class="form" ng-submit="ordForm.submit()" style="margin: 0 0 10px 0;">
+                        <stcperson
+                            person="ordForm.order.contact"
+                            companies="ordForm.companies"
+                            company-switch-off="true"
+                            web-site-off="true"
+                            company-exist="false"
+                        />
+                        <div>
+                        <div class="row-fluid">
+                            <div class="control-group">
+                                <label class="control-label">
+                                    <span></span>
+                                    <label class="checkbox">
+                                        <input type="checkbox" ng-model="ordForm.order.mailingOn">{{'Оповещать об обучениях InterSystems в этом городе'|localize}}
+                                    </label>
+                                </label>
+                                <div class="controls">
+                                    <input class="span12" 
+                                           style="margin-bottom: 0;"
+                                           type="text" 
+                                           title="{{'Город, Регион, Страна'|localize}}" 
+                                           ng-model="ordForm.order.city" 
+                                           ng-change="loadCities(ordForm.order.city)" 
+                                           placeholder="{{'Поиск'|localize}}" 
+                                           typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+                                           ng-disabled="!ordForm.order.mailingOn"
+                                           ng-required="ordForm.order.mailingOn"></input>
+                                    <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button type="submit" class="btn btn-success btn-small" ng-bind="'Зарегистрироваться'|localize" ng-click="ordForm.formatCity()"></button>
+                                    <button type="button" class="btn btn-small" ng-bind="'Очистить'|localize" ng-click="ordForm.clear()" ng-show="ordForm.btnClearShow"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </accordion-group>
+            </accordion>
+        </div>
+        <div class="span6">
+            <accordion close-others="false">
+                <accordion-group is-open="true" heading="{{ordForm.trainingCaption}}">
+                    <p><span ng-bind="'Курс'|localize"></span>: <span ng-bind="ordForm.training.course.name"></span></p>
+                    <p>
+                        <a ng-href="{{'http://' + ordForm.training.course.programUrl}}" class="cellLink" target="_blank" ng-bind="('Программа курса'|localize) + ' »'"></a>
                         &nbsp;&nbsp;&nbsp;
-						<a ng-href="{{ordForm.training.urlAddGoogleCalendarEvent}}" class="cellLink" target="_blank" ng-bind="'Копировать в мой календарь »'"></a></p>
-					<br>
-					<p><span ng-bind="'Город'|localize"></span>: <span ng-bind="ordForm.training.city.name + ', ' + ordForm.training.city.parentName + ', ' + ordForm.training.city.greatParentName"></span></p>
-					<p>
-						<span ng-bind="'Адрес'|localize"></span>: <span ng-bind="ordForm.training.address.title"></span>
-						<span ng-hide="ordForm.training.room=='-'||ordForm.training.room==''" ng-bind="', ' + ordForm.training.room"></span>
-					</p>
-					<p>
-						<span ng-bind="'Дата'|localize"></span>: <span ng-bind="ordForm.training.dates"></span>
-						<span ng-bind="', время'|localize"></span>: <span ng-bind="ordForm.training.timeStart + ' - ' + ordForm.training.timeFinish"></span>
-					</p>
-				
-					<p><span ng-bind="'Преподаватель'|localize"></span>: <span ng-bind="ordForm.training.teacher.lastName + ' ' + ordForm.training.teacher.firstName + ' ' + ordForm.training.teacher.middleName + ', ' + ordForm.training.teacher.email"></span></p>
-					<!--<p><span class="unselectable" style="color: white;" ng-bind="'Преподаватель:'|localize"></span> <span ng-bind="ordForm.training.teacher.email"></span></p>-->
-			
-					<div ng-hide="ordForm.training.curator.fullName==''">
-						<p><span ng-bind="'Контактное лицо'|localize"></span>: 
-							<span ng-bind="ordForm.training.curator.fullName"></span>
-							<span ng-bind="ordForm.training.curator.email"></span>
-							<span ng-hide="ordForm.training.curator.phone==''" ng-bind="', ' + ordForm.training.curator.phone"></span>
-						</p>
-						<!--
-						<p style="margin-bottom: 0px"><span ng-bind="'Контактное лицо'|localize"></span>: <span ng-bind="ordForm.training.curator.fullName"></span></p>
-						<p ng-hide="ordForm.training.curator.email==''"><span class="unselectable" style="color: white;" ng-bind="'Контактное лицо:'|localize"></span> <span ng-bind="ordForm.training.curator.email"></span><span ng-hide="ordForm.training.curator.phone==''" ng-bind="', ' + ordForm.training.curator.phone"></span></p>-->
-					</div>
-			
-					<p ng-hide="ordForm.training.otherInfo==''"><span ng-bind="'Примечание'|localize"></span>: <span ng-bind="ordForm.training.otherInfo"></span></p>
-					
-					<div class="row-fluid" id="map" style="height: 420px; border: 1px solid rgb(204, 204, 204);"></div>
-				</accordion-group>
-			</accordion>
-		</div>
-	</div >
+                        <a ng-href="{{ordForm.training.urlAddGoogleCalendarEvent}}" class="cellLink" target="_blank" ng-bind="('Копировать в мой календарь'|localize) + ' »'"></a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="" class="cellLink" target="_blank" ng-bind="('Задать вопрос организатору'|localize) + ' »'" ng-click="openQuestionDialog()"></a>
+                    </p>
+                    <br>
+                    <p><span ng-bind="'Город'|localize"></span>: <span ng-bind="ordForm.training.city.name + ', ' + ordForm.training.city.parentName + ', ' + ordForm.training.city.greatParentName"></span></p>
+                    <p>
+                        <span ng-bind="'Адрес'|localize"></span>: <span ng-bind="ordForm.training.street"></span>
+                        <span ng-hide="ordForm.training.room=='-'||ordForm.training.room==''" ng-bind="', ' + ordForm.training.room"></span>
+                    </p>
+                    <p>
+                        <span ng-bind="'Дата'|localize"></span>: <span ng-bind="ordForm.training.dates"></span>
+                        <span ng-bind="', время'|localize"></span>: <span ng-bind="ordForm.training.timeStart + ' - ' + ordForm.training.timeFinish"></span>
+                    </p>
+                
+                    <p><span ng-bind="'Преподаватель'|localize"></span>: <span ng-bind="getFullNameForCurLang(ordForm.training.teacher.lastName, ordForm.training.teacher.firstName, ordForm.training.teacher.middleName)"></span></p>
+                    <!--<p><span class="unselectable" style="color: white;" ng-bind="'Преподаватель:'|localize"></span> <span ng-bind="ordForm.training.teacher.email"></span></p>-->
+            
+                    <div ng-hide="ordForm.training.curator.fullName==''">
+                        <p><span ng-bind="'Контактное лицо'|localize"></span>: 
+                            <span ng-bind="ordForm.training.curator.fullName"></span>
+                            <span ng-hide="ordForm.training.curator.phone==''" ng-bind="', ' + ordForm.training.curator.phone"></span>
+                        </p>
+                        <!--
+                        <p style="margin-bottom: 0px"><span ng-bind="'Контактное лицо'|localize"></span>: <span ng-bind="ordForm.training.curator.fullName"></span></p>
+                        <p ng-hide="ordForm.training.curator.email==''"><span class="unselectable" style="color: white;" ng-bind="'Контактное лицо:'|localize"></span> <span ng-bind="ordForm.training.curator.email"></span><span ng-hide="ordForm.training.curator.phone==''" ng-bind="', ' + ordForm.training.curator.phone"></span></p>-->
+                    </div>
+            
+                    <p ng-hide="ordForm.training.otherInfo==''"><span ng-bind="'Примечание'|localize"></span>: <span ng-bind="ordForm.training.otherInfo"></span></p>
+                    
+                    <div class="row-fluid" id="map" style="height: 420px; border: 1px solid rgb(204, 204, 204);"></div>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div >
 </div >
 
 <div class="row-fluid">
-	<div class="span10 offset1">
-		<stcalert data="ordForm.alert"/>
-	</div>
+    <div class="span10 offset1">
+        <stcalert data="ordForm.alert"/>
+    </div>
 </div>
 
 <br>
+
+
+
+<div class="modal" id="MSGModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="MSGLabel" aria-hidden="true" ng-show="msgModalVisible">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"  ng-click="closeQuestionDialog()">×</button>
+        <h4 id="MSGLabel" ng-bind="'Задать вопрос организаторам'|localize"></h4>
+    </div>
+    <div class="modal-body" style="padding: 0 0 5px;">
+        <div class="row-fluid">
+            <form name="form_feedback" ng-submit="createQuestion()" style="margin: 0; padding: 15px 15px 5px 15px;">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label" ng-bind="('Ваше имя'|localize) + '*'"></label>
+                            <div class="controls">
+                                <input class="span12" type="text" ng-model="questionData.author" required></input>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label" ng-bind="('Ваш email'|localize) + '*'"></label>
+                            <div class="controls">
+                                <input class="span12" type="email" ng-model="questionData.email" required></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" ng-bind="('Тема сообщения'|localize) + '*'"></label>
+                    <div class="controls">
+                        <input class="span12" type="text" ng-model="questionData.subject"  required></input>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" ng-bind="('Сообщение'|localize) + '*'"></label>
+                    <div class="controls">
+                        <textarea class="span12" rows="4" ng-model="questionData.msg" required></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary btn-small" ng-disabled="form_feedback.$pristine">{{'Отправить'|localize}}</button>
+                        &nbsp;
+                        <button type="button" class="btn btn-small" ng-click="closeQuestionDialog()">{{'Закрыть'|localize}}</button>
+                        &nbsp;
+                        <stcalertlabel data="questionAlertLabel"></stcalertlabel>
+                    </div>
+                </div>                          
+            </form>
+        </div>
+    </div>
+</div>
 
 ]]></CSP>
 </Export>

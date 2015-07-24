@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/AllPersonsCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/AllPersonsCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dd
 
@@ -17,6 +17,7 @@ controllersModule.controller('AllPersonsCtrl', function($scope, $location, $rout
     $scope.trainingTable = {items:[]};
     $scope.certificateTable = {items:[]};
     $scope.courseTable = {items:[]};
+    $scope.teacherStat = {data: {courses:[]}};
     $scope.companyTable = {items:[]};
     $scope.other = {allEmpty: true};
 
@@ -73,6 +74,17 @@ controllersModule.controller('AllPersonsCtrl', function($scope, $location, $rout
                           {name:'name'}, 
                           {name:'hours', cellStyle: {textAlign: 'center'}},
                           {name:'days', cellStyle: {textAlign: 'center'}}];
+                          
+        // TEACHER STATISTICS --------------------------
+        $scope.teacherStat.columns = [
+                          {name: 'Курс'}, 
+                          {name: 'Проведено обучений', captionStyle: {textAlign: 'center'}}, 
+                          {name: 'Средний балл по отзывам', captionStyle: {textAlign: 'center'}}];
+        
+        $scope.teacherStat.properties = [
+                          {name:'name'}, 
+                          {name:'trainingsCount', cellStyle: {textAlign: 'center'}},
+                          {name:'avgRating', cellStyle: {textAlign: 'center'}}];
         
         // COMPANIES --------------------------
         $scope.companyTable.columns = [
@@ -98,14 +110,15 @@ controllersModule.controller('AllPersonsCtrl', function($scope, $location, $rout
         $scope.personTable.itemsTotal = 0;
         $scope.personTable.selectedItems = [];
         $scope.personTable.multiSelectMode = false;
-		$scope.personTable.forciblyUpdate = 0;
-		
+        $scope.personTable.forciblyUpdate = 0;
+        $scope.personTable.type = UtilsSrvc.getPropertyValue($scope.pageStore, 'persons.grid.type', 'All');
+        
         $scope.personTable.loadItems($scope.personTable.pageCurr, $scope.personTable.pageSize, "LastName->Value", true, "", ""); 
     };
 
     // Загрузить сотрудников
     $scope.personTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
-        PersonSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText).then(
+        PersonSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, $scope.personTable.type).then(
             function(data){
                 $scope.personTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
                 $scope.personTable.itemsTotal = data.itemsTotal;
@@ -121,16 +134,26 @@ controllersModule.controller('AllPersonsCtrl', function($scope, $location, $rout
             });
     };
 
+    // При смене тип - фильтра
+    $scope.$watch('personTable.type', function(){
+        $scope.personTable.forciblyUpdate++;
+        $scope.pageStore.persons.grid.type = $scope.personTable.type;
+    });
+    
     // При выборе сотрудника подгрузить все его связи
     $scope.$watch('personTable.selectedItems[0]', function(){
         if (!$scope.personTable.selectedItems || $scope.personTable.selectedItems.length == 0)
           return;
         
+        // Загрузить данные по преподу за всё время
+        $scope.teacherStat.loadData($scope.personTable.selectedItems[0].id, null, null);
+            
         $scope.other.loads = 0; 
         $scope.other.loadItems($scope.personTable.selectedItems[0].id, 'companyTable', 'getCompanies');
         $scope.other.loadItems($scope.personTable.selectedItems[0].id, 'courseTable', 'getCourses');
         $scope.other.loadItems($scope.personTable.selectedItems[0].id, 'certificateTable', 'getCertificates');
         $scope.other.loadItems($scope.personTable.selectedItems[0].id, 'trainingTable', 'getTrainings');
+        
     });
 
     // Загрузка связи сотрудника
@@ -155,7 +178,11 @@ controllersModule.controller('AllPersonsCtrl', function($scope, $location, $rout
         
         var flag = false;
 
-        if ($scope.trainingTable.items.length > 0){
+        if ($scope.teacherStat.data.courses.length > 0 && $scope.teacherStat.active){
+            $scope.teacherStat.active = true;
+            flag = true;
+        }
+        else if ($scope.trainingTable.items.length > 0){
             $scope.trainingTable.active = true;
             flag = true;
         }
@@ -231,6 +258,30 @@ controllersModule.controller('AllPersonsCtrl', function($scope, $location, $rout
             });
     };    
 
+    // Обновить данные статистики препода
+    $scope.teacherStat.refreshData = function(){
+        if ($scope.personTable.selectedItems.length == 0)
+            return;
+            
+        var dateFrom = UtilsSrvc.getValidDate($scope.teacherStat.data.dateFrom);
+        var dateTo = UtilsSrvc.getValidDate($scope.teacherStat.data.dateTo);
+        $scope.teacherStat.loadData($scope.personTable.selectedItems[0].id, dateFrom, dateTo);
+    };
+    
+    // Загрузить данные по преподу
+    $scope.teacherStat.loadData = function(teacherId, dateFrom, dateTo){
+        // Load teacher statisticst if exists
+        
+        PersonSrvc.getTeacherStatistics(teacherId, dateFrom, dateTo).then(
+            function(data){
+                $scope.teacherStat.data = data; 
+            },
+            function(response){
+                $scope.teacherStat.data = {courses: []};
+                $scope.personTable.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+            });
+    };
+    
     $scope.personTable.init();
 });
 

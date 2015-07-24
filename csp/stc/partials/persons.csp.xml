@@ -1,178 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/persons.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/persons.csp" application="/csp/stc_loc/" default="1"><![CDATA[
+<div class="row-fluid" style="padding-bottom: 5px;">
+    <div class="span10 offset1">
+        <span ng-bind="'Сотрудники'|localize" style="font-weight: bold;"></span>
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-mini btnRadio" ng-model="personTable.type" btn-radio="'All'"  ng-bind="'Все'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="personTable.type" btn-radio="'Teachers'"  ng-bind="'Преподаватели'|localize"></button>
+        </div>
+    </div>
+</div>
 <div class="row-fluid">
-	<div class="span10 offset1">
-		<stcgrid
-			grid="pageStore.persons.grid"
-		    table-class="table table-bordered table-hover"
-		    caption="Сотрудники"
-		    columns="personTable.columns"
-		    items="personTable.items"
-		    properties="personTable.properties"
-		    update-items="personTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+    <div class="span10 offset1">
+        <stcgrid
+            grid="pageStore.persons.grid"
+            table-class="table table-bordered table-hover"
+            caption=""
+            columns="personTable.columns"
+            items="personTable.items"
+            properties="personTable.properties"
+            update-items="personTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-		    page-curr="personTable.pageCurr"
-		    page-total="personTable.pageTotal"
-		    page-size="personTable.pageSize"
-		    navigator-visible="true"
+            page-curr="personTable.pageCurr"
+            page-total="personTable.pageTotal"
+            page-size="personTable.pageSize"
+            navigator-visible="true"
 
-		    selectable="true"
-		    selected-items="personTable.selectedItems"
-		    multi-select-mode="personTable.multiSelectMode"
+            selectable="true"
+            selected-items="personTable.selectedItems"
+            multi-select-mode="personTable.multiSelectMode"
 
-		    action-column-visible="!menu.readOnlyMode"
-		    action-column-icon="'icon-plus-sign'"
-		    action-column-title="'Добавить сотрудника'|localize"
-		    action-column-method="personTable.add()"
+            action-column-visible="!menu.readOnlyMode"
+            action-column-icon="'icon-plus-sign'"
+            action-column-title="'Добавить сотрудника'|localize"
+            action-column-method="personTable.add()"
 
-		    first-row-action-icon="'icon-pencil'"
-		    first-row-action-title="'Редактировать сотрудника'|localize"
-		    first-row-action-method="personTable.edit(item)"
-		    
-		    second-row-action-icon="'icon-remove'"
-		    second-row-action-title="'Удалить сотрудника'|localize"
-		    second-row-action-method="personTable.remove(item)"
-		    
-		    forcibly-update="personTable.forciblyUpdate"
-		/>
-	</div>
+            first-row-action-icon="'icon-pencil'"
+            first-row-action-title="'Редактировать сотрудника'|localize"
+            first-row-action-method="personTable.edit(item)"
+            
+            second-row-action-icon="'icon-remove'"
+            second-row-action-title="'Удалить сотрудника'|localize"
+            second-row-action-method="personTable.remove(item)"
+            
+            forcibly-update="personTable.forciblyUpdate"
+        />
+    </div>
 </div>
 
 
 <div class="row-fluid">
-	<div class="span10 offset1">
-		<stcalert data="personTable.alert"/>
-	</div>
+    <div class="span10 offset1">
+        <stcalert data="personTable.alert"/>
+    </div>
 </div>
 
 
 <div class="row-fluid" ng-show="personTable.selectedItems.length==0" style="text-align: center;">
-	<i ng-bind="'Выберите сотрудника для отображения подробной информации.'|localize"></i>
-</div>	
+    <i ng-bind="'Выберите сотрудника для отображения подробной информации.'|localize"></i>
+</div>  
 
 
 <div class="row-fluid" ng-show="other.allEmpty && personTable.selectedItems.length>0" style="text-align: center;">
-	<i ng-bind="'Выбранный сотрудник не указан ни в одной заявке, не проходит обучение, не имеет сертификатов, не преподаватель и не является контактом организации.'|localize"></i>
-</div>	
+    <i ng-bind="'Выбранный сотрудник не указан ни в одной заявке, не проходит обучение, не имеет сертификатов, не преподаватель и не является контактом организации.'|localize"></i>
+</div>  
 
 <div class="row-fluid" ng-hide="personTable.selectedItems.length==0 || other.allEmpty">
-	<div class="span10 offset1">
-		<tabset>
-			<tab heading="{{('Обучения'|localize) + ' (' + trainingTable.items.length + ')'}}" active="trainingTable.active" ng-hide="$parent.trainingTable.items.length==0">
-				<stcgrid
-			    table-class="table table-bordered"
-			    caption=""
-			    columns="trainingTable.columns"
-			    items="trainingTable.items"
-			    properties="trainingTable.properties"
-			    update-items=""
+    <div class="span10 offset1">
+        <tabset>
+            <tab heading="{{('Пройденные курсы'|localize) + ' (' + trainingTable.items.length + ')'}}" active="trainingTable.active" ng-hide="$parent.trainingTable.items.length==0">
+                <stcgrid
+                table-class="table table-bordered"
+                caption=""
+                columns="trainingTable.columns"
+                items="trainingTable.items"
+                properties="trainingTable.properties"
+                update-items=""
 
-			    page-curr="1"
-			    page-total="1"
-			    page-size="100"
-			    navigator-visible="false"
+                page-curr="1"
+                page-total="1"
+                page-size="100"
+                navigator-visible="false"
 
-			    selectable="false"
-			    selected-items="trainingTable.selectedItems"
-			    multi-select-mode="false"
+                selectable="false"
+                selected-items="trainingTable.selectedItems"
+                multi-select-mode="false"
 
-			    action-column-visible="!menu.readOnlyMode"
-		    	action-column-icon="'icon-ellipsis-horizontal'"
+                action-column-visible="!menu.readOnlyMode"
+                action-column-icon="'icon-ellipsis-horizontal'"
 
-		    	first-row-action-icon="'icon-eye-open'"
-		    	first-row-action-title="'Открыть обучение'|localize"
-		    	first-row-action-method="trainingTable.open(item)"
-				/>
-		    </tab>
-		    
-			<tab heading="{{('Сертификаты'|localize) + ' (' + certificateTable.items.length + ')'}}" active="certificateTable.active" ng-hide="$parent.certificateTable.items.length==0">
-				<stcgrid
-			    table-class="table table-bordered"
-			    caption=""
-			    columns="certificateTable.columns"
-			    items="certificateTable.items"
-			    properties="certificateTable.properties"
-			    update-items=""
+                first-row-action-icon="'icon-eye-open'"
+                first-row-action-title="'Открыть обучение'|localize"
+                first-row-action-method="trainingTable.open(item)"
+                />
+            </tab>
+            
+            <tab heading="{{('Сертификаты слушателя'|localize) + ' (' + certificateTable.items.length + ')'}}" active="certificateTable.active" ng-hide="$parent.certificateTable.items.length==0">
+                <stcgrid
+                table-class="table table-bordered"
+                caption=""
+                columns="certificateTable.columns"
+                items="certificateTable.items"
+                properties="certificateTable.properties"
+                update-items=""
 
-			    page-curr="1"
-			    page-total="1"
-			    page-size="100"
-			    navigator-visible="false"
+                page-curr="1"
+                page-total="1"
+                page-size="100"
+                navigator-visible="false"
 
-			    selectable="false"
-			    selected-items="certificateTable.selectedItems"
-			    multi-select-mode="false"
+                selectable="false"
+                selected-items="certificateTable.selectedItems"
+                multi-select-mode="false"
 
-			    action-column-visible="!menu.readOnlyMode"
-		    	action-column-icon="'icon-ellipsis-horizontal'"
+                action-column-visible="!menu.readOnlyMode"
+                action-column-icon="'icon-ellipsis-horizontal'"
 
-		    	first-row-action-icon="'icon-print'"
-		    	first-row-action-title="'Распечатать'|localize"
-		    	first-row-action-method="certificateTable.print(item)"
-				/>
-		    </tab>
-		    
-			<tab heading="{{('Преподает курсы'|localize) + ' (' + courseTable.items.length + ')'}}" active="courseTable.active" ng-hide="$parent.courseTable.items.length==0">
-				<stcgrid
-			    table-class="table table-bordered"
-			    caption=""
-			    columns="courseTable.columns"
-			    items="courseTable.items"
-			    properties="courseTable.properties"
-			    update-items=""
+                first-row-action-icon="'icon-print'"
+                first-row-action-title="'Распечатать'|localize"
+                first-row-action-method="certificateTable.print(item)"
+                />
+            </tab>
+            
+            <tab heading="{{('Курсы преподавателя'|localize) + ' (' + courseTable.items.length + ')'}}" active="courseTable.active" ng-hide="$parent.courseTable.items.length==0">
+                <stcgrid
+                table-class="table table-bordered"
+                caption=""
+                columns="courseTable.columns"
+                items="courseTable.items"
+                properties="courseTable.properties"
+                update-items=""
 
-			    page-curr="1"
-			    page-total="1"
-			    page-size="100"
-			    navigator-visible="false"
+                page-curr="1"
+                page-total="1"
+                page-size="100"
+                navigator-visible="false"
 
-			    selectable="false"
-			    selected-items="courseTable.selectedItems"
-			    multi-select-mode="false"
-			    
-			    action-column-visible="!menu.readOnlyMode"
-		    	action-column-icon="'icon-ellipsis-horizontal'"
-		    	
-		    	first-row-action-icon="'icon-pencil'"
-		    	first-row-action-title="'Редактировать курс'|localize"
-		    	first-row-action-method="courseTable.edit(item)"
-				/>
-		    </tab>
+                selectable="false"
+                selected-items="courseTable.selectedItems"
+                multi-select-mode="false"
+                
+                action-column-visible="!menu.readOnlyMode"
+                action-column-icon="'icon-ellipsis-horizontal'"
+                
+                first-row-action-icon="'icon-pencil'"
+                first-row-action-title="'Редактировать курс'|localize"
+                first-row-action-method="courseTable.edit(item)"
+                />
+            </tab>
 
-			<tab heading="{{('Контакт организации'|localize) + ' (' + companyTable.items.length + ')'}}" active="companyTable.active" ng-hide="$parent.companyTable.items.length==0">
-				<stcgrid
-			    table-class="table table-bordered"
-			    caption=""
-			    columns="companyTable.columns"
-			    items="companyTable.items"
-			    properties="companyTable.properties"
-			    update-items=""
+          <tab heading="{{('Статистика преподавателя'|localize)}}" active="teacherStat.active" ng-hide="$parent.teacherStat.data.courses.length==0">
+                <p>
+                    <div class="control-group">
+                        <label ng-bind="'За период'"></label>
+                        <input type="text" style="width: 130px;" datepicker-popup="{{'d MMMM y'|localize}}" onkeydown="return false;" ng-model="teacherStat.data.dateFrom" show-weeks="false"/>
+                        -
+                        <input type="text" style="width: 130px;" datepicker-popup="{{'d MMMM y'|localize}}" onkeydown="return false;" ng-model="teacherStat.data.dateTo" show-weeks="false"/>
+                        <button class="btn" style="margin-bottom: 10px;" ng-click="teacherStat.refreshData()" title="{{'Обновить статистику'|localize}}">&nbsp;<i class="icon-refresh"></i>&nbsp;</button>
+                    </div>
+                </p>
+                <p>{{'Всего проведено обучающих курсов'|localize}}: {{teacherStat.data.totalTrainingsCount}}</p>
+                <p>{{'Общий средний балл по отзывам'|localize}}: <span ng-bind="teacherStat.data.totalRating" ng-hide="teacherStat.data.totalRating==0 || !teacherStat.data.totalRating"></span><span ng-bind="'-'" ng-show="teacherStat.data.totalRating0 || !teacherStat.data.totalRating"></span></p>
+                <stcgrid
+                table-class="table table-bordered"
+                caption=""
+                columns="teacherStat.columns"
+                items="teacherStat.data.courses"
+                properties="teacherStat.properties"
+                update-items=""
 
-			    page-curr="1"
-			    page-total="1"
-			    page-size="100"
-			    navigator-visible="false"
+                page-curr="1"
+                page-total="1"
+                page-size="100"
+                navigator-visible="false"
 
-			    selectable="false"
-			    selected-items="companyTable.selectedItems"
-			    multi-select-mode="false"
+                selectable="false"
+                selected-items="teacherStat.selectedItems"
+                multi-select-mode="false"
+                
+                action-column-visible="false"
+                />
+            </tab>
 
-			    action-column-visible="!menu.readOnlyMode"
-		    	action-column-icon="'icon-ellipsis-horizontal'"
-		    	
-		    	first-row-action-icon="'icon-pencil'"
-		    	first-row-action-title="'Редактировать организацию'|localize"
-		    	first-row-action-method="companyTable.edit(item)"
-				/>
-		    </tab>
-		</tebset>
-	</div>
+            <tab heading="{{('Контакт организации'|localize) + ' (' + companyTable.items.length + ')'}}" active="companyTable.active" ng-hide="$parent.companyTable.items.length==0">
+                <stcgrid
+                table-class="table table-bordered"
+                caption=""
+                columns="companyTable.columns"
+                items="companyTable.items"
+                properties="companyTable.properties"
+                update-items=""
+
+                page-curr="1"
+                page-total="1"
+                page-size="100"
+                navigator-visible="false"
+
+                selectable="false"
+                selected-items="companyTable.selectedItems"
+                multi-select-mode="false"
+
+                action-column-visible="!menu.readOnlyMode"
+                action-column-icon="'icon-ellipsis-horizontal'"
+                
+                first-row-action-icon="'icon-pencil'"
+                first-row-action-title="'Редактировать организацию'|localize"
+                first-row-action-method="companyTable.edit(item)"
+                />
+            </tab>
+        </tebset>
+    </div>
 </div>
 
 <div class="row-fluid">
-	<div class="span10 offset1">
-		<stcalert data="other.alert"/>
-	</div>
+    <div class="span10 offset1">
+        <stcalert data="other.alert"/>
+    </div>
 </div>]]></CSP>
 </Export>

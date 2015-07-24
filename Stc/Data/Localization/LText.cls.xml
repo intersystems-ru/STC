@@ -58,6 +58,20 @@ Getting string value for current language by id</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="GetValueByLang">
+<FormalSpec>lang:%String</FormalSpec>
+<ReturnType>%Text</ReturnType>
+<Implementation><![CDATA[	quit ##class(LTextValue).GetValue(..%Id(), lang)
+]]></Implementation>
+</Method>
+
+<Method name="SetValueByLang">
+<FormalSpec>value:%Text,lang:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ##class(LTextValue).SetValue(value, ..%Id(), lang)
+]]></Implementation>
+</Method>
+
 <Method name="Create">
 <Description>
 Create multilanguage property. 

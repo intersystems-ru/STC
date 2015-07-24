@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/app.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/app.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dddddddd
 
@@ -12,19 +12,21 @@ var filterModule       = angular.module('filterModule', []);
 var mainModule         = angular.module('mainModule', ['ui.bootstrap', 'servicesModule', 'controllersModule', 'directivesModule', 'localizationModule', 'filterModule']);
 
 mainModule.config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/createorder', {templateUrl: 'partials/createorder.csp', controller: 'CreateOrderCtrl'});
-	$routeProvider.when('/orderstudent', {templateUrl: 'partials/orderstudent.csp', controller: 'OrderNewStudentCtrl'});
+    $routeProvider.when('/createorder', {templateUrl: 'partials/createorder.csp', controller: 'CreateOrderCtrl'});
+    $routeProvider.when('/orderstudent', {templateUrl: 'partials/orderstudent.csp', controller: 'OrderNewStudentCtrl'});
     $routeProvider.when('/training/:training/order', {templateUrl: 'partials/orderstudent.csp', controller: 'OrderNewStudentCtrl'});
-	$routeProvider.when('/orders', {templateUrl: 'partials/orders.csp', controller: 'AllOrdersCtrl'});
-	$routeProvider.when('/companies', {templateUrl: 'partials/companies.csp', controller: 'AllCompaniesCtrl'});
-	$routeProvider.when('/company', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
-	$routeProvider.when('/company/:id', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
-	$routeProvider.when('/company/order/:order', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
-	$routeProvider.when('/company/order/:ordernewstudent/student', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
+    $routeProvider.when('/orders', {templateUrl: 'partials/orders.csp', controller: 'AllOrdersCtrl'});
+    $routeProvider.when('/companies', {templateUrl: 'partials/companies.csp', controller: 'AllCompaniesCtrl'});
+    $routeProvider.when('/company', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
+    $routeProvider.when('/company/:id', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
+    $routeProvider.when('/company/order/:order', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
+    $routeProvider.when('/company/order/:ordernewstudent/student', {templateUrl: 'partials/company.csp', controller: 'CompanyCtrl'});
     
     $routeProvider.when('/persons', {templateUrl: 'partials/persons.csp', controller: 'AllPersonsCtrl'});
     $routeProvider.when('/person/:id', {templateUrl: 'partials/person.csp', controller: 'PersonCtrl'});
     $routeProvider.when('/person', {templateUrl: 'partials/person.csp', controller: 'PersonCtrl'});
+    $routeProvider.when('/company/:cmpId/person', {templateUrl: 'partials/person.csp', controller: 'PersonCompanyContactCtrl'});
+    $routeProvider.when('/company/:cmpId/person/:id', {templateUrl: 'partials/person.csp', controller: 'PersonCompanyContactCtrl'});
     
     $routeProvider.when('/course/:courseId/teacher', {templateUrl: 'partials/person.csp', controller: 'PersonTeacherCtrl'});
     $routeProvider.when('/course/:courseId/teacher/:teacherId', {templateUrl: 'partials/person.csp', controller: 'PersonTeacherCtrl'});

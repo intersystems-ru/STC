@@ -14,6 +14,13 @@ Name of currency</Description>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
+<Property name="Code">
+<Description>
+Code of currency</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
 <Method name="ConvertToProxyObject">
 <Description>
 Convert to proxyObject (for JSON)</Description>
@@ -22,7 +29,40 @@ Convert to proxyObject (for JSON)</Description>
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
 	set proxy.name = ..Name.Value
+	set proxy.code = ..Code
 	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="UpdateCurrencyCode">
+<Description>
+do ##class(Stc.Data.Currency).UpdateCurrencyCode()</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set obj = ..%OpenId(1)
+	set obj.Code = "RUB"
+	do obj.%Save()
+	
+	set obj = ..%OpenId(2)
+	set obj.Code = "USD"
+	do obj.%Save()
+	
+	set obj = ..%OpenId(3)
+	set obj.Code = "EUR"
+	do obj.%Save()
+	
+	set obj = ..%OpenId(4)
+	if '$ISOBJECT(obj){
+		set obj = ..%New()
+		set obj.Name = ##class(Stc.Data.Localization.LText).Create("GBP")
+		do obj.Name.SetValueByLang("Фунт стерлингов", "ru")
+		do obj.Name.SetValueByLang("Pound Sterling", "en")
+		set obj.Code = "GBP"
+		do obj.%Save()
+	}
+	
+	// GBP
 ]]></Implementation>
 </Method>
 
@@ -40,6 +80,9 @@ Convert to proxyObject (for JSON)</Description>
 </Value>
 <Value name="2">
 <Value>Name</Value>
+</Value>
+<Value name="3">
+<Value>Code</Value>
 </Value>
 </Data>
 </Storage>

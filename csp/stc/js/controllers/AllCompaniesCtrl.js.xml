@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/AllCompaniesCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/AllCompaniesCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dd
 
@@ -10,8 +10,8 @@
 controllersModule.controller('AllCompaniesCtrl', function($scope, $filter, $location, $routeParams, UtilsSrvc, CompanySrvc){
     $scope.menu.selectMenu('companies');
     
-	if (!$scope.pageStore.companies)
-       	$scope.pageStore.companies = {grid:{}};
+    if (!$scope.pageStore.companies)
+        $scope.pageStore.companies = {grid:{}};
 
     $scope.company = {};
 
@@ -38,7 +38,7 @@ controllersModule.controller('AllCompaniesCtrl', function($scope, $filter, $loca
         $scope.company.itemsTotal = 0;
         $scope.company.selectedItems = [];
         $scope.company.multiSelectMode = false;
-		$scope.company.forciblyUpdate = 0;
+        $scope.company.forciblyUpdate = 0;
     };
 
     // company
@@ -63,6 +63,10 @@ controllersModule.controller('AllCompaniesCtrl', function($scope, $filter, $loca
     // Переход на страницу редактирования компании
     $scope.company.edit = function(item){
          $location.path('/company').search({id: item.id});
+    };
+    
+    $scope.company.add = function(){
+         $location.path('/company');
     };
 
     // Удалить компанию

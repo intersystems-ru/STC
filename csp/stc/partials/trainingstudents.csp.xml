@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/trainingstudents.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/trainingstudents.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span10 offset1">
-		<accordion close-others="false">
-		    <accordion-group is-open="true" heading="{{'Информация о курсе'|localize}}">
-				<div class="row-fluid">
-					<div class="span6">
-						<p><span ng-bind="'Курс'|localize"></span>: <span ng-bind="page.training.course.name"></span></p>
-						<p><span ng-bind="'Дата начала'|localize"></span>: <span ng-bind="page.training.dateStart|convertCacheDate:('d MMMM y'|localize)"></span></p>
-						<p><span ng-bind="'Дата окончания'|localize"></span>: <span ng-bind="page.training.dateFinish|convertCacheDate:('d MMMM y'|localize)"></span></p>
-					</div>
-					<div class="span6">
-						<p><span ng-bind="'Город'|localize"></span>: <span ng-bind="page.training.city.name + ', ' + page.training.city.parentName + ', ' + page.training.city.greatParentName"></span></p>
-						<p><span ng-bind="'Адрес'|localize"></span>: <span ng-bind="page.training.address.title"></span></p>
-						<p><span ng-bind="'Аудитория'|localize"></span>: <span ng-bind="page.training.room"></span></p>
-					</div>
-				</div>
-    		</accordion-group>
-			<br>
-		    <accordion-group is-open="true" heading="{{'Слушатели курса'|localize}}">
-				<stcgrid
-					grid="pageStore.trstudents.grid"
-				    table-class="table table-bordered table-hover"
-				    caption=""
-				    columns="page.studTable.columns"
-				    items="page.studTable.items"
-				    properties="page.studTable.properties"
-				    update-items="page.studTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+    <div class="span10 offset1">
+        <accordion close-others="false">
+            <accordion-group is-open="true" heading="{{'Информация о курсе'|localize}}">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <p><span ng-bind="'Курс'|localize"></span>: <span ng-bind="page.training.course.name"></span></p>
+                        <p><span ng-bind="'Дата начала'|localize"></span>: <span ng-bind="page.training.dateStart|convertCacheDate:('d MMMM y'|localize)"></span></p>
+                        <p><span ng-bind="'Дата окончания'|localize"></span>: <span ng-bind="page.training.dateFinish|convertCacheDate:('d MMMM y'|localize)"></span></p>
+                    </div>
+                    <div class="span6">
+                        <p><span ng-bind="'Город'|localize"></span>: <span ng-bind="page.training.city.name + ', ' + page.training.city.parentName + ', ' + page.training.city.greatParentName"></span></p>
+                        <p><span ng-bind="'Адрес'|localize"></span>: <span ng-bind="page.training.street"></span></p>
+                        <p><span ng-bind="'Аудитория'|localize"></span>: <span ng-bind="page.training.room"></span></p>
+                    </div>
+                </div>
+            </accordion-group>
+        </accordion>
+        <tabset>
+            <!-- ============================================ STUDENTS ==================================================-->
+            <tab heading="{{('Слушатели'|localize) + ' (' + page.studTable.itemsTotal + ')'}}">
+                <stcgrid
+                        grid="pageStore.trstudents.grid"
+                        table-class="table table-bordered table-hover"
+                        caption=""
+                        columns="page.studTable.columns"
+                        items="page.studTable.items"
+                        properties="page.studTable.properties"
+                        update-items="page.studTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-				    page-curr="page.studTable.pageCurr"
-				    page-total="page.studTable.pageTotal"
-				    page-size="page.studTable.pageSize"
-				    navigator-visible="true"
+                        page-curr="page.studTable.pageCurr"
+                        page-total="page.studTable.pageTotal"
+                        page-size="page.studTable.pageSize"
+                        navigator-visible="true"
 
-				    selectable="true"
-				    selected-items="page.studTable.selectedItems"
-				    multi-select-mode="false"
+                        selectable="true"
+                        selected-items="page.studTable.selectedItems"
+                        multi-select-mode="false"
 
-				    action-column-visible="false"
-				    forcibly-update="page.studTable.forciblyUpdate"
-				/> 
-				<button type="button" class="btn btn-small btn-success" ng-click="page.exportToCSV()" ng-bind="'Экспорт'|localize" title="{{'Экспорт всех слушателей в файл *.csv'|localize}}"></button>   			
-		    </accordion-group>
-		</accordion>
-		
+                        action-column-visible="false"
+                        forcibly-update="page.studTable.forciblyUpdate"
+                    /> 
+                    <button type="button" class="btn btn-small btn-success" ng-click="page.studExportToCSV()" ng-bind="'Экспорт слушателей'|localize" title="{{'Экспорт всех слушателей в файл *.csv'|localize}}"></button>             
+            </tab>
+            
+            <!-- ============================================ ORDERS ==================================================-->
+            <tab heading="{{('Заявки на регистрацию'|localize) + ' (' + page.newstudTable.itemsTotal + ')'}}">
+                <stcgrid
+                        grid="pageStore.trorders.grid"
+                        table-class="table table-bordered table-hover"
+                        caption=""
+                        columns="page.newstudTable.columns"
+                        items="page.newstudTable.items"
+                        properties="page.newstudTable.properties"
+                        update-items="page.newstudTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-		<br>
-		<stcalert data="page.alert"/>
-	</div>
+                        page-curr="page.newstudTable.pageCurr"
+                        page-total="page.newstudTable.pageTotal"
+                        page-size="page.newstudTable.pageSize"
+                        navigator-visible="true"
+
+                        selectable="true"
+                        selected-items="page.newstudTable.selectedItems"
+                        multi-select-mode="false"
+
+                        action-column-visible="false"
+                        forcibly-update="page.newstudTable.forciblyUpdate"
+                    />
+                <button type="button" class="btn btn-small btn-success" ng-click="page.orderExportToCSV()" ng-bind="'Экспорт заявок'|localize" title="{{'Экспорт всех заявок в файл *.csv'|localize}}"></button>            
+            </tab>
+        </tabset>               
+        <br>
+        <stcalert data="page.alert"/>
+    </div>
 </div >
-
 ]]></CSP>
 </Export>

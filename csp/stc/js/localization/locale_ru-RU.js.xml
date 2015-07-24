@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/localization/locale_ru-RU.js" application="/csp/four/" default="1"><![CDATA[
+<CSP name="stc/js/localization/locale_ru-RU.js" application="/csp/stc_loc/" default="1"><![CDATA[
 //dddd
 
 localizationModule.constant('StcDictionary', {
-  strings: null,
+  strings: {
+    'Создать заявку*':'Обучения',
+    'Обучения*':'Обучения'
+  },
   getTranslate: function(word){
-      return word;
+      return this.strings[word] ? this.strings[word] : word;
   }
 });
 

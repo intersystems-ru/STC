@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/components/stcperson.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/components/stcperson.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div>
     <div class="control-group">
         <label class="control-label" ng-bind="('Фамилия'|localize) + '*'"></label>
@@ -26,17 +26,23 @@
             <input class="span12" type="email" ng-model="person.email" ng-disabled="allDisabled" required></input>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label" ng-bind="('Телефон'|localize)"></label>
-        <div class="controls">
-            <input class="span12" type="text" ng-model="person.phone" ng-disabled="allDisabled"></input>
-        </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label">Skype</label>
-        <div class="controls">
-            <input class="span12" type="text" ng-model="person.skype" ng-disabled="allDisabled" ></input>
-        </div>
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="control-group">
+                <label class="control-label" ng-bind="('Телефон'|localize)"></label>
+                <div class="controls">
+                    <input class="span12" type="text" ng-model="person.phone" ng-disabled="allDisabled"></input>
+                </div>
+            </div>
+       </div>
+       <div class="span6">
+            <div class="control-group">
+                <label class="control-label">Skype</label>
+                <div class="controls">
+                    <input class="span12" type="text" ng-model="person.skype" ng-disabled="allDisabled" ></input>
+                </div>
+            </div>
+       </div>
     </div>
     <div class="control-group">
         <label class="control-label" ng-show="companyDisabled" ng-bind="('Организация'|localize) + '*'"></label>

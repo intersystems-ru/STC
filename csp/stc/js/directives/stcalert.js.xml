@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/directives/stcalert.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/directives/stcalert.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //sddddddd
 
@@ -29,7 +29,7 @@ directivesModule.directive('stcalert', function(){
 	       
 	       $scope.$watch('data.visible', function(){
                 if ($scope.data.visible && $scope.data.cssClass == 'alert alert-success'){
-                    $timeout(function(){$scope.close()}, 2200);        
+                    $timeout(function(){$scope.close()}, 3200);        
                 }     
            });
 	   	}

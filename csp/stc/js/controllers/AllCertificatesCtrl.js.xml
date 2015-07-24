@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/AllCertificatesCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/AllCertificatesCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //ddd
 
@@ -28,7 +28,7 @@ controllersModule.controller('AllCertificatesCtrl', function($scope, $filter, $l
                                   {name:'number', cellStyle: {textAlign: 'center'}},
                                   {name:'student.fullName', 
                                   calculate: function(item){
-                                                item.student.fullName = item.student.lastName + ' ' + item.student.firstName + ' ' + item.student.middleName;
+                                      item.student.fullName = $scope.getFullNameForCurLang(item.student.lastName, item.student.firstName, item.student.middleName);
                                   }}, 
                                   {name:'date', filter: 'date', filterParam: $filter('localize')('d MMMM y')}, 
                                   {name:'status', cellStyle: {textAlign: 'center'},

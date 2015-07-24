@@ -31,9 +31,12 @@
 	set proxy.fullName = ..Student.FullName
 	set proxy.email = ..Student.Email
 	set proxy.company = ..Student.Company.ShortName.Value
+	set proxy.companyTypeCode = ..Student.Company.Type.Code
+	
 	set proxy.position = ""
 	set proxy.city = ..City.Name.Value
-	set proxy.lastUpdated = ..LastUpdated
+	set proxy.lastUpdated = ..LastUpdated 
+	
 	if (fullInfo){
 		set proxy.group = ..MGroup.ConvertToProxyObject()
 	}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/MailingGroupCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/MailingGroupCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //
 
@@ -27,7 +27,7 @@ controllersModule.controller('MailingGroupCtrl', function($scope, $filter, $rout
     $scope.groupForm.loadData = function(){
         MailingSrvc.getGroup($routeParams.id).then(
             function(data){
-	            data.mailMessage = data.mailMessage.replace(/<br>/g, "\n");
+                data.mailMessage = data.mailMessage.replace(/<br>/g, "\n");
                 $scope.groupForm.group = data;
             },
             function(response){
@@ -37,17 +37,17 @@ controllersModule.controller('MailingGroupCtrl', function($scope, $filter, $rout
 
     // Сохранить / создать курс
     $scope.groupForm.submit = function(){
-	    var group = angular.copy($scope.groupForm.group);
-	    group.mailMessage = group.mailMessage.replace(/\n/g, "<br>");
+        var group = angular.copy($scope.groupForm.group);
+        group.mailMessage = group.mailMessage.replace(/\n/g, "<br>");
         
         MailingSrvc.saveGroup(group).then(
             function(data){
-	            if (!$scope.groupForm.group.id){
-                	$scope.groupForm.alert = UtilsSrvc.getAlert('Готово!', 'Группа создана.', 'success', true);
-                	$scope.groupForm.group = {};
-	            }
+                if (!$scope.groupForm.group.id){
+                    $scope.groupForm.alert = UtilsSrvc.getAlert('Готово!', 'Группа создана.', 'success', true);
+                    $scope.groupForm.group = {};
+                }
                 else{
-                	$scope.groupForm.alert = UtilsSrvc.getAlert('Готово!', 'Изменения сохранены.', 'success', true);
+                    $scope.groupForm.alert = UtilsSrvc.getAlert('Готово!', 'Изменения сохранены.', 'success', true);
                 }
                 
                 $scope.form.$setPristine();
@@ -62,8 +62,8 @@ controllersModule.controller('MailingGroupCtrl', function($scope, $filter, $rout
     $scope.groupForm.loadPreview = function(){
         MailingSrvc.getGroupMail($scope.groupForm.group.id).then(
             function(data){
-	            $scope.groupForm.previewVisible = true;
-	            $scope.groupForm.preview = data.subject + '<br><br>' + data.message;
+                $scope.groupForm.previewVisible = true;
+                $scope.groupForm.preview = data.subject + '<br><br>' + data.message;
             },
             function(response){
                 $scope.groupForm.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
@@ -77,23 +77,27 @@ controllersModule.controller('MailingGroupCtrl', function($scope, $filter, $rout
     
     // Show help dialog window 
     $scope.groupForm.showHelp = function(type){
-        var msg = 'В содержании письма можно использовать переменные(%Variable), которые впоследствии будут заменены на соответствующие значения. Список доступных переменных для данного шаблона:<br>';
+        var getLocValue = function(key){
+            return $filter('localize')(key)
+        };
+       
+        var msg = getLocValue('В содержании письма можно использовать переменные(%Variable), которые впоследствии будут заменены на соответствующие значения. Список доступных переменных для данного шаблона:<br>');
         msg += 
-              '%DateStart, %DateEnd - дата начала / окончания обучения;<br>' +
-              '%TimeStart, %TimeEnd - время начала / окончание занятий;<br>' +
-              '%Course.Name - название курса;<br>' +
-              '%City.Name, %Region.Name, %Country.Name - город, регион, страна;<br>' +
-              '%Street, %Room - улица и аудитория;<br>' +
-              '%Teacher.FullName - фамилия и имя преподавателя;<br>' +
-              '%Teacher.Email, %Teacher.Phone - email, телефон<br>' +
-              '%Curator.FullName - фамилия и имя куратора;<br>' + 
-              '%Curator.Email, %Curator.PhoneSecret, %Curator.PhonePublic - email, личный|публичный телефон;<br>' +
-              '%OtherInfo - дополнительная информация об обучении;<br>' + 
-              '%JoinUrl - ссылка на страницу для регистрации;<br>'+
-              '%ListOfStudentsUrl - ссылка на страницу со списком слушателей;<br>' +
-              '%UnsubscribeUrl - ссылка на отмену подписки.<br>';
+              '%DateStart, %DateEnd - '+ getLocValue('дата начала / окончания обучения') + ';<br>' +
+              '%TimeStart, %TimeEnd - '+ getLocValue('время начала / окончание занятий') + ';<br>' +
+              '%Course.Name - '+ getLocValue('название курса') + ';<br>' +
+              '%City.Name, %Region.Name, %Country.Name - '+ getLocValue('город, регион, страна') + ';<br>' +
+              '%Street, %Room - '+ getLocValue('улица и аудитория') + ';<br>' +
+              '%Trainer.FullName - '+ getLocValue('фамилия и имя преподавателя') + ';<br>' +
+              '%Trainer.Email, %Trainer.Phone - '+ getLocValue('email, телефон') + '<br>' +
+              '%Curator.FullName - '+ getLocValue('фамилия и имя куратора') + ';<br>' + 
+              '%Curator.Email, %Curator.PhoneSecret, %Curator.PhonePublic - '+ getLocValue('email, личный | публичный телефон') + ';<br>' +
+              '%OtherInfo - '+ getLocValue('дополнительная информация об обучении') + ';<br>' + 
+              '%JoinUrl - '+ getLocValue('ссылка на страницу регистрации') + ';<br>'+
+              '%ListOfAttendeesUrl - '+ getLocValue('ссылка на страницу со списком слушателей') + ';<br>' +
+              '%UnsubscribeUrl - '+ getLocValue('ссылка на отмену подписки') + '.<br>';
          
-		UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
+        UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
     };
     
     $scope.groupForm.init();

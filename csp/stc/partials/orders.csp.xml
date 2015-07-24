@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/orders.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/orders.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 
 <div class="row-fluid" style="padding-bottom: 5px;">
 	<div class="span10 offset1">
@@ -61,7 +61,7 @@
 						<p><span class="spnTitle" ng-bind="'Организация'|localize"         ></span>: <span ng-bind="order.selectedItems[0].contact.company.shortName"></span>&nbsp;&nbsp;<span class="label label-important" ng-hide="order.selectedItems[0].contact.company.id" ng-bind="('Новая организация'|localize) + '!'"></span></p>
 						<p ng-hide="order.selectedItems[0].contact.company.site==''"><span class="spnTitle" ng-bind="'Веб-сайт организации'|localize"></span>: <a target="_blank" style="text-decoration: none;" ng-href="{{'http://' + order.selectedItems[0].contact.company.site}}" title="{{order.selectedItems[0].contact.company.site}}"><i ng-bind="order.selectedItems[0].contact.company.site.substring(0,25)"></i></a></p>
 						<div ng-show="order.contactType=='order' || (order.selectedItems[0].contact.company.contact.email==order.selectedItems[0].contact.email && order.selectedItems[0].contact.company.contact.phone==order.selectedItems[0].contact.phone && order.selectedItems[0].contact.company.contact.skype==order.selectedItems[0].contact.skype)">
-							<p style="padding-top: 10px;"><span class="spnTitle" ng-bind="'Контакт'|localize"></span>: <span ng-bind="order.selectedItems[0].contact.lastName + ' ' + order.selectedItems[0].contact.firstName + ' ' + order.selectedItems[0].contact.middleName"></span></p>
+							<p style="padding-top: 10px;"><span class="spnTitle" ng-bind="'Контакт'|localize"></span>: <span ng-bind="getFullNameForCurLang(order.selectedItems[0].contact.lastName, order.selectedItems[0].contact.firstName, order.selectedItems[0].contact.middleName)"></span></p>
 							<p>
 								<span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{order.selectedItems[0].contact.email}}</span>
 								<span ng-hide="order.selectedItems[0].contact.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{order.selectedItems[0].contact.phone}}</span>

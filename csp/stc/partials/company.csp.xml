@@ -1,66 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/company.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/company.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div ng-show="compForm.visible">
-	<div class="row-fluid">
-		<div class="span10 offset1">
-			<div class="accordion">
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" ng-bind="compForm.caption|localize"></a>
-					</div>
-					<div class="accordion-body">
-						<div class="accordion-inner">
-							<form name="compForm_form" ng-submit="compForm.save()">
-								<stccompany company="compForm.company" required-all="false" disable-short-name="false"/>
-								<button class="btn btn-success btn-small" type="submit" ng-bind="'Сохранить'|localize" ></button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<stcalert data="compForm.alert"/>			
-		</div>
-	</div>
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <div class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" ng-bind="compForm.caption|localize"></a>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-inner">
+                            <form name="compForm_form" ng-submit="compForm.save()">
+                                <stccompany company="compForm.company" required-all="false" disable-short-name="false"/>
+                                <button ng-show="compForm.company.id" class="btn btn-success btn-small" type="submit" ng-bind="'Сохранить'|localize" ></button>
+                                <button ng-hide="compForm.company.id" class="btn btn-success btn-small" type="submit" ng-bind="'Добавить'|localize" ></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <stcalert data="compForm.alert"/>           
+        </div>
+    </div>
 
 
-	<div class="row-fluid">
-		<div class="span10 offset1">
-			<div class="accordion">
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" ng-bind="'Контакт'|localize"></a>
-					</div>
-					<div class="accordion-body">
-						<div class="accordion-inner">
-						<div class="row-fluid">
-							<div class="span6">
-								<form class="form" ng-submit="">
-									<p><span class="spnTitle" ng-bind="'ФИО'|localize"    ></span>: <span ng-bind="compForm.company.contact.lastName + ' ' + compForm.company.contact.firstName + ' ' + compForm.company.contact.middleName"></span></p>
-									<p>
-										<span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{compForm.company.contact.email}}</span>
-										<span ng-hide="compForm.company.contact.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{compForm.company.contact.phone}}</span>
-										<span ng-hide="compForm.company.contact.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{compForm.company.contact.skype}}</span>
-									</p>
-									<button class="btn btn-small" type="submit" ng-show="compForm.company.id" ng-click="compForm.editContact()" ng-bind="'Редактировать'|localize" style="margin-top: 5px;"></button>
-								</form>
-							</div>
-							<div class="span6">
-								<div class="control-group" ng-show="compForm.company.id">
-									<label class="control-label" ng-bind="'Фамилия или email'|localize"></label>
-									<div class="controls">
-			                			<input class="span12" type="text" ng-model="searchForm.person" ng-change="searchForm.search(searchForm.person)" placeholder="{{'Фамилия И.О., Email, Организация'|localize}}" typeahead="person as person.text for person in searchForm.persons | filter: {text: $viewValue} | limitTo: 15" required></input>
-					    				<button class="btn btn-small" type="submit" ng-click="compForm.changeContact()" ng-bind="'Заменить'|localize" ng-disabled="!searchForm.person.id"></button>
-					    			</div>
-								</div>
-							</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>		
-		</div>
-	</div>
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <div class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" ng-bind="'Контакт'|localize"></a>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-inner">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <form class="form" ng-submit="" ng-show="compForm.company.contact">
+                                    <p><span class="spnTitle" ng-bind="'ФИО'|localize"    ></span>: <span ng-bind="compForm.company.contact.lastName + ' ' + compForm.company.contact.firstName + ' ' + compForm.company.contact.middleName"></span></p>
+                                    <p>
+                                        <span ng-show="compForm.company.contact.email"><i class="icon-envelope" style="font-size: 0.9em;"></i> {{compForm.company.contact.email}}</span>
+                                        <span ng-show="compForm.company.contact.phone" style="padding-left:12px"><i class="icon-phone"></i> {{compForm.company.contact.phone}}</span>
+                                        <span ng-show="compForm.company.contact.skype" style="padding-left:12px"><i class="icon-skype"></i> {{compForm.company.contact.skype}}</span>
+                                    </p>
+                                    <button class="btn btn-small" type="submit" ng-show="compForm.company.id" ng-click="compForm.editContact()" ng-bind="'Редактировать'|localize" style="margin-top: 5px;"></button>
+                                </form>
+                                
+                                <button class="btn btn-small" ng-hide="compForm.company.contact" ng-click="compForm.addContact()" ng-bind="'Указать / добавить'|localize" style="margin-top: 5px;"></button>
+                            </div>
+                            <div class="span6">
+                                <div class="control-group" ng-show="compForm.company.id && compForm.company.contact">
+                                    <label class="control-label" ng-bind="'Фамилия или email'|localize"></label>
+                                    <div class="controls">
+                                        <input class="span12" type="text" ng-model="searchForm.person" ng-change="searchForm.search(searchForm.person)" placeholder="{{'Фамилия И.О., Email, Организация'|localize}}" typeahead="person as person.text for person in searchForm.persons | filter: {text: $viewValue} | limitTo: 15" required></input>
+                                        <button class="btn btn-small" type="submit" ng-click="compForm.changeContact()" ng-bind="'Заменить'|localize" ng-disabled="!searchForm.person.id"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </div>
+    </div>
 </div>]]></CSP>
 </Export>

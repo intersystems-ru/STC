@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/AllMailingGroupsCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/AllMailingGroupsCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //вdddddddddd
 
@@ -27,7 +27,7 @@ controllersModule.controller('AllMailingGroupsCtrl', function($scope, $location,
         $scope.groupTable.columns = [
                           {name: 'Название', sqlName: 'Name', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
                           {name: 'Описание', sqlName: 'Description', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false},
-                          {name: 'Участники', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '80px'}}];
+                          {name: 'Участники', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '120px'}}];
         
         $scope.groupTable.properties = [{name:'name'}, 
                                         {name:'description'}, 
@@ -105,10 +105,10 @@ controllersModule.controller('AllMailingGroupsCtrl', function($scope, $location,
     $scope.mitemTable.init = function(){
         $scope.mitemTable.columns = [
                           {name: 'Ф.И.О.', sqlName: 'ItemFullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
-                          {name: 'Email', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Город', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Организация', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Должность', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false},
+                          {name: 'Email', sqlName: 'ItemEmail', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Город', sqlName: 'ItemCity', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Организация', sqlName: 'ItemCompany', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Должность', sqlName: 'ItemPosition', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Послед. изменение', sqlName: 'LastUpdated', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, captionStyle: {width: '190px'}}];
         
         $scope.mitemTable.properties = [{name:'fullName'}, 

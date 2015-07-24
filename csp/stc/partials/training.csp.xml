@@ -1,529 +1,529 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/training.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/training.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span10 offset1">
-	 	<tabset>
-	 		<!-- ============================================ ОБУЧЕНИЕ ==================================================-->
-	    	<tab heading="{{'Обучение'|localize}}" select="pageStore.training.tabSgActive=false">
-	    		<form name="trainingForm" style="margin: 0 0 10px 0;" ng-submit="training.save()">
-					<stctraining training="training.data" 
-								 form-name="trainingForm" 
-								 date-start="training.dateStart" 
-								 date-finish="training.dateFinish" 
-								 edit-mode="true" 
-								 btn-addition-name="training.btnAdditionName|localize" 
-								 btn-addition-visible="training.btnAdditionVisible" 
-								 btn-addition-action="training.btnAdditionAction()"/>
-				</form>
-			</tab>
-			<!-- ============================================ РАССЫЛКА ==================================================-->
-	    	<tab heading="{{'Рассылка'|localize}}" active="pageStore.training.tabMailingActive" select="mailing.selectTab()">
-	    		<form style="margin: 0 0 10px 0;" ng-submit="">
-				   <div class="row-fluid">
-					    <div class="control-group">
-						    <label class="control-label" style="margin-bottom: 10px;">{{('Получатели'|localize) + '*'}}
-		            			<i class="iSwitcher"ng-bind="'(обновить)'|localize" ng-click="mailing.selectTab()"></i>
-		        			</label>        
-						    <div class="controls" ng-style="mailing.selectedGroup.contactsStyle">
-								<label class="emailContact" type="button" ng-repeat="contact in mailing.selectedGroup.contacts" title="{{contact.email}}" ng-click="mailing.deleteEmailContact(contact)">{{contact.nameShort + ' '}}<i class="emailContactRemove">&times;</i></label>    	
-						    </div>
-					    </div>
-				   	</div>
-				    <div class="row-fluid" style="margin-top: 12px;">
-					    <div class="span7">
-						    <div class="control-group">
-							    <label class="control-label" ng-bind="('Тема письма'|localize) + '*'"></label>
-							    <div class="controls">
-							    	<input class="span12" type="text" ng-model="mailing.selectedGroup.mail.subject" required>
-							    </div>
-						    </div>
-					    </div>
-					    <div class="span5">
-						    <div class="control-group">
-							    <label class="control-label" ng-bind="('Тип'|localize) + '*'"></label>
-							    <div class="controls">
-							    	<select class="span12" ng-model="mailing.selectedGroup" ng-options="group as group.name for group in mailing.groups" required>
-	                				</select>
-							    </div>
-						    </div>
-					    </div>
-				    </div>
-				    <div class="control-group">
-					    <label class="control-label" ng-bind="('Содержание'|localize) + '*'"></label>
-					    <div class="controls">
-					    	<textarea class="span12" rows="10" ng-model="mailing.selectedGroup.mail.message" required></textarea>
-					    </div>
-				    </div>
-				    <div class="row-fluid" ng-hide="menu.readOnlyMode">
-						<div class="span8">
-							<div class="input-append">
-								<input class="mailInput" id="appendedInputButton" placeholder="{{'sample@mail.com'}}" type="email" ng-model="mailing.single">
-								<button class="btn btn-small" type="submit" ng-click="mailing.sendEmail(true)" ng-bind="'Отправить на адрес'|localize"></button>
-							</div>
-							<button class="btn btn-small" type="button" title="{{('Сформировать ссылку'|localize)}}" ng-click="linkBuilderIsVisible = true;" style="margin-bottom: 10px;"><i class="icon-link"></i></button>
-						</div>
-						<div class="span4">
-							<button class="btn btn-success btn-small pull-right"  type="submit" ng-click="mailing.sendEmail(false)" ng-bind="'Отправить'|localize"></button>
-							<label ng-hide="menu.readOnlyMode" class="checkbox pull-right"  style="padding-top: 3px; margin-right: 25px;">
-					    		<input type="checkbox" ng-click="mailing.changeStatus()" ng-model="mailing.selectedGroup.isAutoMailing" ng-disabled="mailing.selectedGroup.mailingIsCompleted==1">{{('Авторассылка'|localize) }}
-					    	</label>
-						</div>
-				    </div>
-			    </form>
-			</tab>
-			<!-- ============================================ ПОДГРУППЫ ==================================================-->
-	    	<tab heading="{{('Подгруппы'|localize) + ' (' + training.data.sgroups+ ')'}}" active="pageStore.training.tabSgActive" select="sgroup.selectTab()">
-	    		<stcgrid
-				    table-class="table table-bordered table-hover"
-				    grid="sgroup.grid"
-				    caption=""
-				    columns="sgroup.columns"
-				    items="sgroup.items"
-				    properties="sgroup.properties"
-				    update-items="sgroup.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+    <div class="span10 offset1">
+        <tabset>
+            <!-- ============================================ ОБУЧЕНИЕ ==================================================-->
+            <tab heading="{{'Обучение'|localize}}" select="pageStore.training.tabSgActive=false">
+                <form name="trainingForm" style="margin: 0 0 10px 0;" ng-submit="training.save()">
+                    <stctraining training="training.data" 
+                                 form-name="trainingForm" 
+                                 date-start="training.dateStart" 
+                                 date-finish="training.dateFinish" 
+                                 edit-mode="true" 
+                                 btn-addition-name="training.btnAdditionName|localize" 
+                                 btn-addition-visible="training.btnAdditionVisible" 
+                                 btn-addition-action="training.btnAdditionAction()"/>
+                </form>
+            </tab>
+            <!-- ============================================ РАССЫЛКА ==================================================-->
+            <tab heading="{{'Рассылка'|localize}}" active="pageStore.training.tabMailingActive" select="mailing.selectTab()">
+                <form style="margin: 0 0 10px 0;" ng-submit="">
+                   <div class="row-fluid">
+                        <div class="control-group">
+                            <label class="control-label" style="margin-bottom: 10px;">{{('Получатели'|localize) + '*'}}
+                                <i class="iSwitcher"ng-bind="'(обновить)'|localize" ng-click="mailing.selectTab()"></i>
+                            </label>        
+                            <div class="controls" ng-style="mailing.selectedGroup.contactsStyle">
+                                <label class="emailContact" type="button" ng-repeat="contact in mailing.selectedGroup.contacts" title="{{contact.email}}" ng-click="mailing.deleteEmailContact(contact)">{{contact.nameShort + ' '}}<i class="emailContactRemove">&times;</i></label>       
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid" style="margin-top: 12px;">
+                        <div class="span7">
+                            <div class="control-group">
+                                <label class="control-label" ng-bind="('Тема письма'|localize) + '*'"></label>
+                                <div class="controls">
+                                    <input class="span12" type="text" ng-model="mailing.selectedGroup.mail.subject" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span5">
+                            <div class="control-group">
+                                <label class="control-label" ng-bind="('Тип'|localize) + '*'"></label>
+                                <div class="controls">
+                                    <select class="span12" ng-model="mailing.selectedGroup" ng-options="group as group.name for group in mailing.groups" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" ng-bind="('Содержание'|localize) + '*'"></label>
+                        <div class="controls">
+                            <textarea class="span12" rows="10" ng-model="mailing.selectedGroup.mail.message" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row-fluid" ng-hide="menu.readOnlyMode">
+                        <div class="span8">
+                            <div class="input-append">
+                                <input class="mailInput" id="appendedInputButton" placeholder="{{'sample@mail.com'}}" type="email" ng-model="mailing.single">
+                                <button class="btn btn-small" type="submit" ng-click="mailing.sendEmail(true)" ng-bind="'Отправить на адрес'|localize"></button>
+                            </div>
+                            <button class="btn btn-small" type="button" title="{{('Сформировать ссылку'|localize)}}" ng-click="linkBuilderIsVisible = true;" style="margin-bottom: 10px;"><i class="icon-link"></i></button>
+                        </div>
+                        <div class="span4">
+                            <button class="btn btn-success btn-small pull-right"  type="submit" ng-click="mailing.sendEmail(false)" ng-bind="'Отправить'|localize"></button>
+                            <label ng-hide="menu.readOnlyMode" class="checkbox pull-right"  style="padding-top: 3px; margin-right: 25px;">
+                                <input type="checkbox" ng-click="mailing.changeStatus()" ng-model="mailing.selectedGroup.isAutoMailing" ng-disabled="mailing.selectedGroup.mailingIsCompleted==1">{{('Авторассылка'|localize) }}
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            <!-- ============================================ ПОДГРУППЫ ==================================================-->
+            <tab heading="{{('Подгруппы'|localize) + ' (' + training.data.sgroups+ ')'}}" active="pageStore.training.tabSgActive" select="sgroup.selectTab()">
+                <stcgrid
+                    table-class="table table-bordered table-hover"
+                    grid="sgroup.grid"
+                    caption=""
+                    columns="sgroup.columns"
+                    items="sgroup.items"
+                    properties="sgroup.properties"
+                    update-items="sgroup.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-				    page-curr="sgroup.pageCurr"
-				    page-total="sgroup.pageTotal"
-				    page-size="sgroup.pageSize"
-				    navigator-visible="true"
+                    page-curr="sgroup.pageCurr"
+                    page-total="sgroup.pageTotal"
+                    page-size="sgroup.pageSize"
+                    navigator-visible="true"
 
-				    selectable="true"
-				    selected-items="sgroup.selectedItems"
-				    multi-select-mode="sgroup.multiSelectMode"
+                    selectable="true"
+                    selected-items="sgroup.selectedItems"
+                    multi-select-mode="sgroup.multiSelectMode"
 
-				    action-column-visible="!menu.readOnlyMode"
-				    action-column-icon="'icon-plus-sign'"
-				    action-column-title="'Добавить подгруппу'|localize"
-				    action-column-method="sgroup.add()"
-				    
-				    first-row-action-icon="'icon-remove'"
-				    first-row-action-title="'Удалить подгруппу'|localize"
-				    first-row-action-method="sgroup.remove(item)"
+                    action-column-visible="!menu.readOnlyMode"
+                    action-column-icon="'icon-plus-sign'"
+                    action-column-title="'Добавить подгруппу'|localize"
+                    action-column-method="sgroup.add()"
+                    
+                    first-row-action-icon="'icon-remove'"
+                    first-row-action-title="'Удалить подгруппу'|localize"
+                    first-row-action-method="sgroup.remove(item)"
 
-				    forcibly-update="sgroup.forciblyUpdate"
-				/>
-	    	</tab>
-	    	<!-- ============================================ ВСЕ СЛУШАТЕЛИ ==================================================-->
-	    	<tab heading="{{('Все слушатели'|localize) + ' (' + training.data.students + ')'}}" active="pageStore.training.tabAllStudActive" select="allstud.selectTab()">
-				<stcgrid
-			    	grid="pageStore.allstud.grid"
-				    table-class="table table-bordered table-hover"
-				    caption=""
-				    columns="allstud.columns"
-				    items="allstud.items"
-				    properties="allstud.properties"
-				    update-items="allstud.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+                    forcibly-update="sgroup.forciblyUpdate"
+                />
+            </tab>
+            <!-- ============================================ ВСЕ СЛУШАТЕЛИ ==================================================-->
+            <tab heading="{{('Все слушатели'|localize) + ' (' + training.data.students + ')'}}" active="pageStore.training.tabAllStudActive" select="allstud.selectTab()">
+                <stcgrid
+                    grid="pageStore.allstud.grid"
+                    table-class="table table-bordered table-hover"
+                    caption=""
+                    columns="allstud.columns"
+                    items="allstud.items"
+                    properties="allstud.properties"
+                    update-items="allstud.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-				    page-curr="allstud.pageCurr"
-				    page-total="allstud.pageTotal"
-				    page-size="allstud.pageSize"
-				    navigator-visible="true"
+                    page-curr="allstud.pageCurr"
+                    page-total="allstud.pageTotal"
+                    page-size="allstud.pageSize"
+                    navigator-visible="true"
 
-				    selectable="true"
-				    selected-items="allstud.selectedItems"
-				    multi-select-mode="allstud.multiSelectMode"
-		 			
-					action-column-visible="!menu.readOnlyMode"
-					action-column-icon="'icon-plus-sign'"
-					action-column-title="'Добавить слушателя'|localize"
-					action-column-method="allstud.add()"
+                    selectable="true"
+                    selected-items="allstud.selectedItems"
+                    multi-select-mode="allstud.multiSelectMode"
+                    
+                    action-column-visible="!menu.readOnlyMode"
+                    action-column-icon="'icon-plus-sign'"
+                    action-column-title="'Добавить слушателя'|localize"
+                    action-column-method="allstud.add()"
 
-				    first-row-action-icon="'icon-pencil'"
-				    first-row-action-title="'Редактировать слушателя'|localize"
-				    first-row-action-method="allstud.edit(item)"
+                    first-row-action-icon="'icon-pencil'"
+                    first-row-action-title="'Редактировать слушателя'|localize"
+                    first-row-action-method="allstud.edit(item)"
 
-				   	second-row-action-icon="'icon-remove'"
-				    second-row-action-title="'Удалить слушателя'|localize"
-				    second-row-action-method="allstud.remove(item)"
-				    	
-		 			forcibly-update="allstud.forciblyUpdate"
-				/>
-			</tab>
-	    	<!-- ============================================ СЕРТИФИКАТЫ ==================================================-->
-	    	<tab heading="{{('Сертификаты'|localize) + ' (' + training.data.certificates + ')'}}" active="pageStore.training.tabCertsActive" select="cert.selectTab()">
-	    		<stcgrid
-			    	grid="pageStore.trainingCertificates.grid"
-				    table-class="table table-bordered table-hover"
-				    caption=""
-				    columns="cert.columns"
-				    items="cert.items"
-				    properties="cert.properties"
-				    update-items="cert.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+                    second-row-action-icon="'icon-remove'"
+                    second-row-action-title="'Удалить слушателя'|localize"
+                    second-row-action-method="allstud.remove(item)"
+                        
+                    forcibly-update="allstud.forciblyUpdate"
+                />
+            </tab>
+            <!-- ============================================ СЕРТИФИКАТЫ ==================================================-->
+            <tab heading="{{('Сертификаты'|localize) + ' (' + training.data.certificates + ')'}}" active="pageStore.training.tabCertsActive" select="cert.selectTab()">
+                <stcgrid
+                    grid="pageStore.trainingCertificates.grid"
+                    table-class="table table-bordered table-hover"
+                    caption=""
+                    columns="cert.columns"
+                    items="cert.items"
+                    properties="cert.properties"
+                    update-items="cert.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-				    page-curr="cert.pageCurr"
-				    page-total="cert.pageTotal"
-				    page-size="cert.pageSize"
-				    navigator-visible="true"
+                    page-curr="cert.pageCurr"
+                    page-total="cert.pageTotal"
+                    page-size="cert.pageSize"
+                    navigator-visible="true"
 
-				    selectable="true"
-				    selected-items="cert.selectedItems"
-				    multi-select-mode="cert.multiSelectMode"
-		 			
-		 			action-column-visible="!menu.readOnlyMode"
-				    action-column-icon="'icon-ellipsis-horizontal'"
+                    selectable="true"
+                    selected-items="cert.selectedItems"
+                    multi-select-mode="cert.multiSelectMode"
+                    
+                    action-column-visible="!menu.readOnlyMode"
+                    action-column-icon="'icon-ellipsis-horizontal'"
 
-				    first-row-action-icon="'icon-print'"
-				    first-row-action-title="'Изменить статус'|localize"
-				    first-row-action-method="cert.print(item)"
+                    first-row-action-icon="'icon-print'"
+                    first-row-action-title="'Изменить статус'|localize"
+                    first-row-action-method="cert.print(item)"
 
-				   	second-row-action-icon="'icon-remove'"
-				    second-row-action-title="'Удалить сертификат'|localize"
-				    second-row-action-method="cert.remove(item)"
-				    	
-		 			forcibly-update="cert.forciblyUpdate"
-				/>
-				<button type="button" ng-hide="menu.readOnlyMode" class="btn btn-small btn-primary" ng-click="cert.createAll()" ng-bind="'Обновить'|localize" title="{{'Создание сертификатов для слушателей (если еще не созданы)'|localize}}"></button>
-				<button type="button" ng-hide="menu.readOnlyMode" class="btn btn-small btn-success" ng-click="cert.exportToCSV()" ng-bind="'Экспорт'|localize" title="{{'Экспорт всех сертификатов в файл *.csv'|localize}}"></button>
-	    	</tab>
-	    	 <!-- ============================================ ОТЗЫВЫ ==================================================-->
-	    	<tab heading="{{('Отзывы'|localize) + ' (' + training.data.feedBacks.count + ')'}}" select="feedBack.selectTab()" active="pageStore.training.tabFeedBacksActive">
-	    		<stcgrid
-			    	grid="pageStore.trainingFeedBacks.grid"
-				    table-class="table table-bordered table-hover"
-				    caption=""
-				    columns="feedBack.columns"
-				    items="feedBack.items"
-				    properties="feedBack.properties"
-				    update-items="feedBack.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+                    second-row-action-icon="'icon-remove'"
+                    second-row-action-title="'Удалить сертификат'|localize"
+                    second-row-action-method="cert.remove(item)"
+                        
+                    forcibly-update="cert.forciblyUpdate"
+                />
+                <button type="button" ng-hide="menu.readOnlyMode" class="btn btn-small btn-primary" ng-click="cert.createAll()" ng-bind="'Обновить'|localize" title="{{'Создание сертификатов для слушателей (если еще не созданы)'|localize}}"></button>
+                <button type="button" ng-hide="menu.readOnlyMode" class="btn btn-small btn-success" ng-click="cert.exportToCSV()" ng-bind="'Экспорт'|localize" title="{{'Экспорт всех сертификатов в файл *.csv'|localize}}"></button>
+            </tab>
+             <!-- ============================================ ОТЗЫВЫ ==================================================-->
+            <tab heading="{{('Отзывы'|localize) + ' (' + training.data.feedBacks.count + ')'}}" select="feedBack.selectTab()" active="pageStore.training.tabFeedBacksActive">
+                <stcgrid
+                    grid="pageStore.trainingFeedBacks.grid"
+                    table-class="table table-bordered table-hover"
+                    caption=""
+                    columns="feedBack.columns"
+                    items="feedBack.items"
+                    properties="feedBack.properties"
+                    update-items="feedBack.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-				    page-curr="feedBack.pageCurr"
-				    page-total="feedBack.pageTotal"
-				    page-size="feedBack.pageSize"
-				    navigator-visible="true"
+                    page-curr="feedBack.pageCurr"
+                    page-total="feedBack.pageTotal"
+                    page-size="feedBack.pageSize"
+                    navigator-visible="true"
 
-				    selectable="true"
-				    selected-items="feedBack.selectedItems"
-				    multi-select-mode="feedBack.multiSelectMode"
-		 			
-		 			action-column-visible="!menu.readOnlyMode"
-				    action-column-icon="'icon-ellipsis-horizontal'"
+                    selectable="true"
+                    selected-items="feedBack.selectedItems"
+                    multi-select-mode="feedBack.multiSelectMode"
+                    
+                    action-column-visible="!menu.readOnlyMode"
+                    action-column-icon="'icon-ellipsis-horizontal'"
 
-				   	first-row-action-icon="'icon-remove'"
-				    first-row-action-title="'Удалить отзыв'|localize"
-				    first-row-action-method="feedBack.remove(item)"
-				    	
-		 			forcibly-update="feedBack.forciblyUpdate"
-				/>
-	    	</tab>
-	    	<!-- ============================================ НОВЫЕ СЛУШАТЕЛИ ==================================================-->
-	    	<tab heading="{{('Новые заявки'|localize) + ' (' + training.data.newStudents + ')'}}" active="pageStore.training.tabNewStudActive" select="newstud.selectTab()">
-	    		<stcgrid
-			    	grid="pageStore.newstud.grid"
-				    table-class="table table-bordered table-hover"
-				    caption=""
-				    columns="newstud.columns"
-				    items="newstud.items"
-				    properties="newstud.properties"
-				    update-items="newstud.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+                    first-row-action-icon="'icon-remove'"
+                    first-row-action-title="'Удалить отзыв'|localize"
+                    first-row-action-method="feedBack.remove(item)"
+                        
+                    forcibly-update="feedBack.forciblyUpdate"
+                />
+            </tab>
+            <!-- ============================================ НОВЫЕ СЛУШАТЕЛИ ==================================================-->
+            <tab heading="{{('Новые заявки'|localize) + ' (' + training.data.newStudents + ')'}}" active="pageStore.training.tabNewStudActive" select="newstud.selectTab()">
+                <stcgrid
+                    grid="pageStore.newstud.grid"
+                    table-class="table table-bordered table-hover"
+                    caption=""
+                    columns="newstud.columns"
+                    items="newstud.items"
+                    properties="newstud.properties"
+                    update-items="newstud.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-				    page-curr="newstud.pageCurr"
-				    page-total="newstud.pageTotal"
-				    page-size="newstud.pageSize"
-				    navigator-visible="true"
+                    page-curr="newstud.pageCurr"
+                    page-total="newstud.pageTotal"
+                    page-size="newstud.pageSize"
+                    navigator-visible="true"
 
-				    selectable="true"
-				    selected-items="newstud.selectedItems"
-				    multi-select-mode="newstud.multiSelectMode"
-		 			
-		 			action-column-visible="!menu.readOnlyMode"
-				    action-column-icon="'icon-ellipsis-horizontal'"
+                    selectable="true"
+                    selected-items="newstud.selectedItems"
+                    multi-select-mode="newstud.multiSelectMode"
+                    
+                    action-column-visible="!menu.readOnlyMode"
+                    action-column-icon="'icon-ellipsis-horizontal'"
 
-				   	first-row-action-icon="'icon-remove'"
-				    first-row-action-title="'Удалить заявку'|localize"
-				    first-row-action-method="newstud.remove(item)"
-				    	
-		 			forcibly-update="newstud.forciblyUpdate"
-				/>
-				
-				<div ng-show="newstud.selectedItems.length!=0 && newstud.items.length!=0 && !menu.readOnlyMode">
-					<p ng-hide="newstud.selectedItems[0].company.id"><span class="label label-important" ng-bind="'Внимание!'|localize"></span>&nbsp;&nbsp;<span ng-bind="'Организация слушателя не существует, создайте её или смените'"></span></p>
-					
-					<div ng-hide="newstud.conflict.id">
-						<button type="button" class="btn btn-small btn-success" ng-click="newstud.addIntoTraining('create_add')" ng-bind="'Добавить в обучение'|localize" title="{{'Слушатель будет добавлен в обучение'|localize}}" ng-disabled="!newstud.selectedItems[0].company.id"></button>
-						<button type="button" class="btn btn-small btn-info"    ng-click="other.openChangeCompanyDialog()"       ng-bind="'Сменить организацию'|localize"   title="{{'Заменить организацию в заявке на существующую'|localize}}"></button>				
-						<button type="button" class="btn btn-small btn-primary" ng-click="other.createCompany()"                 ng-bind="'Создать организацию'|localize"    title="{{'Создать новую организацию, контактом организации станет слушатель из заявки'|localize}}" ng-hide="newstud.selectedItems[0].company.id"></button>				
-					</div>
+                    first-row-action-icon="'icon-remove'"
+                    first-row-action-title="'Удалить заявку'|localize"
+                    first-row-action-method="newstud.remove(item)"
+                        
+                    forcibly-update="newstud.forciblyUpdate"
+                />
+                
+                <div ng-show="newstud.selectedItems.length!=0 && newstud.items.length!=0 && !menu.readOnlyMode">
+                    <p ng-hide="newstud.selectedItems[0].company.id"><span class="label label-important" ng-bind="'Внимание!'|localize"></span>&nbsp;&nbsp;<span ng-bind="'Организация слушателя не существует, создайте её или смените'|localize"></span></p>
+                    
+                    <div ng-hide="newstud.conflict.id">
+                        <button type="button" class="btn btn-small btn-success" ng-click="newstud.addIntoTraining('create_add')" ng-bind="'Добавить в обучение'|localize" title="{{'Слушатель будет добавлен в обучение'|localize}}" ng-disabled="!newstud.selectedItems[0].company.id"></button>
+                        <button type="button" class="btn btn-small btn-info"    ng-click="other.openChangeCompanyDialog()"       ng-bind="'Сменить организацию'|localize"   title="{{'Заменить организацию в заявке на существующую'|localize}}"></button>              
+                        <button type="button" class="btn btn-small btn-primary" ng-click="other.createCompany()"                 ng-bind="'Создать организацию'|localize"    title="{{'Создать новую организацию, контактом организации станет слушатель из заявки'|localize}}" ng-hide="newstud.selectedItems[0].company.id"></button>             
+                    </div>
 
-					<div ng-show="newstud.conflict.id">
-						<p><span class="label label-important" ng-bind="'Внимание!'|localize"></span>&nbsp;&nbsp;<span ng-bind="('В системе уже присутствует сотрудник с email: '|localize) + newstud.conflict.email"></span></p>
-						<p>
-							<span class="spnTitle" ng-bind="'Сотрудник'|localize"></span>: <span ng-bind="newstud.conflict.lastName + ' ' + newstud.conflict.firstName + ' ' + newstud.conflict.middleName"></span>
-							&nbsp;
-							<span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{newstud.conflict.email}}</span>
-							<span ng-hide="newstud.conflict.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{newstud.conflict.phone}}</span>
-							<span ng-hide="newstud.conflict.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{newstud.conflict.skype}}</span>
-						</p>
-						<p><span class="spnTitle" ng-bind="'Организация'"          ></span>: <span ng-bind="newstud.conflict.company.shortName"></span></p>
-						
-						<button ng-hide="newstud.conflict.id && newstud.selectedItems[0].lastName == newstud.conflict.lastName && newstud.selectedItems[0].firstName == newstud.conflict.firstName && newstud.selectedItems[0].middleName == newstud.conflict.middleName && newstud.selectedItems[0].email == newstud.conflict.email && newstud.selectedItems[0].phone == newstud.conflict.phone && newstud.selectedItems[0].skype == newstud.conflict.skype"
-								type="button" 
-								class="btn btn-small btn-warning" 
-								ng-click="newstud.addIntoTraining('update_add')" 
-								ng-bind="'Обновить и добавить в обучение'|localize"     
-								title="{{'Сотрудник из системы будет обновлен и добавлен в обучение'|localize}}" 
-								ng-disabled="!newstud.selectedItems[0].company.id">
-						</button>
-						
-						<button ng-hide="newstud.conflict.id && newstud.selectedItems[0].lastName == newstud.conflict.lastName && newstud.selectedItems[0].firstName == newstud.conflict.firstName && newstud.selectedItems[0].middleName == newstud.conflict.middleName && newstud.selectedItems[0].email == newstud.conflict.email && newstud.selectedItems[0].phone == newstud.conflict.phone && newstud.selectedItems[0].skype == newstud.conflict.skype"
-								type="button" 
-								class="btn btn-small btn-success" 
-								ng-click="newstud.addIntoTraining('old_add')"    
-								ng-bind="'Не обновлять и добавить в обучение'|localize" 
-								title="{{'Сотрудник из системы будет добавлен в обучение'|localize}}">
-						</button>
-						
-						<button ng-show="newstud.conflict.id && newstud.selectedItems[0].lastName == newstud.conflict.lastName && newstud.selectedItems[0].firstName == newstud.conflict.firstName && newstud.selectedItems[0].middleName == newstud.conflict.middleName && newstud.selectedItems[0].email == newstud.conflict.email && newstud.selectedItems[0].phone == newstud.conflict.phone && newstud.selectedItems[0].skype == newstud.conflict.skype"
-								type="button" 
-								class="btn btn-small btn-success" 
-								ng-click="newstud.addIntoTraining('old_add')"    
-								ng-bind="'Добавить в обучение'|localize" 
-								title="{{'Сотрудник из системы будет добавлен в обучение'|localize}}">
-						</button>
-						
-						<button type="button" 
-								class="btn btn-small btn-info"    
-								ng-click="other.openChangeCompanyDialog()"       
-								ng-bind="'Сменить организацию'|localize"                  
-								title="{{'Заменить организацию в заявке на существующую'|localize}}">
-						</button>				
-						
-						<button type="button" 
-								class="btn btn-small btn-primary" 
-								ng-click="other.createCompany()"                 
-								ng-bind="'Создать организацию'|localize"      
-								title="{{'Создать новую организацию, контактом организации станет слушатель из заявки'|localize}}" 
-								ng-hide="newstud.selectedItems[0].company.id">
-						</button>				
-					</div>
-				</div>
-	    	</tab>
-	    	<!-- ============================================ КАЛЕНДАРЬ ==================================================-->
-	    	<tab heading="{{('Google календарь'|localize)}}" select="training.loadEvent()">
-	    		<form style="margin: 0 0 10px 0;">
-	    			<div class="row-fluid">
-						<div class="span6">
-							<div class="control-group">
-							    <label class="control-label" ng-bind="('Событие'|localize) + '*'"></label>
-							    <div class="controls">
-							    	<input type="text" class="span12" ng-model="training.eventData.event.summary" required>
-							    </div>
-						    </div>
-							<div class="control-group">
-							    <label class="control-label" ng-bind="('Место'|localize) + '*'"></label>
-							    <div class="controls">
-							    	<input type="text" class="span12" ng-model="training.eventData.event.location" required>
-							    </div>
-						    </div>
-						    <div class="row-fluid">
-								<div class="span6">
-									<div class="control-group">
-									    <label class="control-label" ng-bind="('Дата начала'|localize) + '*'"></label>
-									    <div class="controls">
-									    	<input type="text" class="span12" ng-model="training.eventData.event.start.date" required>
-									    </div>
-								    </div>
-								</div>
-								<div class="span6">
-									<div class="control-group">
-									    <label class="control-label" ng-bind="('Дата окончания'|localize) + '*' + ' ' + ('(не включительно)'|localize)"></label>
-									    <div class="controls">
-									    	<input type="text" class="span12" ng-model="training.eventData.event.end.date" required>
-									    </div>
-								    </div>
-								</div>
-							</div>
-							<div ng-hide="menu.readOnlyMode" >
-						    	<button class="btn btn-small btn-success" type="submit" ng-click="training.createEvent()" ng-bind="'Создать'|localize"  ng-hide="training.eventData.event.exists==1"></button>
-								<button class="btn btn-small btn-success" type="submit" ng-click="training.updateEvent()" ng-bind="'Обновить'|localize" ng-show="training.eventData.event.exists==1"></button>
-								<button class="btn btn-small btn-danger"  type="submit" ng-click="training.deleteEvent()" ng-bind="'Удалить'|localize"  ng-show="training.eventData.event.exists==1"></button>
-								<button class="btn btn-small pull-right"  type="button" ng-click="other.help=!other.help" title="{{'Справка'|localize}}">&nbsp;<i class="icon-question"></i>&nbsp;</button>				    					    					
-							</div>
-							<br>
-							<br>
-							<p ng-show="other.help" style="text-align: justify; font-style: italic;" ng-bind="'Если событие не создано, то в этой форме данные из обучения. Если данные по умолчанию изменить и создать событие, то при следующей загрузке формы будут отображены данные события, а не обучения.'|localize"></p>
-						</div>
-						<div class="span6">
-							<div class="control-group">
-							    <label class="control-label" ng-bind="('Описание'|localize) + '*'"></label>
-							    <div class="controls">
-							    	 <textarea class="span12" rows="16" ng-model="training.eventData.event.description" required></textarea>
-							    </div>
-						    </div>						
-						</div>
-					</div>
-			 	</form>
-	    	</tab>
-	    </tabset>
-	</div>
+                    <div ng-show="newstud.conflict.id">
+                        <p><span class="label label-important" ng-bind="'Внимание!'|localize"></span>&nbsp;&nbsp;<span ng-bind="('В системе уже присутствует сотрудник с email: '|localize) + newstud.conflict.email"></span></p>
+                        <p>
+                            <span class="spnTitle" ng-bind="'Сотрудник'|localize"></span>: <span ng-bind="newstud.conflict.lastName + ' ' + newstud.conflict.firstName + ' ' + newstud.conflict.middleName"></span>
+                            &nbsp;
+                            <span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{newstud.conflict.email}}</span>
+                            <span ng-hide="newstud.conflict.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{newstud.conflict.phone}}</span>
+                            <span ng-hide="newstud.conflict.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{newstud.conflict.skype}}</span>
+                        </p>
+                        <p><span class="spnTitle" ng-bind="'Организация'"          ></span>: <span ng-bind="newstud.conflict.company.shortName"></span></p>
+                        
+                        <button ng-hide="newstud.conflict.id && newstud.selectedItems[0].lastName == newstud.conflict.lastName && newstud.selectedItems[0].firstName == newstud.conflict.firstName && newstud.selectedItems[0].middleName == newstud.conflict.middleName && newstud.selectedItems[0].email == newstud.conflict.email && newstud.selectedItems[0].phone == newstud.conflict.phone && newstud.selectedItems[0].skype == newstud.conflict.skype"
+                                type="button" 
+                                class="btn btn-small btn-warning" 
+                                ng-click="newstud.addIntoTraining('update_add')" 
+                                ng-bind="'Обновить и добавить в обучение'|localize"     
+                                title="{{'Сотрудник из системы будет обновлен и добавлен в обучение'|localize}}" 
+                                ng-disabled="!newstud.selectedItems[0].company.id">
+                        </button>
+                        
+                        <button ng-hide="newstud.conflict.id && newstud.selectedItems[0].lastName == newstud.conflict.lastName && newstud.selectedItems[0].firstName == newstud.conflict.firstName && newstud.selectedItems[0].middleName == newstud.conflict.middleName && newstud.selectedItems[0].email == newstud.conflict.email && newstud.selectedItems[0].phone == newstud.conflict.phone && newstud.selectedItems[0].skype == newstud.conflict.skype"
+                                type="button" 
+                                class="btn btn-small btn-success" 
+                                ng-click="newstud.addIntoTraining('old_add')"    
+                                ng-bind="'Не обновлять и добавить в обучение'|localize" 
+                                title="{{'Сотрудник из системы будет добавлен в обучение'|localize}}">
+                        </button>
+                        
+                        <button ng-show="newstud.conflict.id && newstud.selectedItems[0].lastName == newstud.conflict.lastName && newstud.selectedItems[0].firstName == newstud.conflict.firstName && newstud.selectedItems[0].middleName == newstud.conflict.middleName && newstud.selectedItems[0].email == newstud.conflict.email && newstud.selectedItems[0].phone == newstud.conflict.phone && newstud.selectedItems[0].skype == newstud.conflict.skype"
+                                type="button" 
+                                class="btn btn-small btn-success" 
+                                ng-click="newstud.addIntoTraining('old_add')"    
+                                ng-bind="'Добавить в обучение'|localize" 
+                                title="{{'Сотрудник из системы будет добавлен в обучение'|localize}}">
+                        </button>
+                        
+                        <button type="button" 
+                                class="btn btn-small btn-info"    
+                                ng-click="other.openChangeCompanyDialog()"       
+                                ng-bind="'Сменить организацию'|localize"                  
+                                title="{{'Заменить организацию в заявке на существующую'|localize}}">
+                        </button>               
+                        
+                        <button type="button" 
+                                class="btn btn-small btn-primary" 
+                                ng-click="other.createCompany()"                 
+                                ng-bind="'Создать организацию'|localize"      
+                                title="{{'Создать новую организацию, контактом организации станет слушатель из заявки'|localize}}" 
+                                ng-hide="newstud.selectedItems[0].company.id">
+                        </button>               
+                    </div>
+                </div>
+            </tab>
+            <!-- ============================================ КАЛЕНДАРЬ ==================================================-->
+            <tab heading="{{('Google календарь'|localize)}}" select="training.loadEvent()">
+                <form style="margin: 0 0 10px 0;">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <div class="control-group">
+                                <label class="control-label" ng-bind="('Событие'|localize) + '*'"></label>
+                                <div class="controls">
+                                    <input type="text" class="span12" ng-model="training.eventData.event.summary" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" ng-bind="('Место'|localize) + '*'"></label>
+                                <div class="controls">
+                                    <input type="text" class="span12" ng-model="training.eventData.event.location" required>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" ng-bind="('Дата начала'|localize) + '*'"></label>
+                                        <div class="controls">
+                                            <input type="text" class="span12" ng-model="training.eventData.event.start.date" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" ng-bind="('Дата окончания'|localize) + '*' + ' ' + ('(не включительно)'|localize)"></label>
+                                        <div class="controls">
+                                            <input type="text" class="span12" ng-model="training.eventData.event.end.date" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-hide="menu.readOnlyMode" >
+                                <button class="btn btn-small btn-success" type="submit" ng-click="training.createEvent()" ng-bind="'Создать'|localize"  ng-hide="training.eventData.event.exists==1"></button>
+                                <button class="btn btn-small btn-success" type="submit" ng-click="training.updateEvent()" ng-bind="'Обновить'|localize" ng-show="training.eventData.event.exists==1"></button>
+                                <button class="btn btn-small btn-danger"  type="submit" ng-click="training.deleteEvent()" ng-bind="'Удалить'|localize"  ng-show="training.eventData.event.exists==1"></button>
+                                <button class="btn btn-small pull-right"  type="button" ng-click="other.help=!other.help" title="{{'Справка'|localize}}">&nbsp;<i class="icon-question"></i>&nbsp;</button>                                                             
+                            </div>
+                            <br>
+                            <br>
+                            <p ng-show="other.help" style="text-align: justify; font-style: italic;" ng-bind="'Если событие не создано, то в этой форме данные из обучения. Если данные по умолчанию изменить и создать событие, то при следующей загрузке формы будут отображены данные события, а не обучения.'|localize"></p>
+                        </div>
+                        <div class="span6">
+                            <div class="control-group">
+                                <label class="control-label" ng-bind="('Описание'|localize) + '*'"></label>
+                                <div class="controls">
+                                     <textarea class="span12" rows="16" ng-model="training.eventData.event.description" required></textarea>
+                                </div>
+                            </div>                      
+                        </div>
+                    </div>
+                </form>
+            </tab>
+        </tabset>
+    </div>
 </div>
 
 
 
 
 <div class="row-fluid" ng-show="pageStore.training.tabSgActive && sgroup.selectedItems.length!=0">
-	<div class="span10 offset1">
-			 <tabset>
-			 	<!-- ============================================ ИНФОРМАЦИЯ ==================================================-->
-				<tab heading="{{'Информация'|localize}}">
-					<div class="row-fluid" ng-show="sgroup.items.length==0 || sgroup.selectedItems[0].length==0">
-						<i style="margin-left: 33%;" ng-bind="'Выберите подгруппу для отображения подробной информации.'|localize"></i>
-					</div>
-					<div class="row-fluid" ng-hide="sgroup.items.length==0 || sgroup.selectedItems[0].length==0">
-						<div class="span6">
-							<p><span class="spnTitle" ng-bind="'Плательщик'|localize"              ></span>: <span ng-bind="sgroup.selectedItems[0].payer.shortName"></span></p>
-							<p><span class="spnTitle" ng-bind="'Полное название организации'|localize"></span>: <span ng-bind="sgroup.selectedItems[0].payer.fullName"></span></p>
-							<p><span class="spnTitle" ng-bind="'Юридический адрес'|localize"       ></span>: <span ng-bind="sgroup.selectedItems[0].payer.legalAddress"></span></p>
-							<p><span class="spnTitle" ng-bind="'Почтовый адрес'|localize"          ></span>: <span ng-bind="sgroup.selectedItems[0].payer.mailAddress"></span></p>
-							<p><span class="spnTitle" ng-bind="'Веб-сайт'|localize"                ></span>: <span ng-bind="sgroup.selectedItems[0].payer.site"></span></p>
-							</br>
-							<p><span class="spnTitle" ng-bind="'Контакт'|localize"></span>: <span ng-bind="sgroup.selectedItems[0].payer.contact.lastName + ' ' + sgroup.selectedItems[0].payer.contact.firstName + ' ' + sgroup.selectedItems[0].payer.contact.middleName"></span></p>
-							<p>
-								<span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{sgroup.selectedItems[0].payer.contact.email}}</span>
-								<span ng-hide="sgroup.selectedItems[0].payer.contact.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{sgroup.selectedItems[0].payer.contact.phone}}</span>
-								<span ng-hide="sgroup.selectedItems[0].payer.contact.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{sgroup.selectedItems[0].payer.contact.skype}}</span>
-							</p>
-						</div>
-						<div class="span6">
-							<p>
-								<span class="spnTitle" ng-bind="'Стоимость обучения'|localize"></span>: <span ng-bind="training.data.cost.price + ', ' + training.data.cost.currency.name"></span>
-								&nbsp;&nbsp;&nbsp;
-								<span class="spnTitle" ng-bind="('Скидка'|localize)"></span>: <span ng-show="sgroup.selectedItems[0].discount!==''" ng-bind="sgroup.selectedItems[0].discount + ' %'"></span> <span ng-show="sgroup.selectedItems[0].discount===''" ng-bind="'не указана, т.к. сумма к оплате задана вручную'|localize"></span></p>
-							<p>
-								<span class="spnTitle" ng-bind="'Сумма к оплате'|localize"    ></span>: <span ng-bind="sgroup.selectedItems[0].amount + ', ' + sgroup.selectedItems[0].currency.name"></span>
-								&nbsp;&nbsp;&nbsp;
-								<span class="spnTitle" ng-bind="'Сумма c НДС'|localize"       ></span>: <span ng-bind="(sgroup.selectedItems[0].amount*1.18+0.000001).toFixed(2)*1 + ', ' + sgroup.selectedItems[0].currency.name"></span>
-								&nbsp;&nbsp;<a ng-hide="menu.readOnlyMode" ng-click="sgroup.openPaymentModal()" style="color: rgb(83,83,83); text-decoration: none;" onmouseover="this.style.color='black';" onmouseout="this.style.color='rgb(83,83,83)';" title="{{'Редактировать платеж'|localize}}"> <i class="icon-pencil" style="cursor: pointer;"></i> </a>
-							</p>
-							
-							
-							</br>
-							<p><span class="spnTitle" ng-bind="'КПП'|localize"  title="{{'Код причины постановки на учёт'|localize}}"                 ></span>: <span ng-bind="sgroup.selectedItems[0].payer.kpp"></span></p>
-							<p><span class="spnTitle" ng-bind="'ИНН'|localize"  title="{{'Идентификационный номер налогоплательщика'|localize}}"      ></span>: <span ng-bind="sgroup.selectedItems[0].payer.inn"></span></p>
-							<p><span class="spnTitle" ng-bind="'ОГРН'|localize" title="{{'Основной государственный регистрационный номер'|localize}}" ></span>: <span ng-bind="sgroup.selectedItems[0].payer.ogrn"></span></p>
-							<p><span class="spnTitle" ng-bind="'Р/С'|localize"  title="{{'Расчётный счёт'|localize}}"                                 ></span>: <span ng-bind="sgroup.selectedItems[0].payer.settlementAccount"></span></p>
-							<p><span class="spnTitle" ng-bind="'К/С'|localize"  title="{{'Корреспондентский счёт'|localize}}"                         ></span>: <span ng-bind="sgroup.selectedItems[0].payer.correspondentAccount"></span></p>
-							<p><span class="spnTitle" ng-bind="'БИК'|localize"  title="{{'Банковский идентификационный код'|localize}}"               ></span>: <span ng-bind="sgroup.selectedItems[0].payer.bic"></span></p>
-							<p><span class="spnTitle" ng-bind="'Другая информация'|localize"    ></span>: <span ng-bind="sgroup.selectedItems[0].payer.otherInfo"></span></p>
+    <div class="span10 offset1">
+             <tabset>
+                <!-- ============================================ ИНФОРМАЦИЯ ==================================================-->
+                <tab heading="{{'Информация'|localize}}">
+                    <div class="row-fluid" ng-show="sgroup.items.length==0 || sgroup.selectedItems[0].length==0">
+                        <i style="margin-left: 33%;" ng-bind="'Выберите подгруппу для отображения подробной информации.'|localize"></i>
+                    </div>
+                    <div class="row-fluid" ng-hide="sgroup.items.length==0 || sgroup.selectedItems[0].length==0">
+                        <div class="span6">
+                            <p ng-show="sgroup.selectedItems[0].payer.shortName"><span class="spnTitle" ng-bind="'Плательщик'|localize"              ></span>: <span ng-bind="sgroup.selectedItems[0].payer.shortName"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.fullName"><span class="spnTitle" ng-bind="'Полное название организации'|localize"></span>: <span ng-bind="sgroup.selectedItems[0].payer.fullName"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.legalAddress"><span class="spnTitle" ng-bind="'Юридический адрес'|localize"       ></span>: <span ng-bind="sgroup.selectedItems[0].payer.legalAddress"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.mailAddress"><span class="spnTitle" ng-bind="'Почтовый адрес'|localize"          ></span>: <span ng-bind="sgroup.selectedItems[0].payer.mailAddress"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.site"><span class="spnTitle" ng-bind="'Веб-сайт'|localize"                ></span>: <span ng-bind="sgroup.selectedItems[0].payer.site"></span></p>
+                            </br>
+                            <p ng-show="sgroup.selectedItems[0].payer.contact"><span class="spnTitle" ng-bind="'Контакт'|localize"></span>: <span ng-bind="getFullNameForCurLang(sgroup.selectedItems[0].payer.contact.lastName, sgroup.selectedItems[0].payer.contact.firstName, sgroup.selectedItems[0].payer.contact.middleName)"></span></p>
+                            <p>
+                                <span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{sgroup.selectedItems[0].payer.contact.email}}</span>
+                                <span ng-hide="sgroup.selectedItems[0].payer.contact.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{sgroup.selectedItems[0].payer.contact.phone}}</span>
+                                <span ng-hide="sgroup.selectedItems[0].payer.contact.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{sgroup.selectedItems[0].payer.contact.skype}}</span>
+                            </p>
+                        </div>
+                        <div class="span6">
+                            <p>
+                                <span class="spnTitle" ng-bind="'Стоимость обучения'|localize"></span>: <span ng-bind="training.data.cost.price + ', ' + training.data.cost.currency.name"></span>
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="spnTitle" ng-bind="('Скидка'|localize)"></span>: <span ng-show="sgroup.selectedItems[0].discount!==''" ng-bind="sgroup.selectedItems[0].discount + ' %'"></span> <span ng-show="sgroup.selectedItems[0].discount===''" ng-bind="'не указана, т.к. сумма к оплате задана вручную'|localize"></span></p>
+                            <p>
+                                <span class="spnTitle" ng-bind="'Сумма к оплате'|localize"    ></span>: <span ng-bind="sgroup.selectedItems[0].amount + ', ' + sgroup.selectedItems[0].currency.name"></span>
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="spnTitle" ng-bind="'Сумма c НДС'|localize"       ></span>: <span ng-bind="(sgroup.selectedItems[0].amount*1.18+0.000001).toFixed(2)*1 + ', ' + sgroup.selectedItems[0].currency.name"></span>
+                                &nbsp;&nbsp;<a ng-hide="menu.readOnlyMode" ng-click="sgroup.openPaymentModal()" style="color: rgb(83,83,83); text-decoration: none;" onmouseover="this.style.color='black';" onmouseout="this.style.color='rgb(83,83,83)';" title="{{'Редактировать платеж'|localize}}"> <i class="icon-pencil" style="cursor: pointer;"></i> </a>
+                            </p>
+                            
+                            
+                            </br>
+                            <p ng-show="sgroup.selectedItems[0].payer.kpp"><span class="spnTitle" ng-bind="'КПП'|localize"  title="{{'Код причины постановки на учёт'|localize}}"                 ></span>: <span ng-bind="sgroup.selectedItems[0].payer.kpp"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.inn"><span class="spnTitle" ng-bind="'ИНН'|localize"  title="{{'Идентификационный номер налогоплательщика'|localize}}"      ></span>: <span ng-bind="sgroup.selectedItems[0].payer.inn"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.ogrn"><span class="spnTitle" ng-bind="'ОГРН'|localize" title="{{'Основной государственный регистрационный номер'|localize}}" ></span>: <span ng-bind="sgroup.selectedItems[0].payer.ogrn"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.settlementAccount"><span class="spnTitle" ng-bind="'Р/С'|localize"  title="{{'Расчётный счёт'|localize}}"                                 ></span>: <span ng-bind="sgroup.selectedItems[0].payer.settlementAccount"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.correspondentAccount"><span class="spnTitle" ng-bind="'К/С'|localize"  title="{{'Корреспондентский счёт'|localize}}"                         ></span>: <span ng-bind="sgroup.selectedItems[0].payer.correspondentAccount"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.bic"><span class="spnTitle" ng-bind="'БИК'|localize"  title="{{'Банковский идентификационный код'|localize}}"               ></span>: <span ng-bind="sgroup.selectedItems[0].payer.bic"></span></p>
+                            <p ng-show="sgroup.selectedItems[0].payer.otherInfo"><span class="spnTitle" ng-bind="'Другая информация'|localize"    ></span>: <span ng-bind="sgroup.selectedItems[0].payer.otherInfo"></span></p>
 
 
-						</div>
-					</div>
-				</tab>
-				<!-- ============================================ ДОГОВОР ==================================================-->
-				<tab heading="{{'Договор'|localize}}">
-					<form name="sgContractForm" ng-submit="sgroup.saveContract()">
-						<div class="row-fluid">
-							<div class="span6">
-								<div class="control-group">
-						    		<label class="control-label" ng-bind="('ФИО подписанта в родительном падеже'|localize) + '*'"></label>
-					        		<div class="controls">
-				            			<input type="text" class="span12" ng-model="sgroup.contract.fullName" required/>
-					        		</div>
-								</div>
-								<div class="control-group">
-						    		<label class="control-label" ng-bind="('Документ основания (устав и прочее)'|localize) + '*'"></label>
-					        		<div class="controls">
-				            			 <textarea class="span12" rows="3" ng-model="sgroup.contract.document" required></textarea>
-					        		</div>
-								</div>
-							</div>
-							<div class="span6">
-								<div class="control-group">
-						    		<label class="control-label" ng-bind="('Место исполнения'|localize) + '*'"></label>
-					        		<div class="controls">
-				            			<input disabled type="text" class="span12" value="{{training.data.city.name + ', ' + training.data.city.parentName + ', ' + training.data.city.greatParentName}}" required/>
-					        		</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6">
-										<div class="control-group">
-									        <label class="control-label" ng-bind="('Дата договора'|localize) + '*'"></label>
-									        <div class="controls">
-									            <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="sgroup.dateSt" show-weeks="false" ng-required="true" />
-									        </div>
-									    </div>			
-									</div>
-									<div class="span6">
-										<div class="control-group">
-									        <label class="control-label" ng-bind="('Дата окончания договора'|localize) + '*'"></label>
-									        <div class="controls">
-									            <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="sgroup.dateFn" show-weeks="false" ng-required="true" />
-									        </div>
-									    </div>
-									</div>
-								</div>
-					    		<button type="submit" class="btn btn-success btn-small" ng-bind="'Сохранить'|localize" ng-disabled="sgContractForm.$pristine" ng-click="sgroup.formatData()" ng-hide="menu.readOnlyMode"></button>
-							</div>		
-						</div>
-					</form>
-				</tab>
-				<!-- ============================================ СЛУШАТЕЛИ ==================================================-->
-				<tab heading="{{('Слушатели'|localize) + ' (' + sgroup.selectedItems[0].students.length + ')'}}" active="pageStore.training.tabSgStActive">
-					<div class="row-fluid" ng-show="sgroup.items==0 || sgroup.selectedItems[0].length==0">
-						<i style="margin-left: 33%;" ng-bind="'Выберите подгруппу для отображения слушателей.'|localize"></i>
-					</div>
-					<div class="row-fluid" ng-hide="sgroup.items==0 || sgroup.selectedItems[0].length==0">
-						<stcgrid
-						    table-class="table table-bordered"
-						    grid="student.grid"
-						    caption=""
-						    columns="student.columns"
-						    items="sgroup.selectedItems[0].students"
-						    properties="student.properties"
-						    update-items=""
+                        </div>
+                    </div>
+                </tab>
+                <!-- ============================================ ДОГОВОР ==================================================-->
+                <tab heading="{{'Договор'|localize}}">
+                    <form name="sgContractForm" ng-submit="sgroup.saveContract()">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" ng-bind="('ФИО подписанта в родительном падеже'|localize) + '*'"></label>
+                                    <div class="controls">
+                                        <input type="text" class="span12" ng-model="sgroup.contract.fullName" required/>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" ng-bind="('Документ основания (устав и прочее)'|localize) + '*'"></label>
+                                    <div class="controls">
+                                         <textarea class="span12" rows="3" ng-model="sgroup.contract.document" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" ng-bind="('Место исполнения'|localize) + '*'"></label>
+                                    <div class="controls">
+                                        <input disabled type="text" class="span12" value="{{training.data.city.name + ', ' + training.data.city.parentName + ', ' + training.data.city.greatParentName}}" required/>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <div class="control-group">
+                                            <label class="control-label" ng-bind="('Дата договора'|localize) + '*'"></label>
+                                            <div class="controls">
+                                                <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="sgroup.dateSt" show-weeks="false" ng-required="true" />
+                                            </div>
+                                        </div>          
+                                    </div>
+                                    <div class="span6">
+                                        <div class="control-group">
+                                            <label class="control-label" ng-bind="('Дата окончания договора'|localize) + '*'"></label>
+                                            <div class="controls">
+                                                <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="sgroup.dateFn" show-weeks="false" ng-required="true" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-small" ng-bind="'Сохранить'|localize" ng-disabled="sgContractForm.$pristine" ng-click="sgroup.formatData()" ng-hide="menu.readOnlyMode"></button>
+                            </div>      
+                        </div>
+                    </form>
+                </tab>
+                <!-- ============================================ СЛУШАТЕЛИ ==================================================-->
+                <tab heading="{{('Слушатели'|localize) + ' (' + sgroup.selectedItems[0].students.length + ')'}}" active="pageStore.training.tabSgStActive">
+                    <div class="row-fluid" ng-show="sgroup.items==0 || sgroup.selectedItems[0].length==0">
+                        <i style="margin-left: 33%;" ng-bind="'Выберите подгруппу для отображения слушателей.'|localize"></i>
+                    </div>
+                    <div class="row-fluid" ng-hide="sgroup.items==0 || sgroup.selectedItems[0].length==0">
+                        <stcgrid
+                            table-class="table table-bordered"
+                            grid="student.grid"
+                            caption=""
+                            columns="student.columns"
+                            items="sgroup.selectedItems[0].students"
+                            properties="student.properties"
+                            update-items=""
 
-						    page-curr="student.pageCurr"
-						    page-total="student.pageTotal"
-						    page-size="student.pageSize"
-						    navigator-visible="false"
+                            page-curr="student.pageCurr"
+                            page-total="student.pageTotal"
+                            page-size="student.pageSize"
+                            navigator-visible="false"
 
-						    selectable="false"
-						    selected-items="student.selectedItems"
-						    multi-select-mode="student.multiSelectMode"
+                            selectable="false"
+                            selected-items="student.selectedItems"
+                            multi-select-mode="student.multiSelectMode"
 
-						    action-column-visible="!menu.readOnlyMode"
-						    action-column-icon="'icon-plus-sign'"
-						    action-column-title="'Добавить слушателя'|localize"
-						    action-column-method="student.add()"
-						    
-						    first-row-action-icon="'icon-pencil'"
-						    first-row-action-title="'Редактировать слушателя'|localize"
-						    first-row-action-method="student.edit(item)"
-						    
-						    second-row-action-icon="'icon-remove'"
-						    second-row-action-title="'Удалить слушателя'|localize"
-						    second-row-action-method="student.remove(item)" 
-						/>
-					</div>
-				</tab>
-			</tabset>
-	</div>
+                            action-column-visible="!menu.readOnlyMode"
+                            action-column-icon="'icon-plus-sign'"
+                            action-column-title="'Добавить слушателя'|localize"
+                            action-column-method="student.add()"
+                            
+                            first-row-action-icon="'icon-pencil'"
+                            first-row-action-title="'Редактировать слушателя'|localize"
+                            first-row-action-method="student.edit(item)"
+                            
+                            second-row-action-icon="'icon-remove'"
+                            second-row-action-title="'Удалить слушателя'|localize"
+                            second-row-action-method="student.remove(item)" 
+                        />
+                    </div>
+                </tab>
+            </tabset>
+    </div>
 </div>
 </br>
 
 
 <div class="row-fluid" ng-show="pageStore.training.tabFeedBacksActive && feedBack.items.length!=0 && feedBack.selectedItems.length!=0">
-	<div class="span10 offset1">
-		 <tabset>
-		 	<!-- ============================================ ПОДРОБНОСТИ ОТЗЫВА ==================================================-->
-			<tab heading="{{'Информация'|localize}}">
-				<p><span class="spnTitle" ng-bind="'Оценка'|localize"></span>: <rating value="feedBack.selectedItems[0].rating" readonly="true" on-hover="" on-leave="" required></rating></p>
-				<p ng-hide="feedBack.selectedItems[0].author==''"><span class="spnTitle" ng-bind="'Автор'|localize"                               ></span>: <span ng-bind="feedBack.selectedItems[0].author"></span></p>
-				<p ng-hide="feedBack.selectedItems[0].whatLiked==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Что понравилось'|localize"></span>: <span ng-bind="feedBack.selectedItems[0].whatLiked"></span></p>
-				<p ng-hide="feedBack.selectedItems[0].whatImprovements==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Что можно улучшить'|localize"                  ></span>: <span ng-bind="feedBack.selectedItems[0].whatImprovements"></span></p>
-				<p ng-hide="feedBack.selectedItems[0].whatHear==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Что ещё хотелось бы услышать в курсе'|localize"></span>: <span ng-bind="feedBack.selectedItems[0].whatHear"></span></p>
-				<p ng-hide="feedBack.selectedItems[0].aboutTeacher==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Комментарии о докладчике'|localize"            ></span>: <span ng-bind="feedBack.selectedItems[0].aboutTeacher"></span></p>
-			</tab>
-		</tabset>
-	</div>
+    <div class="span10 offset1">
+         <tabset>
+            <!-- ============================================ ПОДРОБНОСТИ ОТЗЫВА ==================================================-->
+            <tab heading="{{'Информация'|localize}}">
+                <p><span class="spnTitle" ng-bind="'Оценка'|localize"></span>: <rating value="feedBack.selectedItems[0].rating" readonly="true" on-hover="" on-leave="" required></rating></p>
+                <p ng-hide="feedBack.selectedItems[0].author==''"><span class="spnTitle" ng-bind="'Автор'|localize"                               ></span>: <span ng-bind="feedBack.selectedItems[0].author"></span></p>
+                <p ng-hide="feedBack.selectedItems[0].whatLiked==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Что понравилось'|localize"></span>: <span ng-bind="feedBack.selectedItems[0].whatLiked"></span></p>
+                <p ng-hide="feedBack.selectedItems[0].whatImprovements==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Что можно улучшить'|localize"                  ></span>: <span ng-bind="feedBack.selectedItems[0].whatImprovements"></span></p>
+                <p ng-hide="feedBack.selectedItems[0].whatHear==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Что ещё хотелось бы услышать в курсе'|localize"></span>: <span ng-bind="feedBack.selectedItems[0].whatHear"></span></p>
+                <p ng-hide="feedBack.selectedItems[0].aboutTeacher==''" style="text-align: justify;"><span class="spnTitle" ng-bind="'Комментарии о докладчике'|localize"            ></span>: <span ng-bind="feedBack.selectedItems[0].aboutTeacher"></span></p>
+            </tab>
+        </tabset>
+    </div>
 </div>
 
 
 <div class="row-fluid">
-	<div class="span10 offset1">
-		<stcalert data="other.alert"/>
-	</div>
+    <div class="span10 offset1">
+        <stcalert data="other.alert"/>
+    </div>
 </div>
 
 <br>
@@ -535,46 +535,46 @@
     <h3 id="PaymentModalLabel" ng-bind="'Платеж'|localize"></h3>
   </div>
   <div class="modal-body">
-	<form  class="form-horizontal" name="sgPaymentForm" style="margin: 0 0 10px 0;" ng-submit="">
+    <form  class="form-horizontal" name="sgPaymentForm" style="margin: 0 0 10px 0;" ng-submit="">
 
-	    <div class="control-group">
-		    <label class="control-label" ng-bind="'Стоимость обучения'|localize"></label>
-		    <div class="controls">
-		    	<input type="text" value="{{training.data.cost.price + ', ' + training.data.cost.currency.name}}" disabled>
-		    </div>
-	    </div>
-	    <div class="control-group">
-		    <label class="control-label" ng-bind="('Скидка'|localize) + ' (%)'"></label>
-		    <div class="controls" >
-		    	<input type="text" ng-model="sgroup.selectedItems[0].discount" ng-change="sgroup.changeDiscount()">
-		    </div>
-	    </div>
-		<div class="control-group">
-		    <label class="control-label" ng-bind="('Валюта платежа'|localize) + '*'"></label>
-	        <div class="controls">
-            	<select ng-model="sgroup.selectedItems[0].currency.id" ng-options="curr.id as curr.name for curr in sgroup.currencies" required>
-            	</select>
-	        </div>
-		</div>
-	    <div class="control-group">
-		    <label class="control-label" ng-bind="('Сумма к оплате'|localize) + '*'"></label>
-		    <div class="controls">
-		    	<input type="text" ng-model="sgroup.selectedItems[0].amount" ng-change="sgroup.selectedItems[0].discount=''">
-		    </div>
-	    </div>
-	    <div class="control-group">
-		    <label class="control-label" ng-bind="('Сумма с НДС'|localize) + '*'"></label>
-		    <div class="controls">
-		    	<input type="text" value="{{(sgroup.selectedItems[0].amount * 1.18 + 0.000001).toFixed(2)*1}}" disabled>
-		    </div>
-	    </div>
-	    <div class="control-group">	 
-	    	<div class="controls">  
-				<button class="btn btn-success btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.savePayment()" ng-disabled="sgPaymentForm.$pristine" ng-bind="'Сохранить'|localize"></button>
-				<button class="btn btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.cancelPayment()" ng-bind="'Отмена'|localize"></button>
-			</div>
-		</div>
- 	</form>
+        <div class="control-group">
+            <label class="control-label" ng-bind="'Стоимость обучения'|localize"></label>
+            <div class="controls">
+                <input type="text" value="{{training.data.cost.price + ', ' + training.data.cost.currency.name}}" disabled>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" ng-bind="('Скидка'|localize) + ' (%)'"></label>
+            <div class="controls" >
+                <input type="text" ng-model="sgroup.selectedItems[0].discount" ng-change="sgroup.changeDiscount()">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" ng-bind="('Валюта платежа'|localize) + '*'"></label>
+            <div class="controls">
+                <select ng-model="sgroup.selectedItems[0].currency.id" ng-options="curr.id as curr.name for curr in sgroup.currencies" required>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" ng-bind="('Сумма к оплате'|localize) + '*'"></label>
+            <div class="controls">
+                <input type="text" ng-model="sgroup.selectedItems[0].amount" ng-change="sgroup.selectedItems[0].discount=''">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" ng-bind="('Сумма с НДС'|localize) + '*'"></label>
+            <div class="controls">
+                <input type="text" value="{{(sgroup.selectedItems[0].amount * 1.18 + 0.000001).toFixed(2)*1}}" disabled>
+            </div>
+        </div>
+        <div class="control-group">  
+            <div class="controls">  
+                <button class="btn btn-success btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.savePayment()" ng-disabled="sgPaymentForm.$pristine" ng-bind="'Сохранить'|localize"></button>
+                <button class="btn btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.cancelPayment()" ng-bind="'Отмена'|localize"></button>
+            </div>
+        </div>
+    </form>
   </div>
 </div>
 
@@ -585,19 +585,19 @@
     <h3 id="AddSubGroupModalLabel" ng-bind="'Добавить подгруппу'|localize"></h3>
   </div>
   <div class="modal-body">
-	<form style="margin: 0 0 10px 0;" ng-submit="">
-		<div class="row-fluid">
-			<div class="control-group">
-			    <label class="control-label" ng-bind="('Организация - плательщик подгруппы'|localize) + '*'"></label>
-		        <div class="controls">
-	            	<select class="span12" ng-model="sgroup.newSubGroupPayer" ng-options="comp as comp.name for comp in sgroup.companies" required>
-	            	</select>
-		        </div>
-			</div>
-		</div>
-		<button class="btn btn-success btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.addSubGroup()" ng-bind="'Добавить'|localize"></button>
-		<button class="btn btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.modalAddSubGroupVisible=false" ng-bind="'Отмена'|localize"></button>
-	</form>
+    <form style="margin: 0 0 10px 0;" ng-submit="">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" ng-bind="('Организация - плательщик подгруппы'|localize) + '*'"></label>
+                <div class="controls">
+                    <select class="span12" ng-model="sgroup.newSubGroupPayer" ng-options="comp as comp.name for comp in sgroup.companies" required>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.addSubGroup()" ng-bind="'Добавить'|localize"></button>
+        <button class="btn btn-small" data-dismiss="modal" aria-hidden="true" ng-click="sgroup.modalAddSubGroupVisible=false" ng-bind="'Отмена'|localize"></button>
+    </form>
   </div>
 </div>
 
@@ -608,19 +608,19 @@
     <h3 id="ChangeCompanyModalLabel" ng-bind="'Сменить организацию в заявке'|localize"></h3>
   </div>
   <div class="modal-body">
-	<form style="margin: 0 0 10px 0;" ng-submit="">
-		<div class="row-fluid">
-			<div class="control-group">
-			    <label class="control-label" ng-bind="('Организация'|localize) + '*'"></label>
-		        <div class="controls">
-	            	<select class="span12" ng-model="other.newOrderCompany" ng-options="comp as comp.name for comp in sgroup.companies" required>
-	            	</select>
-		        </div>
-			</div>
-		</div>
-		<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="other.changeCompany()" ng-bind="'Сменить'|localize"></button>
-		<button class="btn" data-dismiss="modal" aria-hidden="true" ng-click="other.modalChangeCompanyVisible=false" ng-bind="'Отмена'|localize"></button>
-	</form>
+    <form style="margin: 0 0 10px 0;" ng-submit="">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label" ng-bind="('Организация'|localize) + '*'"></label>
+                <div class="controls">
+                    <select class="span12" ng-model="other.newOrderCompany" ng-options="comp as comp.name for comp in sgroup.companies" required>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="other.changeCompany()" ng-bind="'Сменить'|localize"></button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true" ng-click="other.modalChangeCompanyVisible=false" ng-bind="'Отмена'|localize"></button>
+    </form>
   </div>
 </div>
 

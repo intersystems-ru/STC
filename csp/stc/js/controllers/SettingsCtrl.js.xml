@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/SettingsCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/SettingsCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //=    
 
@@ -99,7 +99,7 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
                 function(data){
                     $scope.page.mail[data.type] = data.data;
                     if ($scope.page.mail[data.type].message){
-                    	$scope.page.mail[data.type].message = $scope.page.mail[data.type].message.replace(/<br>/g, "\n")
+                        $scope.page.mail[data.type].message = $scope.page.mail[data.type].message.replace(/<br>/g, "\n")
                     }
                 },
                 function(response){      
@@ -112,7 +112,7 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
         var mailData = angular.copy($scope.page.mail[type]);
         
         if (mailData.message){
-        	mailData.message = mailData.message.replace(/\n/g, "<br>");
+            mailData.message = mailData.message.replace(/\n/g, "<br>");
         }
         
         SettingsSrvc.saveMail(mailData, type).then(
@@ -131,25 +131,31 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
         form.$setPristine();
     };
 
- 	$scope.page.mail.removeOperator = function(idx, form){
+    $scope.page.mail.removeOperator = function(idx, form){
         $scope.page.mail.operators.items.splice(idx, 1);
         form.$setDirty();
     };
     
     // Show help dialog window 
     $scope.page.mail.showHelp = function(type){
-        var msg = 'В содержании письма можно использовать переменные(%Variable), которые впоследствии будут заменены на соответствующие значения. Список доступных переменных для данного шаблона:<br>';
+        var getLocValue = function(key){
+            return $filter('localize')(key)
+        };
+        
+        
+        var msg = getLocValue('В содержании письма можно использовать переменные(%Variable), которые впоследствии будут заменены на соответствующие значения. Список доступных переменных для данного шаблона:<br>');
+        
         var trainingVariables = 
-              '%DateStart, %DateEnd - дата начала / окончания обучения;<br>' +
-              '%TimeStart, %TimeEnd - время начала / окончание занятий;<br>' +
-              '%Course.Name - название курса;<br>' +
-              '%City.Name, %Region.Name, %Country.Name - город, регион, страна;<br>' +
-              '%Street, %Room - улица и аудитория;<br>' +
-              '%Teacher.FullName - фамилия и имя преподавателя;<br>' +
-              '%Teacher.Email, %Teacher.Phone - email, телефон<br>' +
-              '%Curator.FullName - фамилия и имя куратора;<br>' + 
-              '%Curator.Email, %Curator.PhoneSecret, %Curator.PhonePublic - email, личный|публичный телефон;<br>' +
-              '%OtherInfo - дополнительная информация об обучении;';
+              '%DateStart, %DateEnd - ' + getLocValue('дата начала / окончания обучения') + ';<br>' +
+              '%TimeStart, %TimeEnd - ' + getLocValue('время начала / окончание занятий') + ';<br>' +
+              '%Course.Name - ' + getLocValue('название курса') + ';<br>' +
+              '%City.Name, %Region.Name, %Country.Name - ' + getLocValue('город, регион, страна') + ';<br>' +
+              '%Street, %Room - ' + getLocValue('улица и аудитория') + ';<br>' +
+              '%Trainer.FullName - ' + getLocValue('фамилия и имя преподавателя') + ';<br>' +
+              '%Trainer.Email, %Trainer.Phone - ' + getLocValue('email, телефон') + ';<br>' +
+              '%Curator.FullName - ' + getLocValue('фамилия и имя куратора') + ';<br>' + 
+              '%Curator.Email, %Curator.PhoneSecret, %Curator.PhonePublic - ' + getLocValue('email, личный | публичный телефон') + ';<br>' +
+              '%OtherInfo - '  + getLocValue('дополнительная информация об обучении') + ';';
         
         switch(type){
             case 'registration':{
@@ -161,50 +167,50 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
               break;
             }
             case 'feedback':{
-              msg += '%Course.Name - курс;<br>' + 
-                    '%FeedBackUrl - ссылка на страницу для анкетирования.';
+              msg += '%Course.Name - ' + getLocValue('название курса') + ';<br>' + 
+                    '%SurveyUrl - ' + getLocValue('ссылка на страницу для анкетирования') + '.';
               break;
             }
             case 'teacher':{
               msg += trainingVariables + '<br>' +
-                    '%ListOfStudentsUrl - ссылка на страницу со списком слушателей.';
+                    '%ListOfAttendeesUrl - ' + getLocValue('ссылка на страницу со списком слушателей') + '.';
               break;
             }
             case 'curator':{
               msg += trainingVariables + '<br>' +
-                    '%ListOfStudentsUrl - ссылка на страницу со списком слушателей.';
+                    '%ListOfAttendeesUrl - ' + getLocValue('ссылка на страницу со списком слушателей') + '.';
               break;
             }
             case 'orders':{
               msg += trainingVariables + '<br>' +
-                    '%JoinUrl - ссылка на страницу регистрации.';
+                    '%JoinUrl - ' + getLocValue('ссылка на страницу регистрации')  + '.';
               break;
             }
             case 'orderapply':{
-              msg += '%Course.Name - курс.';
+              msg += '%Course.Name - ' + getLocValue('название курса') + '.';
               break;
             } 
             case 'confirmsubscription':{
-              msg += '%ActivationUrl - ссылка для активации подписки.';
+              msg += '%ActivationUrl - ' + getLocValue('ссылка для активации подписки') + '.';
               break;
             }
             case 'listOfFeedbacks':{
               msg += trainingVariables + '<br>' + 
-                     '%NumberOfNewestFeedbacks - количество новых отзывов.' + '<br>' +
-                     '%ListOfFeedbacksUrl - ссылка на страницу с отзывами.';
+                     '%NumberOfNewestSurveys - ' + getLocValue('количество новых отзывов') + ';<br>' +
+                     '%ListOfSurveysUrl - ' + getLocValue('ссылка на страницу с отзывами') + '.';
               break;
             } 
         }
         
-		    UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
+        UtilsSrvc.openCustomMessageBox('Справка', msg, [{result: '1', label: $filter('localize')('Закрыть'),  cssClass: 'btn-small', func: null}]);    
     };
 
     // Show preview for mail tab as html
     $scope.page.mail.showPreview = function(type){
-		SettingsSrvc.getMailPreview(type).then(
+        SettingsSrvc.getMailPreview(type).then(
                 function(data){
-	                $scope.page.mail[type].preview = data.preview;
-              		$scope.page.mail[type].previewIsVisible = true;
+                    $scope.page.mail[type].preview = data.preview;
+                    $scope.page.mail[type].previewIsVisible = true;
                 },
                 function(response){      
                     $scope.page.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
@@ -213,7 +219,7 @@ controllersModule.controller('SettingsCtrl', function($scope, $filter, SettingsS
 
     
     // Load all settings
-	  $scope.page.google.load('settings');
+      $scope.page.google.load('settings');
     $scope.page.google.load('calendar');
     $scope.page.mail.load('settings');
     $scope.page.mail.load('operators');

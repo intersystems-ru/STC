@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/MailingGroupMailCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/MailingGroupMailCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //
 
@@ -10,8 +10,8 @@
 
 controllersModule.controller('MailingGroupMailCtrl', function($scope, $filter, $window, $routeParams, MailingSrvc, UtilsSrvc){
     if ($scope.menu.admin){
-    	$scope.menu.brandCaption = 'Система учёта курсов';
-    	$scope.menu.appTitle = 'Система учёта курсов';
+        $scope.menu.brandCaption = 'Система учёта курсов';
+        $scope.menu.appTitle = 'Система учёта курсов';
     }
     
     $scope.mailForm = {};
@@ -22,8 +22,8 @@ controllersModule.controller('MailingGroupMailCtrl', function($scope, $filter, $
     $scope.mailForm.loadGroup = function(){
         MailingSrvc.getGroup($routeParams.id).then(
             function(data){
-	            data.mailSubject = '';
-	            data.mailMessage = "" + $filter('localize')("Чтобы отписаться от почтовых уведомлений перейдите по <a target='_blank' href='%UnsubscribeUrl'>ссылке</a>.");
+                data.mailSubject = '';
+                data.mailMessage = "" + $filter('localize')("Чтобы отписаться от почтовых уведомлений перейдите по <a target='_blank' href='%UnsubscribeUrl'>ссылке</a>.");
                 $scope.mailForm.group = data;
             },
             function(response){
@@ -35,23 +35,23 @@ controllersModule.controller('MailingGroupMailCtrl', function($scope, $filter, $
     $scope.mailForm.loadItems = function(){
         MailingSrvc.getGroupContacts($routeParams.id).then(
             function(data){
-	            if (data.length > 40){
-	            	$scope.mailForm.contactsStyle = {
-		            	height: '150px', 
-	            		overflowX: 'auto',
-	            		border: '1px dashed rgb(158, 158, 158)',
-						padding: '4px'
-					};
-	            }
-	            
+                if (data.length > 40){
+                    $scope.mailForm.contactsStyle = {
+                        height: '150px', 
+                        overflowX: 'auto',
+                        border: '1px dashed rgb(158, 158, 158)',
+                        padding: '4px'
+                    };
+                }
+                
                 for (var i=0; i < data.length; i++){
-	                if (data[i].name.length > 20){
-	                	data[i].nameShort = data[i].name.substring(0, 17) + '...'
-	                }
-	                else{
-		                data[i].nameShort = data[i].name;
-		            }
-	            }
+                    if (data[i].name.length > 20){
+                        data[i].nameShort = data[i].name.substring(0, 17) + '...'
+                    }
+                    else{
+                        data[i].nameShort = data[i].name;
+                    }
+                }
                 $scope.mailForm.contacts = data;  
             },
             function(response){
@@ -88,15 +88,15 @@ controllersModule.controller('MailingGroupMailCtrl', function($scope, $filter, $
         if ($scope.mailForm.contacts.length == 0)
             return;
 
-		var resultContacts = $filter('filter')($scope.mailForm.contacts, { city: $scope.mailForm.cityFilter });
-		
-		MailingSrvc.sendEMail({
-	        		contacts: resultContacts, 
-        			subject: $scope.mailForm.group.mailSubject, 
-        			message: $scope.mailForm.group.mailMessage.replace(/\n/g, "<br>")
-        		}).then(
+        var resultContacts = $filter('filter')($scope.mailForm.contacts, { city: $scope.mailForm.cityFilter, companyTypeCode: $scope.companyTypeFilterFunc()});
+        
+        MailingSrvc.sendEMail({
+                    contacts: resultContacts, 
+                    subject: $scope.mailForm.group.mailSubject, 
+                    message: $scope.mailForm.group.mailMessage.replace(/\n/g, "<br>")
+                }).then(
             function(data){
-	            $scope.form_mail.$setPristine();
+                $scope.form_mail.$setPristine();
                 $scope.mailForm.alert = UtilsSrvc.getAlert('Готово!', 'Письма добавлены в очередь, проверьте журнал рассылок', 'success', true);  
             },
             function(response){
@@ -110,7 +110,21 @@ controllersModule.controller('MailingGroupMailCtrl', function($scope, $filter, $
     };
 
 
-    
+    $scope.companyTypeFilterFunc = function () { 
+        if ($scope.mailForm.companyTypeUniverFilter && $scope.mailForm.companyTypePartnerFilter){
+            return '';            
+        }
+        
+        if ($scope.mailForm.companyTypePartnerFilter){
+            return 'Partner';      
+        }
+        
+        if ($scope.mailForm.companyTypeUniverFilter){
+            return 'Univer'           
+        }
+        
+        return 'UnknownCompanyType';
+    };
     
     $scope.mailForm.loadGroup();
     $scope.mailForm.loadItems();

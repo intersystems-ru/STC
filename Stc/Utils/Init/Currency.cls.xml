@@ -23,9 +23,10 @@
 <XData name="ClassXData">
 <Data><![CDATA[
 <ClassXData>
-<Currency><Name>5EB81A33-5310-470D-AE3A-3DABFCF02F3A</Name></Currency>
-<Currency><Name>4E490C1D-8402-4148-A876-85078EEF3ADB</Name></Currency>
-<Currency><Name>3E40D011-A34B-4281-996F-F0ED36E18C75</Name></Currency>
+<Currency><Name>5EB81A33-5310-470D-AE3A-3DABFCF02F3A</Name><Code>RUB</Code></Currency>
+<Currency><Name>4E490C1D-8402-4148-A876-85078EEF3ADB</Name><Code>USD</Code></Currency>
+<Currency><Name>3E40D011-A34B-4281-996F-F0ED36E18C75</Name><Code>EUR</Code></Currency>
+<Currency><Name>3E40D011-A34B-4281-777F-F0ED36E18C75</Name><Code>GBP</Code></Currency>
 </ClassXData>
 ]]></Data>
 </XData>
@@ -36,6 +37,7 @@
 <LText><Guid>5EB81A33-5310-470D-AE3A-3DABFCF02F3A</Guid></LText>
 <LText><Guid>4E490C1D-8402-4148-A876-85078EEF3ADB</Guid></LText>
 <LText><Guid>3E40D011-A34B-4281-996F-F0ED36E18C75</Guid></LText>
+<LText><Guid>3E40D011-A34B-4281-777F-F0ED36E18C75</Guid></LText>
 </LTextOrderStatusXData>
 ]]></Data>
 </XData>
@@ -46,10 +48,12 @@
 <LTextValue><LText>5EB81A33-5310-470D-AE3A-3DABFCF02F3A</LText><Value>Рубли</Value><Lang>ru</Lang></LTextValue>
 <LTextValue><LText>4E490C1D-8402-4148-A876-85078EEF3ADB</LText><Value>Доллары</Value><Lang>ru</Lang></LTextValue>
 <LTextValue><LText>3E40D011-A34B-4281-996F-F0ED36E18C75</LText><Value>Евро</Value><Lang>ru</Lang></LTextValue>
+<LTextValue><LText>3E40D011-A34B-4281-777F-F0ED36E18C75</LText><Value>Фунт стерлингов</Value><Lang>ru</Lang></LTextValue>
 
 <LTextValue><LText>5EB81A33-5310-470D-AE3A-3DABFCF02F3A</LText><Value>Ruble</Value><Lang>en</Lang></LTextValue>
 <LTextValue><LText>4E490C1D-8402-4148-A876-85078EEF3ADB</LText><Value>Dollars</Value><Lang>en</Lang></LTextValue>
 <LTextValue><LText>3E40D011-A34B-4281-996F-F0ED36E18C75</LText><Value>Euro</Value><Lang>en</Lang></LTextValue>
+<LTextValue><LText>3E40D011-A34B-4281-777F-F0ED36E18C75</LText><Value>Pound Sterling</Value><Lang>en</Lang></LTextValue>
 </LTextValueXData>
 ]]></Data>
 </XData>

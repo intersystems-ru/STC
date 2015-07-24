@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/settings.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/settings.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid">
 	<div class="span10 offset1">
 		<tabset>
@@ -60,8 +60,8 @@
 				    	<form name="form_mail_operators" style="margin: 0 0 10px 0;" ng-submit="page.mail.save('operators', form_mail_operators)">
 						    <label ng-bind="'Почтовые адреса для оповещения о новых заявках'|localize"></label>
 						    <div class="control-group" style="display: flex;">
-						    	<div class="controls" style="width: 180px; padding-right: 15px;" ng-repeat="op in page.mail.operators.items">
-						    		<input style="width: 150px" type="email" ng-model="op.email" required></input>
+						    	<div class="controls" style="width: 250px; padding-right: 15px;" ng-repeat="op in page.mail.operators.items">
+						    		<input style="width: 220px" type="email" ng-model="op.email" required></input>
 							    	<button type="button" class="close" style="padding-top: 5px;" title="{{'Удалить'|localize}}" ng-click="page.mail.removeOperator($index, form_mail_operators)" ng-hide="page.mail.operators.items.length <= 1">&times;</button>
 						    	</div>
 						    </div>

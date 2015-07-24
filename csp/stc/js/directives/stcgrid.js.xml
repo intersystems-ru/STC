@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/directives/stcgrid.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/directives/stcgrid.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
-//dd
-
+//ddd
+   
 directivesModule.directive('stcgrid', function(){
     return {
         replace: true,
@@ -23,12 +23,15 @@ directivesModule.directive('stcgrid', function(){
             pageCurr: '=',
             pageSize: '=',
             pageTotal: '=',
-            navigatorVisible: '@',
+            navigatorVisible: '=',
             searchHide: '=',
+            searchTop: '=',
             
             selectable: '=',
             selectedItems: '=',
             multiSelectMode: '=',
+            onSelect: '&',
+            onSelectCell: '&',
 
             actionColumnVisible: '=',
             actionColumnIcon: '=',
@@ -46,19 +49,18 @@ directivesModule.directive('stcgrid', function(){
             forciblyUpdate: '='
         },
         controller: function($scope, $filter, $cookieStore, UtilsSrvc){
-            $scope.isSelectable = $scope.selectable == true ? 'selectableMode':'';
-			$scope.searchText = '';
+            $scope.searchText = '';
             $scope.searchedColumn = {};
-			
-			var idxSearch = UtilsSrvc.getIndexes($scope.columns, 'isSearched', true);
+            
+            var idxSearch = UtilsSrvc.getIndexes($scope.columns, 'isSearched', true);
             if (idxSearch.length != 0) 
                 $scope.searchedColumn = $scope.columns[idxSearch[0]];
-			
+            
             var idxSort = UtilsSrvc.getIndexes($scope.columns, 'isSorted', true);
             if (idxSort.length != 0) 
                 $scope.sortedColumn = $scope.columns[idxSort[0]];
 
-			// Отключить кнопки навигации, если достигли последней стриницы, первой и тп
+            // Отключить кнопки навигации, если достигли последней стриницы, первой и тп
             $scope.checkNavigatorButtons = function(){
                 
                 if ($scope.pageCurr == 1){
@@ -120,9 +122,9 @@ directivesModule.directive('stcgrid', function(){
             });
 
             $scope.getRowClass = function(rowClass){
-                if ($scope.selectable)
+                //if ($scope.selectable)
                     return rowClass;
-                return '';
+               // return '';
             };
 
 
@@ -159,28 +161,42 @@ directivesModule.directive('stcgrid', function(){
             };
 
             // Выбор строки
-            $scope.select = function(item){
-                if (!$scope.selectable)
+            $scope.select = function(item, property){
+                if (!$scope.selectable || property.cellSelectable)
                     return;
-                
-                item.rowClass = 'info';
+                 
+                item.rowClass = 'success';
                 var idx = UtilsSrvc.getIndexes($scope.selectedItems, 'id', item.id);
                 
                 if (idx.length != 0){
                     $scope.selectedItems.splice(idx[0], 1);
                     item.rowClass = '';
+                    $scope.onSelect({item: null});
                 }
                 else if ($scope.multiSelectMode){
                     $scope.selectedItems.push(item);
+                    $scope.onSelect({item: item});
                 }
                 else if ($scope.selectedItems.length > 0){
                     $scope.selectedItems[0].rowClass = '';
                     $scope.selectedItems = [item];
+                    $scope.onSelect({item: item});
                 }
                 else{
                     $scope.selectedItems = [item];
+                    $scope.onSelect({item: item});
                 }
             };
+
+
+            $scope.selectCell = function(item, property){
+                if (!property.cellSelectable)
+                    return;
+
+                if (item && property && $scope.onSelectCell)
+                    $scope.onSelectCell({item: item, property: property});   
+            };
+
 
             // Клик по ячейки - действие для строки
             $scope.actionRow = function(item){
@@ -191,9 +207,10 @@ directivesModule.directive('stcgrid', function(){
                     $scope.firstRowActionMethod({item: item});   
                 }
             };
-			
-			// Обновить данные - вызов внешнего метода
+            
+            // Обновить данные - вызов внешнего метода
             $scope.updateSource = function(){
+               //console.log('$scope.updateSource'); 
                if (!$scope.sortedColumn){
                     var idx = UtilsSrvc.getIndexes($scope.columns, 'isSorted', true);
                     
@@ -210,7 +227,7 @@ directivesModule.directive('stcgrid', function(){
                                     searchText: $scope.searchText}); 
             };
 
-			// Получит значение для поля .prop1.pro1_1.porp1_1_1 и тд
+            // Получит значение для поля .prop1.pro1_1.porp1_1_1 и тд
             $scope.getPropertyValue = function(item, property){
                 if (property.calculate)
                     property.calculate(item);
@@ -221,15 +238,12 @@ directivesModule.directive('stcgrid', function(){
                     value = $scope.getFilteredValue(value, property.filter, property.filterParam);
 
                 return value;
-            }
+            } 
 
-			// Фильтрация даты
+            // Фильтрация даты
             $scope.getFilteredValue = function(value, filter, filterParam){
                 if (filter == 'date'){
                     value = $filter('convertCacheDate')(value, filterParam);
-                }
-                else if (filter == 'dateUTC'){
-                    value = $filter('convertCacheDate')(value, filterParam, true);
                 }
                 else if (filter == 'time' && value && value.length >= 5){
                     value = value.substring(0, 5);
@@ -241,7 +255,7 @@ directivesModule.directive('stcgrid', function(){
                 return value;
             };
 
-			// Выбор столбца для поиска
+            // Выбор столбца для поиска
             $scope.selectSearchColumn = function(column){
                 if ($scope.searchedColumn)
                     $scope.searchedColumn.isSearched = false;
@@ -249,20 +263,33 @@ directivesModule.directive('stcgrid', function(){
                 $scope.searchedColumn = column;
                 $scope.searchedColumn.isSearched = true;
             };
-	
-			// Поиск
+    
+            // Поиск
             $scope.search = function(){
                 if (!$scope.searchedColumn)
                     return;
                 $scope.updateSource();
             };
+
+            $scope.getCountOfVisibleColumns = function(columns){
+                var visibleCount = 0;
+                for(var i=0; i < columns.length; i++)
+                    if (!columns[i].hidden)
+                        visibleCount++;
+                
+                if ($scope.grid && $scope.grid.hideNumbersColumn){
+                    visibleCount--;
+                }
+                    
+                return visibleCount;
+            };
             
             // Принудительное обновление при смене значения извне
             $scope.$watch('forciblyUpdate', function(){
-	            if ($scope.forciblyUpdate > 0)
-	            	$scope.updateSource();
-	        });
-	   	}
+                if ($scope.forciblyUpdate > 0)
+                    $scope.updateSource();
+            });
+        }
     }
 });
 ]]></CSP>

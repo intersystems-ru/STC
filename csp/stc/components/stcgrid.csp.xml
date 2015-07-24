@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/components/stcgrid.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/components/stcgrid.csp" application="/csp/stc_loc/" default="1"><![CDATA[
  
 <table ng-class="tableClass">
     <caption class="text-left" style="padding-bottom: 10px;" ng-show="caption != ''"><b ng-bind="caption|localize"></b></caption>
@@ -54,11 +54,11 @@
             </td>
         </tr>
     </tfoot>
-    <tbody ng-class="isSelectable">
+    <tbody ng-class="{selectableMode: selectable==true}">
         <tr ng-repeat="item in items" ng-class="getRowClass(item.rowClass)">
-            <td ng-bind="$index + pageSize*(pageCurr - 1) + 1" ng-click="select(item)"></td>
-            <td ng-repeat="property in properties" ng-click="select(item)" ng-style="property.cellStyle">
-                <span ng-class="property.getCssClass(item)" ng-bind="getPropertyValue(item, property)"></span>
+            <td ng-bind="$index + pageSize*(pageCurr - 1) + 1" ng-click="select(item, {cellSelectable: false})"></td>
+            <td ng-repeat="property in properties" ng-click="select(item, property)" ng-style="property.cellStyle">
+                <span ng-class="property.getCssClass(item)" ng-bind="getPropertyValue(item, property)" ng-click="selectCell(item, property)"></span>
             </td>
             <td class="atableAction" ng-show="actionColumnVisible" ng-click="actionRow(item)">
                 <i ng-class="firstRowActionIcon"  title="{{firstRowActionTitle}}"  ng-hide="firstActionMode"></i>

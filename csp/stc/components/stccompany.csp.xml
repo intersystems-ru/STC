@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/components/stccompany.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/components/stccompany.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid">
     <div class="span6">
         <div class="control-group">
@@ -49,10 +49,16 @@
                 <input class="span12" type="text" ng-model="company.mailAddress" ng-required="requiredAll"></input>
             </div>
         </div>
-        
+        <div class="control-group" title="Integrated Student Information System ID">
+            <label class="control-label"><span ng-bind="'ISIS ID'"></span></label>
+            <div class="controls">
+                <input class="span12" type="text" ng-model="company.isisID" ></input>
+            </div>
+        </div>
         <label class="checkbox"  style="padding-top: 5px;" >
             <input type="checkbox" ng-model="company.status">{{'Университет'|localize}}
-        </label>   
+        </label> 
+        <br>  
     </div>
 
 
@@ -110,57 +116,12 @@
         <div class="control-group">
             <label class="control-label" ng-bind="'Другая информация'|localize"></label>
             <div class="controls">
-                <textarea class="span12" rows="3" ng-model="company.otherInfo"></textarea>
+                <textarea class="span12" rows="5" ng-model="company.otherInfo"></textarea>
             </div>
         </div>
       
     </div>
         
-
-<!--
-    <div class="span6">
-        <div class="control-group">
-            <label class="control-label"><span ng-bind="'Код причины постановки на учёт'|localize"></span><span ng-show="requiredAll">*</span></label>
-            <div class="controls">
-                <input class="span12" type="text" ng-model="company.kpp" ng-required="requiredAll"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"><span ng-bind="'Идентификационный номер налогоплательщика'|localize"></span><span ng-show="requiredAll">*</span></label>
-            <div class="controls">
-                <input class="span12" type="text" ng-model="company.inn" ng-required="requiredAll"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"><span ng-bind="'Основной государственный регистрационный номер'|localize"></span><span ng-show="requiredAll">*</span></label>
-            <div class="controls">
-                <input class="span12" type="text" ng-model="company.ogrn" ng-required="requiredAll"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"><span ng-bind="'Расчётный счёт'|localize"></span><span ng-show="requiredAll">*</span></label>
-            <div class="controls">
-                <input class="span12" type="text" ng-model="company.settlementAccount" ng-required="requiredAll"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"><span ng-bind="'Корреспондентский счёт'|localize"></span><span ng-show="requiredAll">*</span></label>
-            <div class="controls">
-                <input class="span12" type="text" ng-model="company.correspondentAccount" ng-required="requiredAll"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"><span ng-bind="'Банковский идентификационный код'|localize"></span><span ng-show="requiredAll">*</span></label>
-            <div class="controls">
-                <input class="span12" type="text" ng-model="company.bic" ng-required="requiredAll"></input>
-            </div>
-        </div>
-        <label class="checkbox"  style="padding-top: 5px;" >
-			<input type="checkbox" ng-model="company.status">{{'Университет'|localize}}
-		</label>      
-    </div>
-
--->
 </div>
 ]]></CSP>
 </Export>

@@ -208,9 +208,35 @@ Access code to training for teacher</Description>
 <InitialExpression>0</InitialExpression>
 </Property>
 
+<Property name="TeacherPayout">
+<Description>
+Payout for teacher</Description>
+<Type>%Float</Type>
+</Property>
+
+<Property name="IsPublic">
+<Description>
+Is public training or not (shows in calendar)</Description>
+<Type>%Boolean</Type>
+<InitialExpression>1</InitialExpression>
+</Property>
+
+<Property name="GeoLocationAddress">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
 <Index name="AccessCodeIdx">
 <Properties>AccessCode</Properties>
 <Unique>1</Unique>
+</Index>
+
+<Index name="CourseIdx">
+<Properties>Course</Properties>
+</Index>
+
+<Index name="TeacherIdx">
+<Properties>Teacher</Properties>
 </Index>
 
 <Method name="CheckDeletePrivilege">
@@ -219,11 +245,11 @@ Check delete privilege</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	SET SQLCODE=""
-	&sql(%CHECKPRIV DELETE ON Stc_Data.Training)
-	if (SQLCODE = 100) quit ##class(Stc.Utils.Msg).GetErrorStatus("NoPrivilege", " USERNAME="_$USERNAME)
-	
-	quit $$$OK
+    SET SQLCODE=""
+    &sql(%CHECKPRIV DELETE ON Stc_Data.Training)
+    if (SQLCODE = 100) quit ##class(Stc.Utils.Msg).GetErrorStatus("NoPrivilege", " USERNAME="_$USERNAME)
+    
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
@@ -233,9 +259,9 @@ Build TrainingCube and SubGroupCube</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	do ##class(%DeepSee.Utils).%BuildCube("TrainingCube",1,0)
-	do ##class(%DeepSee.Utils).%BuildCube("SubGroupCube",1,0)
-	quit $$$OK
+    do ##class(%DeepSee.Utils).%BuildCube("TrainingCube",1,0)
+    do ##class(%DeepSee.Utils).%BuildCube("SubGroupCube",1,0)
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
@@ -246,25 +272,25 @@ UpdateFact in TrainingCube and all subgroup facts in SubGroupCube</Description>
 <FormalSpec>trId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	do ##class(%DeepSee.Utils).%ProcessFact("TrainingCube",trId)
-	
-	&sql(DECLARE TrCur CURSOR FOR 
-		 	 SELECT ID 
-		 	 FROM Stc_Data.Training_SubGroups
-		 	 WHERE Training = :trId)	
-		
-	&sql(OPEN TrCur)
-	for  
-	{	
-		&sql(FETCH TrCur INTO :trSgId) 
-		quit:(SQLCODE '= 0)
-		
-		do ##class(%DeepSee.Utils).%ProcessFact("SubGroupCube",trSgId)	
-	}
-		
-	&sql(CLOSE TrCur)
-	
-	q $$$OK
+    do ##class(%DeepSee.Utils).%ProcessFact("TrainingCube",trId)
+    
+    &sql(DECLARE TrCur CURSOR FOR 
+             SELECT ID 
+             FROM Stc_Data.Training_SubGroups
+             WHERE Training = :trId)    
+        
+    &sql(OPEN TrCur)
+    for  
+    {   
+        &sql(FETCH TrCur INTO :trSgId) 
+        quit:(SQLCODE '= 0)
+        
+        do ##class(%DeepSee.Utils).%ProcessFact("SubGroupCube",trSgId)  
+    }
+        
+    &sql(CLOSE TrCur)
+    
+    q $$$OK
 ]]></Implementation>
 </Method>
 
@@ -274,64 +300,69 @@ Convert to proxyObject (for JSON)</Description>
 <FormalSpec>shortInfo:%Boolean=0</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set proxy = ##class(%ZEN.proxyObject).%New()
-	set proxy.id = ..%Id()
-	set proxy.accessCode = ..AccessCode
-	set proxy.event = ..CalendarEvent
-	set proxy.city = ..City.ConvertToProxyObject()
-	set proxy.course = ..Course.ConvertToProxyObject(1)
-	set proxy.teacher = ..Teacher.ConvertToProxyObject()
-	set proxy.dateStart = $ZDATE(..DateStart, 3)
-	set proxy.dateFinish = $ZDATE(..DateFinish, 3)
-	set proxy.isCompleted = ..IsCompleted	
-	set proxy.isCertificatesDone = ..IsCertificatesDone
-	
-	set proxy.timeStart = $e(##class(%Library.Time).LogicalToDisplay(..TimeStart), 1, 5)
-	set proxy.timeFinish = $e(##class(%Library.Time).LogicalToDisplay(..TimeFinish), 1, 5)
-	set proxy.timeStartFinish = proxy.timeStart_" - "_proxy.timeFinish
-	
-	set proxy.otherInfo = ..OtherInfo.Value
-	set proxy.room = ..Room
-	set proxy.address = ##class(%ZEN.proxyObject).%New()
-	set proxy.address.title = ..Street.Value
-	set proxy.address.point = ..Longitude_" "_..Latitude
-	set proxy.isStudentsAutoMailing = ..IsStudentsAutoMailing
-	set proxy.isTeacherAutoMailing = ..IsTeacherAutoMailing
-	set proxy.isCuratorAutoMailing = ..IsCuratorAutoMailing
-	set proxy.isFeedBackAutoMailing = ..IsFeedBackAutoMailing
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    set proxy.id = ..%Id()
+    set proxy.accessCode = ..AccessCode
+    set proxy.event = ..CalendarEvent
+    set proxy.city = ..City.ConvertToProxyObject()
+    set proxy.course = ..Course.ConvertToProxyObject(1)
+    set proxy.teacher = ..Teacher.ConvertToProxyObject()
+    set proxy.dateStart = $ZDATE(..DateStart, 3)
+    set proxy.dateFinish = $ZDATE(..DateFinish, 3)
+    set proxy.isCompleted = ..IsCompleted   
+    set proxy.isCertificatesDone = ..IsCertificatesDone
+    set proxy.isPublic = ..IsPublic
+    
+    set proxy.timeStart = $e(##class(%Library.Time).LogicalToDisplay(..TimeStart), 1, 5)
+    set proxy.timeFinish = $e(##class(%Library.Time).LogicalToDisplay(..TimeFinish), 1, 5)
+    set proxy.timeStartFinish = proxy.timeStart_" - "_proxy.timeFinish
+    
+    set proxy.otherInfo = ..OtherInfo.Value
+    set proxy.room = ..Room
+    set proxy.street = ..Street.Value
+    
+    set proxy.address = ##class(%ZEN.proxyObject).%New()
+    set proxy.address.title = ..GeoLocationAddress
+    set proxy.address.point = ..Longitude_" "_..Latitude
+    set proxy.isStudentsAutoMailing = ..IsStudentsAutoMailing
+    set proxy.isTeacherAutoMailing = ..IsTeacherAutoMailing
+    set proxy.isCuratorAutoMailing = ..IsCuratorAutoMailing
+    set proxy.isFeedBackAutoMailing = ..IsFeedBackAutoMailing
 
-	if (shortInfo = 1) quit proxy
-	
-	set proxy.curator = ##class(%ZEN.proxyObject).%New() 
-	set proxy.curator.fullName = ..CuratorFullName.Value
-	set proxy.curator.email = ..CuratorEmail
-	set proxy.curator.phone = ..CuratorPhone
-	set proxy.curator.phoneSecret = ..CuratorPhoneSecret
-	
-	set proxy.feedBacks = ##class(%ZEN.proxyObject).%New()
-	set proxy.feedBacks.count = ..FeedBacks.Count()
-	
-	set proxy.certificates = 0
-	&sql(SELECT COUNT(ID) INTO :proxy.certificates FROM Stc_Data.Certificate WHERE Training = :proxy.id)
-	
-	set proxy.newStudents = ..NewStudents.Count()
-	set proxy.sgroups = ..SubGroups.Count()
-	set proxy.students = 0
+    if (shortInfo = 1) quit proxy
+    
+    set proxy.curator = ##class(%ZEN.proxyObject).%New() 
+    set proxy.curator.fullName = ..CuratorFullName.Value
+    set proxy.curator.email = ..CuratorEmail
+    set proxy.curator.phone = ..CuratorPhone
+    set proxy.curator.phoneSecret = ..CuratorPhoneSecret
+    
+    set proxy.feedBacks = ##class(%ZEN.proxyObject).%New()
+    set proxy.feedBacks.count = ..FeedBacks.Count()
+    
+    set proxy.certificates = 0
+    &sql(SELECT COUNT(ID) INTO :proxy.certificates FROM Stc_Data.Certificate WHERE Training = :proxy.id)
+    
+    set proxy.newStudents = ..NewStudents.Count()
+    set proxy.sgroups = ..SubGroups.Count()
+    set proxy.students = 0
 
-	set key = ""
-	for i=1:1:..SubGroups.Count(){
-		set key = ..SubGroups.Next(key)
-		set sgroup = ..SubGroups.GetAt(key)
-		
-		set proxy.students = proxy.students + sgroup.Students.Count()
-	}
-	
-	// Training's cost and currency
-	set proxy.cost = ##class(%ZEN.proxyObject).%New()
-	set proxy.cost.price = ..Course.Price
-	set proxy.cost.currency = ..Course.Currency.ConvertToProxyObject()
-	
-	quit proxy
+    set key = ""
+    for i=1:1:..SubGroups.Count(){
+        set key = ..SubGroups.Next(key)
+        set sgroup = ..SubGroups.GetAt(key)
+        
+        set proxy.students = proxy.students + sgroup.Students.Count()
+    }
+    
+    // Training's cost and currency
+    set proxy.cost = ##class(%ZEN.proxyObject).%New()
+    set proxy.cost.price = ..Course.Price
+    set proxy.cost.currency = ..Course.Currency.ConvertToProxyObject()
+    
+    set proxy.payout = ..TeacherPayout
+    
+    quit proxy
 ]]></Implementation>
 </Method>
 
@@ -342,58 +373,62 @@ Create or save modified training</Description>
 <FormalSpec><![CDATA[data:%RegisteredObject,&status]]></FormalSpec>
 <ReturnType>Training</ReturnType>
 <Implementation><![CDATA[
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
-	"ID="_data.id_
-	"; CourseID="_data.course.id_
-	"; CityID="_data.city.id_
-	"; TeacherID="_data.teacher.id_
-	"; CuratorFullName="_$ZCONVERT(data.curator.fullName, "I","UTF8")_
-	"; CuratorEmail="_data.curator.email_
-	"; CuratorPhone="_data.curator.phone_
-	"; DateStart="_data.dateStart_
-	"; DateFinish="_data.dateFinish_
-	"; Street="_$ZCONVERT(data.address.title, "I","UTF8")_
-	"; Point="_data.address.point_
-	"; OtherInfo="_$ZCONVERT(data.otherInfo, "I","UTF8"))
-	
-	if (data.id = ""){
-		set tr = ..%New()
-		set tr.CreatedTS = $ZDT($ZTS, 3)
-		set tr.CuratorFullName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.curator.fullName, "I","UTF8"),"Stc.Data.Localization.Translation;PersonLTextValue")
-		set tr.CuratorEmail = data.curator.email
-		set tr.CuratorPhone = data.curator.phone
-		
-		set tr.Street = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.address.title, "I","UTF8"))
-		set tr.OtherInfo = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.otherInfo, "I","UTF8"))
-		set tr.AccessCode = $SYSTEM.Util.CreateGUID()
-	}
-	else{
-		set tr = ..%OpenId(data.id)
-		set tr.CuratorFullName.Value = $ZCONVERT(data.curator.fullName, "I","UTF8")
-		set tr.Street.Value = $ZCONVERT(data.address.title, "I","UTF8")
-		set tr.OtherInfo.Value = $ZCONVERT(data.otherInfo, "I","UTF8")
-	}
-	
-	set tr.CuratorEmail = data.curator.email
-	set tr.CuratorPhone = data.curator.phone
-	set tr.CuratorPhoneSecret = data.curator.phoneSecret
-	set tr.IsCertificatesDone = data.isCertificatesDone = $$$YES
-		
-		
-	set tr.DateFinish = $ZDATEH(data.dateFinish, 15)
-	set tr.DateStart = $ZDATEH(data.dateStart, 15)
-	set tr.TimeFinish = ##class(%Library.Time).DisplayToLogical(data.timeFinish)
-	set tr.TimeStart = ##class(%Library.Time).DisplayToLogical(data.timeStart)
-	set tr.Room = $ZCONVERT(data.room, "I","UTF8")
-	set tr.Latitude = $p(data.address.point, " ", 2)
-	set tr.Longitude = $p(data.address.point, " ", 1)
-	
-	set tr.Course = ##class(Course).%OpenId(data.course.id)
-	set tr.Teacher = tr.Course.Teachers.GetAt(data.teacher.id) // ##class(Person).%OpenId(data.teacher.id)
-	set tr.City = ##class(Region).%OpenId(data.city.id)
-	
-	set status = tr.%Save()
-	quit tr
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
+    "ID="_data.id_
+    "; CourseID="_data.course.id_
+    "; CityID="_data.city.id_
+    "; TeacherID="_data.teacher.id_
+    "; CuratorFullName="_$ZCONVERT(data.curator.fullName, "I","UTF8")_
+    "; CuratorEmail="_data.curator.email_
+    "; CuratorPhone="_data.curator.phone_
+    "; DateStart="_data.dateStart_
+    "; DateFinish="_data.dateFinish_
+    "; Street="_$ZCONVERT(data.street, "I","UTF8")_
+    "; Point="_data.address.point_
+    "; OtherInfo="_$ZCONVERT(data.otherInfo, "I","UTF8")_
+    "; Payout="_data.payout)
+    
+    if (data.id = ""){
+        set tr = ..%New()
+        set tr.CreatedTS = $ZDT($ZTS, 3)
+        set tr.CuratorFullName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.curator.fullName, "I","UTF8"),"Stc.Data.Localization.Translation;PersonLTextValue")
+        set tr.CuratorEmail = data.curator.email
+        set tr.CuratorPhone = data.curator.phone
+        
+        set tr.Street = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.street, "I","UTF8"))
+        set tr.OtherInfo = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.otherInfo, "I","UTF8"))
+        set tr.AccessCode = $SYSTEM.Util.CreateGUID()
+    }
+    else{
+        set tr = ..%OpenId(data.id)
+        set tr.CuratorFullName.Value = $ZCONVERT(data.curator.fullName, "I","UTF8")
+        set tr.Street.Value = $ZCONVERT(data.street, "I","UTF8")
+        set tr.OtherInfo.Value = $ZCONVERT(data.otherInfo, "I","UTF8")
+    }
+    
+    set tr.GeoLocationAddress = $ZCONVERT(data.address.title, "I","UTF8")
+    set tr.CuratorEmail = data.curator.email
+    set tr.CuratorPhone = $ZCONVERT(data.curator.phone, "I","UTF8")
+    set tr.CuratorPhoneSecret = data.curator.phoneSecret
+    set tr.IsCertificatesDone = data.isCertificatesDone = $$$YES
+    set tr.IsPublic = data.isPublic = $$$YES    
+        
+    set tr.DateFinish = $ZDATEH(data.dateFinish, 15)
+    set tr.DateStart = $ZDATEH(data.dateStart, 15)
+    set tr.TimeFinish = ##class(%Library.Time).DisplayToLogical(data.timeFinish)
+    set tr.TimeStart = ##class(%Library.Time).DisplayToLogical(data.timeStart)
+    set tr.Room = $ZCONVERT(data.room, "I","UTF8")
+    set tr.Latitude = $p(data.address.point, " ", 2)
+    set tr.Longitude = $p(data.address.point, " ", 1)
+    
+    set tr.Course = ##class(Course).%OpenId(data.course.id)
+    set tr.Teacher = tr.Course.Teachers.GetAt(data.teacher.id) // ##class(Person).%OpenId(data.teacher.id)
+    set tr.City = ##class(Region).%OpenId(data.city.id)
+    
+    set tr.TeacherPayout = data.payout
+    
+    set status = tr.%Save()
+    quit tr
 ]]></Implementation>
 </Method>
 
@@ -403,17 +438,17 @@ Delete subgroup from training, without deleting students</Description>
 <FormalSpec>sgId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	do ..SubGroups.RemoveAt(sgId)
-	
-	set sgroup = ##class(Stc.Data.SubGroup).%OpenId(sgId)
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(sgroup.SignerFullName.%Id())
-	quit:$$$ISERR(st) st
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(sgroup.DocumentInfo.%Id())
-	quit:$$$ISERR(st) st
-	
-	quit ##class(Stc.Data.SubGroup).%DeleteId(sgId)
+    do ..SubGroups.RemoveAt(sgId)
+    
+    set sgroup = ##class(Stc.Data.SubGroup).%OpenId(sgId)
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(sgroup.SignerFullName.%Id())
+    quit:$$$ISERR(st) st
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(sgroup.DocumentInfo.%Id())
+    quit:$$$ISERR(st) st
+    
+    quit ##class(Stc.Data.SubGroup).%DeleteId(sgId)
 ]]></Implementation>
 </Method>
 
@@ -422,23 +457,23 @@ Delete subgroup from training, without deleting students</Description>
 Create certificates for all students</Description>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set listOfStudents = ##class(%ListOfObjects).%New()
-	
-	set keyGr = ""
-	for i=1:1:..SubGroups.Count(){
-		set keyGr = ..SubGroups.Next(keyGr)
-		set sgroup = ..SubGroups.GetAt(keyGr)
-			
-		set keySt = ""
-		for j=1:1:sgroup.Students.Count(){
-			set keySt = sgroup.Students.Next(keySt)
-			set student = sgroup.Students.GetAt(keySt)
-				
-			do listOfStudents.Insert(student)
-		}
-	}
-	
-	quit ##class(Stc.Data.Certificate).CreateAll($this, listOfStudents)
+    set listOfStudents = ##class(%ListOfObjects).%New()
+    
+    set keyGr = ""
+    for i=1:1:..SubGroups.Count(){
+        set keyGr = ..SubGroups.Next(keyGr)
+        set sgroup = ..SubGroups.GetAt(keyGr)
+            
+        set keySt = ""
+        for j=1:1:sgroup.Students.Count(){
+            set keySt = sgroup.Students.Next(keySt)
+            set student = sgroup.Students.GetAt(keySt)
+                
+            do listOfStudents.Insert(student)
+        }
+    }
+    
+    quit ##class(Stc.Data.Certificate).CreateAll($this, listOfStudents)
 ]]></Implementation>
 </Method>
 
@@ -449,30 +484,30 @@ Delete training with applications</Description>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set st = $$$OK
-	
-	set training = ..%OpenId(id, 4)
-	
-	set key = ""
-	for i=1:1:training.NewStudents.Count(){
-		set key = training.NewStudents.Next(key)
-		set order = training.NewStudents.GetAt(key)
-		set st = ##class(Stc.Data.OrderNewStudent).Delete(order.%Id())
-		if $$$ISERR(st) RETURN st
-	}
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(training.CuratorFullName.%Id())
-	quit:$$$ISERR(st) st
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(training.Street.%Id())
-	quit:$$$ISERR(st) st
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(training.OtherInfo.%Id())
-	quit:$$$ISERR(st) st
-	
-	kill training
-	
-	quit ..%DeleteId(id, 4)
+    set st = $$$OK
+    
+    set training = ..%OpenId(id, 4)
+    
+    set key = ""
+    for i=1:1:training.NewStudents.Count(){
+        set key = training.NewStudents.Next(key)
+        set order = training.NewStudents.GetAt(key)
+        set st = ##class(Stc.Data.OrderNewStudent).Delete(order.%Id())
+        if $$$ISERR(st) RETURN st
+    }
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(training.CuratorFullName.%Id())
+    quit:$$$ISERR(st) st
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(training.Street.%Id())
+    quit:$$$ISERR(st) st
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(training.OtherInfo.%Id())
+    quit:$$$ISERR(st) st
+    
+    kill training
+    
+    quit ..%DeleteId(id, 4)
 ]]></Implementation>
 </Method>
 
@@ -482,87 +517,88 @@ Add person to training, subgroup is detirmining automatically</Description>
 <FormalSpec>personId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set status = $$$OK
-	
-	set trainingId = ..%Id()
-	
-	// Search student in training to avoid situation, 
-	// when student in two different subgroups of one training
-	set contains = 0
-	&sql(SELECT COUNT(ID) INTO :contains
-		 FROM Stc_Data.SubGroup_Students
-		 WHERE SubGroup IN (SELECT $PIECE(ID,'||',2) 
-		 					FROM Stc_Data.Training_SubGroups 
-		 					WHERE Training = :trainingId) 
-		 				AND Students = :personId)
-	
-	 
-	if (contains '= 0) quit ##class(Stc.Utils.Msg).GetErrorStatus("personContainsInTraining")
-	
-	// If training has no this person, maybe training his organization's subgroup
-	set person = ##class(Stc.Data.Person).%OpenId(personId)
-	set personCompanyId = person.Company.%Id()
-	set sgroupId = ""
-	
-	&sql(SELECT $PIECE(ID,'||',2) INTO :sgroupId FROM Stc_Data.Training_SubGroups WHERE Training = :trainingId AND SubGroups->Payer = :personCompanyId)
-	
-	if (sgroupId = ""){
-		// If training has no organization's subgroup, create subgroup and add person to it
-		set array = ##class(%ArrayOfObjects).%New()
-		do array.SetAt(person, personId)
-		set sgroup = ##class(Stc.Data.SubGroup).Create(person.Company, array, ..Course, .status)
-		
-		if $$$ISERR(status) quit status
-		
-		do ..SubGroups.SetAt(sgroup, sgroup.%Id())
-	}
-	else{
-		// If training has organization's subgroup, just add person to it
-		set group = ..SubGroups.GetAt(sgroupId)
-		do group.Students.SetAt(person, personId)
-		set status = group.%Save()
-		
-		if $$$ISERR(status) quit status
-	}
-	
-	quit status
+    set status = $$$OK
+    
+    set trainingId = ..%Id()
+    
+    // Search student in training to avoid situation, 
+    // when student in two different subgroups of one training
+    set contains = 0
+    &sql(SELECT COUNT(ID) INTO :contains
+         FROM Stc_Data.SubGroup_Students
+         WHERE SubGroup IN (SELECT $PIECE(ID,'||',2) 
+                            FROM Stc_Data.Training_SubGroups 
+                            WHERE Training = :trainingId) 
+                        AND Students = :personId)
+    
+     
+    if (contains '= 0) quit ##class(Stc.Utils.Msg).GetErrorStatus("personContainsInTraining")
+    
+    // If training has no this person, maybe training his organization's subgroup
+    set person = ##class(Stc.Data.Person).%OpenId(personId)
+    set personCompanyId = person.Company.%Id()
+    set sgroupId = ""
+    
+    &sql(SELECT $PIECE(ID,'||',2) INTO :sgroupId FROM Stc_Data.Training_SubGroups WHERE Training = :trainingId AND SubGroups->Payer = :personCompanyId)
+    
+    if (sgroupId = ""){
+        // If training has no organization's subgroup, create subgroup and add person to it
+        set array = ##class(%ArrayOfObjects).%New()
+        do array.SetAt(person, personId)
+        set sgroup = ##class(Stc.Data.SubGroup).Create(person.Company, array, ..Course, .status)
+        
+        if $$$ISERR(status) quit status
+        
+        do ..SubGroups.SetAt(sgroup, sgroup.%Id())
+    }
+    else{
+        // If training has organization's subgroup, just add person to it
+        set group = ..SubGroups.GetAt(sgroupId)
+        do group.Students.SetAt(person, personId)
+        set status = group.%Save()
+        
+        if $$$ISERR(status) quit status
+    }
+    
+    quit status
 ]]></Implementation>
 </Method>
 
 <Method name="ConvertToProxyObjectForPublic">
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set proxy = ##class(%ZEN.proxyObject).%New()
-	set proxy.id = ..%Id()
-	set proxy.city = ..City.ConvertToProxyObject()
-	set proxy.course = ..Course.ConvertToProxyObject()
-	set proxy.teacher = ..Teacher.ConvertToProxyObject()
-	set proxy.teacher.phone = ""
-	set proxy.teacher.company = ""
-	
-	set proxy.dateStart = $ZDATE(..DateStart, 3)
-	set proxy.dateFinish = $ZDATE(..DateFinish, 3)
-	set proxy.dateGoogleCalendar = $REPLACE($ZD(..DateStart, 3)_"/"_$ZD(..DateFinish+1, 3), "-", "")
-	
-	set proxy.isCompleted = ..IsCompleted	
-	
-	set proxy.timeStart = $e(##class(%Library.Time).LogicalToDisplay(..TimeStart), 1, 5)
-	set proxy.timeFinish = $e(##class(%Library.Time).LogicalToDisplay(..TimeFinish), 1, 5)
-	
-	set proxy.otherInfo = ..OtherInfo.Value
-	set proxy.room = ..Room
-	set proxy.address = ##class(%ZEN.proxyObject).%New()
-	set proxy.address.title = ..Street.Value
-	set proxy.address.point = ..Longitude_" "_..Latitude
-	set proxy.address.lat = ..Latitude
-	set proxy.address.lng = ..Longitude
-	
-	set proxy.curator = ##class(%ZEN.proxyObject).%New() 
-	set proxy.curator.fullName = ..CuratorFullName.Value
-	set proxy.curator.email = ..CuratorEmail
-	set proxy.curator.phone = ..CuratorPhone
-	
-	quit proxy
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    set proxy.id = ..%Id()
+    set proxy.city = ..City.ConvertToProxyObject()
+    set proxy.course = ..Course.ConvertToProxyObject()
+    set proxy.teacher = ..Teacher.ConvertToProxyObject()
+    set proxy.teacher.phone = ""
+    set proxy.teacher.company = ""
+    set proxy.street = ..Street.Value
+    
+    set proxy.dateStart = $ZDATE(..DateStart, 3)
+    set proxy.dateFinish = $ZDATE(..DateFinish, 3)
+    set proxy.dateGoogleCalendar = $REPLACE($ZD(..DateStart, 3)_"/"_$ZD(..DateFinish+1, 3), "-", "")
+    
+    set proxy.isCompleted = ..IsCompleted   
+    
+    set proxy.timeStart = $e(##class(%Library.Time).LogicalToDisplay(..TimeStart), 1, 5)
+    set proxy.timeFinish = $e(##class(%Library.Time).LogicalToDisplay(..TimeFinish), 1, 5)
+    
+    set proxy.otherInfo = ..OtherInfo.Value
+    set proxy.room = ..Room
+    set proxy.address = ##class(%ZEN.proxyObject).%New()
+    set proxy.address.title = ..Street.Value
+    set proxy.address.point = ..Longitude_" "_..Latitude
+    set proxy.address.lat = ..Latitude
+    set proxy.address.lng = ..Longitude
+    
+    set proxy.curator = ##class(%ZEN.proxyObject).%New() 
+    set proxy.curator.fullName = ..CuratorFullName.Value
+    set proxy.curator.email = ..CuratorEmail
+    set proxy.curator.phone = ..CuratorPhone
+    
+    quit proxy
 ]]></Implementation>
 </Method>
 
@@ -571,52 +607,52 @@ Add person to training, subgroup is detirmining automatically</Description>
 <FormalSpec>tr:Stc.Data.Training</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set descr = ""
-	
-	try{
-		/*
-			<a href='http://%1'>Программа курса</a><br><br>
-			<a href='http://%2'>Записаться на обучение</a><br><br>
-			Место проведения:<br>
-			%3<br><br>
-			Преподаватель:<br>
-			%4<br><br>
-			Время проведения: %5<br>
-			%6%7
-		*/
-		
-		set pattern = ##class(Stc.Utils.Msg).GetMsg("CalendarEvent")
-		set urlJoin = ##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/order" 
-		set urlCourse = tr.Course.ProgramUrl
-		set cityFullName = tr.City.Name.Value_", "_tr.City.ParentRegion.Name.Value_", "_tr.City.ParentRegion.ParentRegion.Name.Value
-		set street = tr.Street.Value
-		set room = tr.Room
-		set time = $e(##class(%Library.Time).LogicalToDisplay(tr.TimeStart), 1, 5)_" - "_$e(##class(%Library.Time).LogicalToDisplay(tr.TimeFinish), 1, 5)
-		set teacherData = tr.Teacher.LastName.Value_" "_tr.Teacher.FirstName.Value_", "_tr.Teacher.Email								
-		set curatorData = ""
-		
-		if (tr.CuratorFullName.Value '= ""){
-			set curatorData = "<br>"_##class(Stc.Utils.Msg).GetMsg("contactPerson")_":<br>"_tr.CuratorFullName.Value
-			
-			if (tr.CuratorPhone '= ""){
-				set curatorData = curatorData_", "_tr.CuratorPhone
-			}
-			
-			set curatorData = curatorData_"<br>"
-		}
-					
-		set otherInfoData = ""
-		if (tr.OtherInfo.Value '= ""){
-			set otherInfoData = "<br>"_tr.OtherInfo.Value
-		}
-					
-		set descr = ##class(%MessageDictionary).FormatText(pattern, urlCourse, urlJoin, cityFullName_"<br>"_street_", "_room, teacherData, time, curatorData, otherInfoData)
-	}
-	catch(ex){
-		set descr = ex.AsStatus()
-	}
-	
-	quit descr
+    set descr = ""
+    
+    try{
+        /*
+            <a href='http://%1'>Программа курса</a><br><br>
+            <a href='http://%2'>Записаться на обучение</a><br><br>
+            Место проведения:<br>
+            %3<br><br>
+            Преподаватель:<br>
+            %4<br><br>
+            Время проведения: %5<br>
+            %6%7
+        */
+        
+        set pattern = ##class(Stc.Utils.Msg).GetMsg("CalendarEvent")
+        set urlJoin = ##class(Stc.Data.Settings).GetWebAppDomain()_"/stc/index.csp#/training/"_tr.%Id()_"/order" 
+        set urlCourse = tr.Course.ProgramUrl
+        set cityFullName = tr.City.Name.Value_", "_tr.City.ParentRegion.Name.Value_", "_tr.City.ParentRegion.ParentRegion.Name.Value
+        set street = tr.Street.Value
+        set room = tr.Room
+        set time = $e(##class(%Library.Time).LogicalToDisplay(tr.TimeStart), 1, 5)_" - "_$e(##class(%Library.Time).LogicalToDisplay(tr.TimeFinish), 1, 5)
+        set teacherData = tr.Teacher.LastName.Value_" "_tr.Teacher.FirstName.Value_", "_tr.Teacher.Email                                
+        set curatorData = ""
+        
+        if (tr.CuratorFullName.Value '= ""){
+            set curatorData = "<br>"_##class(Stc.Utils.Msg).GetMsg("contactPerson")_":<br>"_tr.CuratorFullName.Value
+            
+            if (tr.CuratorPhone '= ""){
+                set curatorData = curatorData_", "_tr.CuratorPhone
+            }
+            
+            set curatorData = curatorData_"<br>"
+        }
+                    
+        set otherInfoData = ""
+        if (tr.OtherInfo.Value '= ""){
+            set otherInfoData = "<br>"_tr.OtherInfo.Value
+        }
+                    
+        set descr = ##class(%MessageDictionary).FormatText(pattern, urlCourse, urlJoin, cityFullName_"<br>"_street_", "_room, teacherData, time, curatorData, otherInfoData)
+    }
+    catch(ex){
+        set descr = ex.AsStatus()
+    }
+    
+    quit descr
 ]]></Implementation>
 </Method>
 
@@ -625,34 +661,114 @@ Add person to training, subgroup is detirmining automatically</Description>
 <FormalSpec>trId:%String</FormalSpec>
 <ReturnType>%ListOfObjects</ReturnType>
 <Implementation><![CDATA[
-	set contacts = ##class(%ListOfObjects).%New()
-	
-	&sql(DECLARE TrStudEmCur CURSOR FOR 
-			 	 SELECT Students As ID, Students->FullName As FullName, Students->Email 
-			 	 FROM Stc_Data.SubGroup_Students
-			 	 WHERE SubGroup IN (SELECT SubGroups FROM Stc_Data.Training_SubGroups WHERE Training = :trId)
-			 	 ORDER BY FullName)	
-			
-	&sql(OPEN TrStudEmCur)
-	for  
-	{	
-		&sql(FETCH TrStudEmCur INTO :id, :fullName, :email) 
-		quit:(SQLCODE '= 0)
-		set item = ##class(%ZEN.proxyObject).%New()
-		set item.id = id
-		set item.name = fullName
-		set item.email = email
-		do contacts.Insert(item)	
-	}
-	&sql(CLOSE TrStudEmCur)
-	
-	quit contacts
+    set contacts = ##class(%ListOfObjects).%New()
+    
+    &sql(DECLARE TrStudEmCur CURSOR FOR 
+                 SELECT Students As ID, Students->FullName As FullName, Students->Email 
+                 FROM Stc_Data.SubGroup_Students
+                 WHERE SubGroup IN (SELECT SubGroups FROM Stc_Data.Training_SubGroups WHERE Training = :trId)
+                 ORDER BY FullName) 
+            
+    &sql(OPEN TrStudEmCur)
+    for  
+    {   
+        &sql(FETCH TrStudEmCur INTO :id, :fullName, :email) 
+        quit:(SQLCODE '= 0)
+        set item = ##class(%ZEN.proxyObject).%New()
+        set item.id = id
+        set item.name = fullName
+        set item.email = email
+        do contacts.Insert(item)    
+    }
+    &sql(CLOSE TrStudEmCur)
+    
+    quit contacts
 ]]></Implementation>
 </Method>
 
 <Method name="GetAccessCodeForFeedbackList">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	quit $REPLACE($SYSTEM.Encryption.Base64Encode($SYSTEM.Encryption.MD5Hash(..AccessCode_..Teacher.Email)), "/", "")
+<Implementation><![CDATA[    quit $REPLACE($SYSTEM.Encryption.Base64Encode($SYSTEM.Encryption.MD5Hash(..AccessCode_..Teacher.Email)), "/", "")
+]]></Implementation>
+</Method>
+
+<Method name="GetTeacherPayout">
+<Description>
+Get teacher payout for training</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[trainingId:%String,teacherId:%String,&resultData:%ZEN.proxyObject]]></FormalSpec>
+<ReturnType>%Float</ReturnType>
+<Implementation><![CDATA[
+    /* 
+    Формула расчета: p = Y * x * v * h; Y = 1 + (y1-1) + (y2-1) + (y3-1) <= 1.5
+    v - стоимость нормочаса обучения - величина v
+    x - Коэф. сложности курса 
+    h - Продолжительность курса в часах
+    y1 - количество обучений любых курсов этого преподавателя за последний год до обучения. изменяется от 0.8 до 1.1 с шагом 0.1
+    y2 - опыт обучений именно этого курса за всю историю. Изменяется от 0.75 до 1.25 c шагом 0.05. Если это первое обучение этому курсу в жизни, то y2=0.75
+    y3 - рейтинг преподавателя по отзывам слушателей. Отзывы ставят оценки. Учитывается средняя оценка именно по этому курсу.Оценки меняются от 1 до 5. коэффициент меняется от 0,9 до 1.1 в пропорции.
+    */
+    
+    set tr = ..%OpenId(trainingId)
+    set trDateStart = tr.DateStart
+    set trCourseId = tr.Course.%Id()
+    
+    set (Y, y1, y2, y3) = 0
+    
+    // 1. Количество любых обучений за последний год
+    &sql(SELECT %NOLOCK COUNT(ID) INTO :y1
+         FROM Stc_Data.Training
+         WHERE ID <> :trainingId AND 
+               Teacher = :teacherId AND 
+               DateFinish >= (:trDateStart - 365) AND 
+               DateStart <= :trDateStart)
+    
+    set y1 = 0.8 + (y1 * 0.1)
+    if (y1 > 1.1) set y1 = 1.1
+    
+    // 2. Количество обучений этого курса за всё время
+    &sql(SELECT %NOLOCK COUNT(ID) INTO :y2
+         FROM Stc_Data.Training
+         WHERE ID <> :trainingId AND 
+               Teacher = :teacherId AND 
+               Course = :trCourseId)
+    
+    set y2 = 0.75 + (y2 * 0.05)
+    if (y2 > 1.25) set y2 = 1.25
+    
+    // 3. Средняя оценка по курсу (отзывы)
+    &sql(SELECT ROUND(AVG(Rating), 2) INTO :y3 
+         FROM Stc_Data.FeedBack 
+         WHERE Training <> :trainingId AND 
+               Training->Course = :trCourseId AND 
+               Training->Teacher = :teacherId)
+    
+    // 2,3,4,5; колы не учитываем
+    if (+y3 '= 0){
+        set y3 = ((y3 - 1) * 0.05) + 0.9
+    }
+    else{
+        // Ну если нет отзывов вообще
+        set y3 = 1
+    }
+    
+    set Y = $NORMALIZE(1 + (y1-1) + (y2-1) + (y3-1), 2)
+    set P = Y * tr.Course.DifficultyCoefficient * tr.Course.HourPayout * tr.Course.Hours
+    set PRound = $NORMALIZE(((P + 49)/100), 0) * 100 // Округление до сотни в сторону увеличения
+    
+    set resultData = ##class(%ZEN.proxyObject).%New()
+    set resultData.P = P
+    set resultData.PRound = PRound
+    set resultData.Y = Y
+    set resultData.y1 = y1
+    set resultData.y2 = y2
+    set resultData.y3 = y3
+    set resultData.x = tr.Course.DifficultyCoefficient
+    set resultData.v = tr.Course.HourPayout
+    set resultData.h = tr.Course.Hours
+    set resultData.currency = tr.Course.Currency.Name.Value
+   
+    quit PRound
 ]]></Implementation>
 </Method>
 
@@ -759,6 +875,15 @@ Add person to training, subgroup is detirmining automatically</Description>
 </Value>
 <Value name="30">
 <Value>IsCertificatesDone</Value>
+</Value>
+<Value name="31">
+<Value>TeacherPayout</Value>
+</Value>
+<Value name="32">
+<Value>IsPublic</Value>
+</Value>
+<Value name="33">
+<Value>GeoLocationAddress</Value>
 </Value>
 </Data>
 </Storage>

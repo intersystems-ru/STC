@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/certificates.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/certificates.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid" style="padding-bottom: 5px;">
 	<div class="span10 offset1">
 		<span ng-bind="'Сертификаты'|localize" style="font-weight: bold;"></span>
@@ -70,7 +70,7 @@
 				<div class="span6">
 					<p><span class="spnTitle" ng-bind="'Курс'|localize"                      ></span>: <span ng-bind="cert.selectedItems[0].training.course.name"></span></p>
 					<p><span class="spnTitle" ng-bind="'Место обучения'|localize"            ></span>: <span ng-bind="cert.selectedItems[0].training.city.name + ', ' + cert.selectedItems[0].training.city.parentName + ', ' + cert.selectedItems[0].training.city.greatParentName"></span></p>
-					<p><span class="spnTitle" ng-bind="'Адрес'|localize"                     ></span>: <span ng-bind="cert.selectedItems[0].training.address.title"></span></p>
+					<p><span class="spnTitle" ng-bind="'Адрес'|localize"                     ></span>: <span ng-bind="cert.selectedItems[0].training.street"></span></p>
 					<p><span class="spnTitle" ng-bind="'Дата начала обучения'|localize"      ></span>: <span ng-bind="cert.selectedItems[0].training.dateStart|convertCacheDate:('d MMMM y'|localize)"></span></p>
 					<p><span class="spnTitle" ng-bind="'Дата окончания обучения'|localize"   ></span>: <span ng-bind="cert.selectedItems[0].training.dateFinish|convertCacheDate:('d MMMM y'|localize)"></span></p>
 					<a target="_blank" style="text-decoration: none;" ng-href="{{'#/training/' + cert.selectedItems[0].training.id}}"><i ng-bind="'Перейти к обучению'|localize"></i></a></p>

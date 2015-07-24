@@ -14,367 +14,375 @@ Private request processor for administrator</Description>
 <XData name="UrlMap">
 <Data><![CDATA[
 <Routes>
-	<!-- ================================================================================================================================== -->
-	<!-- COURSE                                                                                                                      COURSE -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Save or create course -->
-	<Route Method="POST" Url="/json/course" Call="Stc.Web.JsonAdmin:SaveCourse"/>
-	
-	<!-- Get course -->
-	<Route Method="GET" Url="/json/course/:id" Call="Stc.Web.JsonAdmin:GetCourse"/>	
-	
-	<!-- Mark/unmark course as unused -->
-	<Route Method="POST" Url="/json/course/:id/inverseStatus" Call="Stc.Web.JsonAdmin:ChangeCourseStatus"/>	
-	
-	<!-- Get all teachers of course -->
-	<Route Method="GET" Url="/json/course/:courseId/teacher" Call="Stc.Web.JsonAdmin:GetCourseTeachers"/>
-	
-	<!-- Assign teacher to course -->
-	<Route Method="POST" Url="/json/course/:courseId/teacher" Call="Stc.Web.JsonAdmin:CreateCourseTeacher"/>
+    <!-- ================================================================================================================================== -->
+    <!-- COURSE                                                                                                                      COURSE -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Save or create course -->
+    <Route Method="POST" Url="/json/course" Call="Stc.Web.JsonAdmin:SaveCourse"/>
+    
+    <!-- Get course -->
+    <Route Method="GET" Url="/json/course/:id" Call="Stc.Web.JsonAdmin:GetCourse"/> 
+    
+    <!-- Mark/unmark course as unused -->
+    <Route Method="POST" Url="/json/course/:id/inverseStatus" Call="Stc.Web.JsonAdmin:ChangeCourseStatus"/> 
+    
+    <!-- Get all teachers of course -->
+    <Route Method="GET" Url="/json/course/:courseId/teacher" Call="Stc.Web.JsonAdmin:GetCourseTeachers"/>
+    
+    <!-- Assign teacher to course -->
+    <Route Method="POST" Url="/json/course/:courseId/teacher" Call="Stc.Web.JsonAdmin:CreateCourseTeacher"/>
 
-	<!-- Delete teacher and course link -->
-	<Route Method="DELETE" Url="/json/course/:courseId/teacher/:teacherId" Call="Stc.Web.JsonAdmin:DeleteCourseTeacher"/>
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- APPLICATION (Order)                                                                                            APPLICATION (Order) -->
-	<!-- ================================================================================================================================== -->
+    <!-- Delete teacher and course link -->
+    <Route Method="DELETE" Url="/json/course/:courseId/teacher/:teacherId" Call="Stc.Web.JsonAdmin:DeleteCourseTeacher"/>
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- APPLICATION (Order)                                                                                            APPLICATION (Order) -->
+    <!-- ================================================================================================================================== -->
 
-	<!-- Get all applications (or by status) -->
-	<Route Method="POST" Url="/json/order/grid" Call="Stc.Web.JsonAdmin:GetOrdersForGrid"/>
-	
-	<!-- Get all applications - from students for given training -->
-	<Route Method="POST" Url="/json/orderNewStudent/grid" Call="Stc.Web.JsonAdmin:GetOrdersNewStudentForGrid"/>
-	
-	<!-- Get application by id -->
-	<Route Method="GET" Url="/json/order/:id" Call="Stc.Web.JsonAdmin:GetOrder"/>
-	
-	<!-- Get application from student by id -->
-	<Route Method="GET" Url="/json/orderNewStudent/:id" Call="Stc.Web.JsonAdmin:GetOrderNewStudent"/>
-	
-	<!-- Change order status -->
-	<Route Method="POST" Url="/json/order/:ordId/status/:status" Call="Stc.Web.JsonAdmin:ChangeOrderStatus"/>
-	
-	<!-- Delete application by id -->
-	<Route Method="DELETE" Url="/json/order/:id" Call="Stc.Web.JsonAdmin:DeleteOrder"/>
-	
-	<!-- Delete application from student by id -->
-	<Route Method="DELETE" Url="/json/orderNewStudent/:id" Call="Stc.Web.JsonAdmin:DeleteOrderNewStudent"/>
-	
-	<!-- Change organization in application -->
-	<Route Method="POST" Url="/json/order/:orderId/company/:companyId" Call="Stc.Web.JsonAdmin:ChangeOrderCompany"/>
-	
-	<!-- Change organization in application from student-->
-	<Route Method="POST" Url="/json/orderNewStudent/:orderId/company/:companyId" Call="Stc.Web.JsonAdmin:ChangeOrderNewStudentCompany"/>
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- ORGANIZATION                                                                                                          ORGANIZATION -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Save new organization data -->
-	<Route Method="POST" Url="/json/company" Call="Stc.Web.JsonAdmin:SaveCompany"/>
-	
-	<!-- Get organization by id -->
-	<Route Method="GET" Url="/json/company/:id" Call="Stc.Web.JsonAdmin:GetCompany"/>	
-	
-	<!-- Delete organization if it is available -->
-	<Route Method="DELETE" Url="/json/company/:id" Call="Stc.Web.JsonAdmin:DeleteCompany"/>
-	
-	<!-- Save organization from application -->
-	<Route Method="POST" Url="/json/company/order" Call="Stc.Web.JsonAdmin:SaveCompanyFromOrder"/>
-	
-	<!-- Change contact person of organization -->
-	<Route Method="POST" Url="/json/company/contact/change" Call="Stc.Web.JsonAdmin:ChangeCompanyContact"/>
-	
-	<!-- Get all organizations for table, full info -->
-	<Route Method="POST" Url="/json/company/grid" Call="Stc.Web.JsonAdmin:GetCompaniesFullInfoForGrid"/>
-	
-
-
-	<!-- ================================================================================================================================== -->
-	<!-- TRAINING                                                                                                                  TRAINING -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Working with event in Google Calendar - create, update, delete -->
-	<Route Method="POST" Url="/json/trainingEvent" Call="Stc.Web.JsonAdmin:TrainingCalendarEvent"/>
-	
-	<!-- Create training from selected applications, create/update subgroups -->
-	<Route Method="POST" Url="/json/training" Call="Stc.Web.JsonAdmin:SaveTraining"/>	
-	
-	<!-- Delete training -->
-	<Route Method="DELETE" Url="/json/training/:id" Call="Stc.Web.JsonAdmin:DeleteTraining"/>	
-	
-	<!-- Get training by id -->
-	<Route Method="GET" Url="/json/training/:id" Call="Stc.Web.JsonAdmin:GetTraining"/>	
-	
-	<!-- Complete training and create certificates for each student -->
-	<Route Method="POST" Url="/json/training/:id/complete" Call="Stc.Web.JsonAdmin:CompleteTraining"/>	
-	
-	<!-- Get all trainings for table -->
-	<Route Method="POST" Url="/json/training/grid" Call="Stc.Web.JsonAdmin:GetTrainingsForGrid"/>	
-
-	<!-- Change automail status for teacher -->
-	<Route Method="POST" Url="/json/training/automailing/status" Call="Stc.Web.JsonAdmin:ChangeTrainingAutoMailingStatus"/>
-	
-	<!-- Get training email -->
-	<Route Method="GET" Url="/json/training/:trainingId/mail/:type" Call="Stc.Web.JsonAdmin:GetTrainingEmail"/>
-	
-	<!-- Get mailing groups for combobox in the Mailing tab on training page -->
-	<Route Method="GET" Url="/json/training/:id/mailing/group" Call="Stc.Web.JsonAdmin:GetTrainingMailingGroups"/>
-	
-	<!-- Send email from tab 'Mailing' on the training page -->
-	<Route Method="POST" Url="/json/training/mail/send" Call="Stc.Web.JsonAdmin:SendEmailFromTraining"/>
-	
-	<!-- ================================================================================================================================== -->
-	<!-- TRAINING SUBGROUP                                                                                                TRAINING SUBGROUP  -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Get subgroups of training -->
-	<Route Method="POST" Url="/json/training/subgroup/grid" Call="Stc.Web.JsonAdmin:GetTrainingSubGroupsForGrid"/>	
-	
-	<!-- Add subgroup into training -->
-	<Route Method="POST" Url="/json/training/:trainingId/subgroup" Call="Stc.Web.JsonAdmin:CreateSubGroup"/>	
-
-	<!-- Get subgroup -->
-	<Route Method="GET" Url="/json/training/subgroup/:subgroupId" Call="Stc.Web.JsonAdmin:GetSubGroup"/>	
-	
-	<!-- Delete subgroup from training -->
-	<Route Method="DELETE" Url="/json/training/:trainingId/subgroup/:subgroupId" Call="Stc.Web.JsonAdmin:DeleteSubGroup"/>	
-	
-	<!-- Save pay of subgroup -->
-	<Route Method="POST" Url="/json/training/subgroup/payment" Call="Stc.Web.JsonAdmin:SaveSubGroupPayment"/>
-	
-	<!-- Save contract of subgroup -->
-	<Route Method="POST" Url="/json/training/subgroup/contract" Call="Stc.Web.JsonAdmin:SaveSubGroupContract"/>	
-	
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- TRAINING CERTIFICATE                                                                                          TRAINING CERTIFICATE  -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- All certificates of training -->
-	<Route Method="POST" Url="/json/training/certificate/grid" Call="Stc.Web.JsonAdmin:GetTrainingCertificatesForGrid"/>
-	
-	<!-- Create all certificates for training -->
-	<Route Method="POST" Url="/json/training/:id/certificate" Call="Stc.Web.JsonAdmin:CreateTrainingCertificates"/>
-	
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- TRAINING STUDENT                                                                                                  TRAINING STUDENT -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Get students of trainings -->
-	<Route Method="POST" Url="/json/training/student/grid" Call="Stc.Web.JsonAdmin:GetTrainingStudentsForGrid"/>	
-
-	<!-- Add person from application into training, create/open subgroup and add person -->
-	<Route Method="POST" Url="/json/training/orderNewStudent" Call="Stc.Web.JsonAdmin:AddNewStudentIntoTraining"/>	
-
-	<!-- All email's of students of training -->
-	<Route Method="GET" Url="/json/training/:trainingId/student/email" Call="Stc.Web.JsonAdmin:GetTrainingStudentsEmails"/>
-	
-	<!-- Create / add student into subgroup|or not of training -->
-	<Route Method="POST" Url="/json/training/student" Call="Stc.Web.JsonAdmin:CreateTrainingStudent"/>
-	
-	<!-- Delete student from subgroup -->
-	<Route Method="DELETE" Url="/json/training/subgroup/:sgroupId/student/:studentId" Call="Stc.Web.JsonAdmin:DeleteSubGroupStudent"/>
-	
-	<!-- Delete student from training -->
-	<Route Method="DELETE" Url="/json/training/:trainingId/student/:studentId" Call="Stc.Web.JsonAdmin:DeleteTrainingStudent"/>
-	
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- TRAINING FEEDBACK                                                                                                TRAINING FEEDBACK -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Get feed Backs of trainings -->
-	<Route Method="POST" Url="/json/training/feedback/grid" Call="Stc.Web.JsonAdmin:GetTrainingFeedBacksForGrid"/>	
-	
-	<!-- Delete feedback from training -->
-	<Route Method="DELETE" Url="/json/training/feedback/:id" Call="Stc.Web.JsonAdmin:DeleteFeedBack"/>	
-
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- CERTIFICATE                                                                                                            CERTIFICATE -->
-	<!-- ================================================================================================================================== -->
-		
-	<!-- Get all certificates for table -->
-	<Route Method="POST" Url="/json/certificate/grid" Call="Stc.Web.JsonAdmin:GetCertificatesForGrid"/>
-
-	<!-- Print certificate -->
-	<Route Method="POST" Url="/json/certificate/:number/print" Call="Stc.Web.JsonAdmin:PrintCertificate"/>	
-	
-	<!-- Delete certificate -->
-	<Route Method="DELETE" Url="/json/certificate/:number" Call="Stc.Web.JsonAdmin:DeleteCertificate"/>	
-	
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- PERSON                                                                                                                      PERSON -->
-	<!-- ================================================================================================================================== -->
-		
-	<!-- Save/create person -->
-	<Route Method="POST" Url="/json/person" Call="Stc.Web.JsonAdmin:SavePerson"/>
-	
-	<!-- Get person by id -->
-	<Route Method="GET" Url="/json/person/:id" Call="Stc.Web.JsonAdmin:GetPerson"/>
-	
-	<!-- Get person by Email -->
-	<Route Method="GET" Url="/json/person/email/:email" Call="Stc.Web.JsonAdmin:GetPersonByEmail"/>
-	
-	<!-- Delete person  -->
-	<Route Method="DELETE" Url="/json/person/:id" Call="Stc.Web.JsonAdmin:DeletePerson"/>
-	
-	<!-- Get all persons for table -->
-	<Route Method="POST" Url="/json/person/grid" Call="Stc.Web.JsonAdmin:GetPersonsForGrid"/>
+    <!-- Get all applications (or by status) -->
+    <Route Method="POST" Url="/json/order/grid" Call="Stc.Web.JsonAdmin:GetOrdersForGrid"/>
+    
+    <!-- Get all applications - from students for given training -->
+    <Route Method="POST" Url="/json/orderNewStudent/grid" Call="Stc.Web.JsonAdmin:GetOrdersNewStudentForGrid"/>
+    
+    <!-- Get application by id -->
+    <Route Method="GET" Url="/json/order/:id" Call="Stc.Web.JsonAdmin:GetOrder"/>
+    
+    <!-- Get application from student by id -->
+    <Route Method="GET" Url="/json/orderNewStudent/:id" Call="Stc.Web.JsonAdmin:GetOrderNewStudent"/>
+    
+    <!-- Change order status -->
+    <Route Method="POST" Url="/json/order/:ordId/status/:status" Call="Stc.Web.JsonAdmin:ChangeOrderStatus"/>
+    
+    <!-- Delete application by id -->
+    <Route Method="DELETE" Url="/json/order/:id" Call="Stc.Web.JsonAdmin:DeleteOrder"/>
+    
+    <!-- Delete application from student by id -->
+    <Route Method="DELETE" Url="/json/orderNewStudent/:id" Call="Stc.Web.JsonAdmin:DeleteOrderNewStudent"/>
+    
+    <!-- Change organization in application -->
+    <Route Method="POST" Url="/json/order/:orderId/company/:companyId" Call="Stc.Web.JsonAdmin:ChangeOrderCompany"/>
+    
+    <!-- Change organization in application from student-->
+    <Route Method="POST" Url="/json/orderNewStudent/:orderId/company/:companyId" Call="Stc.Web.JsonAdmin:ChangeOrderNewStudentCompany"/>
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- ORGANIZATION                                                                                                          ORGANIZATION -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Save new organization data -->
+    <Route Method="POST" Url="/json/company" Call="Stc.Web.JsonAdmin:SaveCompany"/>
+    
+    <!-- Get organization by id -->
+    <Route Method="GET" Url="/json/company/:id" Call="Stc.Web.JsonAdmin:GetCompany"/>   
+    
+    <!-- Delete organization if it is available -->
+    <Route Method="DELETE" Url="/json/company/:id" Call="Stc.Web.JsonAdmin:DeleteCompany"/>
+    
+    <!-- Save organization from application -->
+    <Route Method="POST" Url="/json/company/order" Call="Stc.Web.JsonAdmin:SaveCompanyFromOrder"/>
+    
+    <!-- Change contact person of organization -->
+    <Route Method="POST" Url="/json/company/contact/change" Call="Stc.Web.JsonAdmin:ChangeCompanyContact"/>
+    
+    <!-- Create|replace contact person of organization -->
+    <Route Method="POST" Url="/json/company/contact/new" Call="Stc.Web.JsonAdmin:CreateCompanyContact"/>
+    
+    <!-- Get all organizations for table, full info -->
+    <Route Method="POST" Url="/json/company/grid" Call="Stc.Web.JsonAdmin:GetCompaniesFullInfoForGrid"/>
+    
 
 
+    <!-- ================================================================================================================================== -->
+    <!-- TRAINING                                                                                                                  TRAINING -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Working with event in Google Calendar - create, update, delete -->
+    <Route Method="POST" Url="/json/trainingEvent" Call="Stc.Web.JsonAdmin:TrainingCalendarEvent"/>
+    
+    <!-- Create training from selected applications, create/update subgroups -->
+    <Route Method="POST" Url="/json/training" Call="Stc.Web.JsonAdmin:SaveTraining"/>   
+    
+    <!-- Delete training -->
+    <Route Method="DELETE" Url="/json/training/:id" Call="Stc.Web.JsonAdmin:DeleteTraining"/>   
+    
+    <!-- Get training by id -->
+    <Route Method="GET" Url="/json/training/:id" Call="Stc.Web.JsonAdmin:GetTraining"/> 
+    
+    <!-- Complete training and create certificates for each student -->
+    <Route Method="POST" Url="/json/training/:id/complete" Call="Stc.Web.JsonAdmin:CompleteTraining"/>  
+    
+    <!-- Get all trainings for table -->
+    <Route Method="POST" Url="/json/training/grid" Call="Stc.Web.JsonAdmin:GetTrainingsForGrid"/>   
 
-	<!-- All students, search by last name and email -->
-	<Route Method="GET" Url="/json/person/search/:word" Call="Stc.Web.JsonAdmin:GetPersonBySearchParameters"/>
-				
-	<!-- Search teachers, that don't teach selected course -->
-	<Route Method="GET" Url="/json/person/free/course/:crsId/teacher/:word" Call="Stc.Web.JsonAdmin:GetFreeCourseTeachers"/>
-	
-	<!-- Search persons, that not in subgroup of trainings -->
-	<Route Method="GET" Url="/json/person/free/subgroup/:sgId/student/:word" Call="Stc.Web.JsonAdmin:GetFreeSubGroupStudents"/>
-	
-	<!-- Search persons, that not in training -->
-	<Route Method="GET" Url="/json/person/free/training/:trId/student/:word" Call="Stc.Web.JsonAdmin:GetFreeTrainingStudents"/>
-	
+    <!-- Change automail status for teacher -->
+    <Route Method="POST" Url="/json/training/automailing/status" Call="Stc.Web.JsonAdmin:ChangeTrainingAutoMailingStatus"/>
+    
+    <!-- Get training email -->
+    <Route Method="GET" Url="/json/training/:trainingId/mail/:type" Call="Stc.Web.JsonAdmin:GetTrainingEmail"/>
+    
+    <!-- Get mailing groups for combobox in the Mailing tab on training page -->
+    <Route Method="GET" Url="/json/training/:id/mailing/group" Call="Stc.Web.JsonAdmin:GetTrainingMailingGroups"/>
+    
+    <!-- Send email from tab 'Mailing' on the training page -->
+    <Route Method="POST" Url="/json/training/mail/send" Call="Stc.Web.JsonAdmin:SendEmailFromTraining"/>
+    
+    <!-- Get teacher payout for training -->
+    <Route Method="GET" Url="/json/training/:trainingId/teacher/:teacherId/payout" Call="Stc.Web.JsonAdmin:GetTrainingTeacherPayout"/>
+    
+    <!-- ================================================================================================================================== -->
+    <!-- TRAINING SUBGROUP                                                                                                TRAINING SUBGROUP  -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Get subgroups of training -->
+    <Route Method="POST" Url="/json/training/subgroup/grid" Call="Stc.Web.JsonAdmin:GetTrainingSubGroupsForGrid"/>  
+    
+    <!-- Add subgroup into training -->
+    <Route Method="POST" Url="/json/training/:trainingId/subgroup" Call="Stc.Web.JsonAdmin:CreateSubGroup"/>    
 
+    <!-- Get subgroup -->
+    <Route Method="GET" Url="/json/training/subgroup/:subgroupId" Call="Stc.Web.JsonAdmin:GetSubGroup"/>    
+    
+    <!-- Delete subgroup from training -->
+    <Route Method="DELETE" Url="/json/training/:trainingId/subgroup/:subgroupId" Call="Stc.Web.JsonAdmin:DeleteSubGroup"/>  
+    
+    <!-- Save pay of subgroup -->
+    <Route Method="POST" Url="/json/training/subgroup/payment" Call="Stc.Web.JsonAdmin:SaveSubGroupPayment"/>
+    
+    <!-- Save contract of subgroup -->
+    <Route Method="POST" Url="/json/training/subgroup/contract" Call="Stc.Web.JsonAdmin:SaveSubGroupContract"/> 
+    
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- TRAINING CERTIFICATE                                                                                          TRAINING CERTIFICATE  -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- All certificates of training -->
+    <Route Method="POST" Url="/json/training/certificate/grid" Call="Stc.Web.JsonAdmin:GetTrainingCertificatesForGrid"/>
+    
+    <!-- Create all certificates for training -->
+    <Route Method="POST" Url="/json/training/:id/certificate" Call="Stc.Web.JsonAdmin:CreateTrainingCertificates"/>
+    
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- TRAINING STUDENT                                                                                                  TRAINING STUDENT -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Get students of trainings -->
+    <Route Method="POST" Url="/json/training/student/grid" Call="Stc.Web.JsonAdmin:GetTrainingStudentsForGrid"/>    
 
-	<!-- All trainings with person -->
-	<Route Method="GET" Url="/json/person/:id/training" Call="Stc.Web.JsonAdmin:GetPersonTrainings"/>
-	
-	<!-- All certificates of person -->
-	<Route Method="GET" Url="/json/person/:id/certificate" Call="Stc.Web.JsonAdmin:GetPersonCertificates"/>
-	
-	<!-- All courses, where person is teacher -->
-	<Route Method="GET" Url="/json/person/:id/course" Call="Stc.Web.JsonAdmin:GetPersonCourses"/>
-	
-	<!-- All organizations, where person is contact person -->
-	<Route Method="GET" Url="/json/person/:id/company" Call="Stc.Web.JsonAdmin:GetPersonCompanies"/>
+    <!-- Add person from application into training, create/open subgroup and add person -->
+    <Route Method="POST" Url="/json/training/orderNewStudent" Call="Stc.Web.JsonAdmin:AddNewStudentIntoTraining"/>  
+
+    <!-- All email's of students of training -->
+    <Route Method="GET" Url="/json/training/:trainingId/student/email" Call="Stc.Web.JsonAdmin:GetTrainingStudentsEmails"/>
+    
+    <!-- Create / add student into subgroup|or not of training -->
+    <Route Method="POST" Url="/json/training/student" Call="Stc.Web.JsonAdmin:CreateTrainingStudent"/>
+    
+    <!-- Delete student from subgroup -->
+    <Route Method="DELETE" Url="/json/training/subgroup/:sgroupId/student/:studentId" Call="Stc.Web.JsonAdmin:DeleteSubGroupStudent"/>
+    
+    <!-- Delete student from training -->
+    <Route Method="DELETE" Url="/json/training/:trainingId/student/:studentId" Call="Stc.Web.JsonAdmin:DeleteTrainingStudent"/>
+    
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- TRAINING FEEDBACK                                                                                                TRAINING FEEDBACK -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Get feed Backs of trainings -->
+    <Route Method="POST" Url="/json/training/feedback/grid" Call="Stc.Web.JsonAdmin:GetTrainingFeedBacksForGrid"/>  
+    
+    <!-- Delete feedback from training -->
+    <Route Method="DELETE" Url="/json/training/feedback/:id" Call="Stc.Web.JsonAdmin:DeleteFeedBack"/>  
+
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- CERTIFICATE                                                                                                            CERTIFICATE -->
+    <!-- ================================================================================================================================== -->
+        
+    <!-- Get all certificates for table -->
+    <Route Method="POST" Url="/json/certificate/grid" Call="Stc.Web.JsonAdmin:GetCertificatesForGrid"/>
+
+    <!-- Print certificate -->
+    <Route Method="POST" Url="/json/certificate/:number/print" Call="Stc.Web.JsonAdmin:PrintCertificate"/>  
+    
+    <!-- Delete certificate -->
+    <Route Method="DELETE" Url="/json/certificate/:number" Call="Stc.Web.JsonAdmin:DeleteCertificate"/> 
+    
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- PERSON                                                                                                                      PERSON -->
+    <!-- ================================================================================================================================== -->
+        
+    <!-- Save/create person -->
+    <Route Method="POST" Url="/json/person" Call="Stc.Web.JsonAdmin:SavePerson"/>
+    
+    <!-- Get person by id -->
+    <Route Method="GET" Url="/json/person/:id" Call="Stc.Web.JsonAdmin:GetPerson"/>
+    
+    <!-- Get person by Email -->
+    <Route Method="GET" Url="/json/person/email/:email" Call="Stc.Web.JsonAdmin:GetPersonByEmail"/>
+    
+    <!-- Delete person  -->
+    <Route Method="DELETE" Url="/json/person/:id" Call="Stc.Web.JsonAdmin:DeletePerson"/>
+    
+    <!-- Get all persons for table -->
+    <Route Method="POST" Url="/json/person/grid" Call="Stc.Web.JsonAdmin:GetPersonsForGrid"/>
 
 
 
-	<!-- ================================================================================================================================== -->
-	<!-- SETTINGS                                                                                                                  SETTINGS -->
-	<!-- ================================================================================================================================== -->
+    <!-- All students, search by last name and email -->
+    <Route Method="GET" Url="/json/person/search/:word" Call="Stc.Web.JsonAdmin:GetPersonBySearchParameters"/>
+                
+    <!-- Search teachers, that don't teach selected course -->
+    <Route Method="GET" Url="/json/person/free/course/:crsId/teacher/:word" Call="Stc.Web.JsonAdmin:GetFreeCourseTeachers"/>
+    
+    <!-- Search persons, that not in subgroup of trainings -->
+    <Route Method="GET" Url="/json/person/free/subgroup/:sgId/student/:word" Call="Stc.Web.JsonAdmin:GetFreeSubGroupStudents"/>
+    
+    <!-- Search persons, that not in training -->
+    <Route Method="GET" Url="/json/person/free/training/:trId/student/:word" Call="Stc.Web.JsonAdmin:GetFreeTrainingStudents"/>
+    
 
-	<!-- Get settings for google api from globals -->
-	<Route Method="GET" Url="/json/settings/google/:type" Call="Stc.Web.JsonAdmin:GetGoogleSettings"/>
-	
-	<!-- Save settings for google api from client -->
-	<Route Method="POST" Url="/json/settings/google/:type" Call="Stc.Web.JsonAdmin:SaveGoogleSettings"/>
-	
-	
-	<!-- Get settings for mail from globals -->
-	<Route Method="GET" Url="/json/settings/mail/:type" Call="Stc.Web.JsonAdmin:GetMailSettings"/>
-	
-	<!-- Save settings for mail from client -->
-	<Route Method="POST" Url="/json/settings/mail/:type" Call="Stc.Web.JsonAdmin:SaveMailSettings"/>
-	
 
-	<!-- Get preview of settings for mail from last training -->
-	<Route Method="GET" Url="/json/settings/mail/preview/:type" Call="Stc.Web.JsonAdmin:GetMailPreview"/>
-	
-	<!-- Get preview of settings for google from last training -->
-	<Route Method="GET" Url="/json/settings/google/preview/:type" Call="Stc.Web.JsonAdmin:GetGooglePreview"/>
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- MAILING GROUPS AND ITEMS                                                                                  MAILING GROUPS AND ITEMS -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Get mailing groups for table -->
-	<Route Method="POST" Url="/json/mailing/group/grid" Call="Stc.Web.JsonAdmin:GetMailingGroupsForGrid"/>
-	
-	<!-- Save mailing group -->
-	<Route Method="POST" Url="/json/mailing/group" Call="Stc.Web.JsonAdmin:SaveMailingGroup"/>
+    <!-- All trainings with person -->
+    <Route Method="GET" Url="/json/person/:id/training" Call="Stc.Web.JsonAdmin:GetPersonTrainings"/>
+    
+    <!-- All certificates of person -->
+    <Route Method="GET" Url="/json/person/:id/certificate" Call="Stc.Web.JsonAdmin:GetPersonCertificates"/>
+    
+    <!-- All courses, where person is teacher -->
+    <Route Method="GET" Url="/json/person/:id/course" Call="Stc.Web.JsonAdmin:GetPersonCourses"/>
+    
+    <!-- All organizations, where person is contact person -->
+    <Route Method="GET" Url="/json/person/:id/company" Call="Stc.Web.JsonAdmin:GetPersonCompanies"/>
 
-	<!-- Get mailing groups for combobox -->
-	<Route Method="GET" Url="/json/mailing/group" Call="Stc.Web.JsonAdmin:GetMailingGroups"/>
-	
-	<!-- Get mailing group by ID -->
-	<Route Method="GET" Url="/json/mailing/group/:id" Call="Stc.Web.JsonAdmin:GetMailingGroup"/>
-	
-	<!-- Get mailing group contacts by ID -->
-	<Route Method="GET" Url="/json/mailing/group/:id/contact" Call="Stc.Web.JsonAdmin:GetMailingGroupContacts"/>
-	
-	<!-- Get mailing group mail by group ID -->
-	<Route Method="GET" Url="/json/mailing/group/:id/mail" Call="Stc.Web.JsonAdmin:GetMailingGroupMail"/>
-	
-	<!-- Delete mailing group by ID -->
-	<Route Method="DELETE" Url="/json/mailing/group/:id" Call="Stc.Web.JsonAdmin:DeleteMailingGroup"/>
-	
-	<!-- Get mailing items in the group for table  -->
-	<Route Method="POST" Url="/json/mailing/group/item/grid" Call="Stc.Web.JsonAdmin:GetMailingGroupItemsForGrid"/>
-	
-	<!-- Save mailing item -->
-	<Route Method="POST" Url="/json/mailing/group/item" Call="Stc.Web.JsonAdmin:SaveMailingItem"/>
-	
-	<!-- Get mailing item by ID -->
-	<Route Method="GET" Url="/json/mailing/group/item/:id" Call="Stc.Web.JsonAdmin:GetMailingItem"/>
-	
-	<!-- Delete mailing item by ID -->
-	<Route Method="DELETE" Url="/json/mailing/group/item/:id" Call="Stc.Web.JsonAdmin:DeleteMailingItem"/>
-	
-	<!-- Send mail to Mailing group items -->
-	<Route Method="POST" Url="/json/mailing/mail/send" Call="Stc.Web.JsonAdmin:SendMailToMailingGroup"/>
-	
-	<!-- Get mailing journal -->
-	<Route Method="POST" Url="/json/mailing/journal/grid" Call="Stc.Web.JsonAdmin:GetMailingJournalItemsForGrid"/>
-	
-	<!-- Get mailing journal parts -->
-	<Route Method="POST" Url="/json/mailing/journal/parts/grid" Call="Stc.Web.JsonAdmin:GetMailingJournalPartsForGrid"/>
-	
-	
-	<!-- Get current mailing status -->
-	<Route Method="GET" Url="/json/mailing/status" Call="Stc.Web.JsonAdmin:GetMailingStatus"/>
-	
-	<!-- Change mailing status (on|off) -->
-	<Route Method="POST" Url="/json/mailing/status/:status" Call="Stc.Web.JsonAdmin:ChangeMailingStatus"/>
-	
-	<!-- Delete mailing journal item -->
-	<Route Method="DELETE" Url="/json/mailing/journal/:id" Call="Stc.Web.JsonAdmin:DeleteMailingJournalItem"/>
-	
-	<!-- Delete mailing journal part -->
-	<Route Method="DELETE" Url="/json/mailing/journal/part/:groupNumber" Call="Stc.Web.JsonAdmin:DeleteMailingJournalPart"/>
-	
-	<!-- ================================================================================================================================== -->
-	<!-- MAIL                                                                                                                          MAIL -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Send email -->
-	<Route Method="POST" Url="/json/mail/send" Call="Stc.Web.JsonAdmin:SendEmail"/>
-		
-	<!-- Get email pattern from CacheMsg -->
-	<Route Method="GET" Url="/json/mail/pattern/:type" Call="Stc.Web.JsonAdmin:GetEmailPattern"/>
 
-	
-	
-	<!-- ================================================================================================================================== -->
-	<!-- OTHER                                                                                                                        OTHER -->
-	<!-- ================================================================================================================================== -->
-	
-	<!-- Check access, authorization call, if needed -->
-	<Route Method="GET" Url="/json/checkAdmin/:isLogin" Call="Stc.Web.JsonAdmin:CheckAdmin"/>
-		
-	<!-- Report, certificates of training -->
-	<Route Method="GET" Url="/text/:lang/certificates/:trainingId" Call="Stc.Web.Report:Certificates"/>
+    <!-- Get statistics data for teachern -->
+    <Route Method="GET" Url="/json/teacher/:id/statistics/datefrom/:dateFrom/dateto/:dateTo" Call="Stc.Web.JsonAdmin:GetTeacherStatistics"/>
 
-	<!-- All currencies -->
-	<Route Method="GET" Url="/json/currency" Call="Stc.Web.JsonAdmin:GetCurrencies"/>
-	
-	<!-- All logs -->
-	<Route Method="POST" Url="/json/log/grid" Call="Stc.Web.JsonAdmin:GetLogsForGrid"/>
-	
+    <!-- ================================================================================================================================== -->
+    <!-- SETTINGS                                                                                                                  SETTINGS -->
+    <!-- ================================================================================================================================== -->
+
+    <!-- Get settings for google api from globals -->
+    <Route Method="GET" Url="/json/settings/google/:type" Call="Stc.Web.JsonAdmin:GetGoogleSettings"/>
+    
+    <!-- Save settings for google api from client -->
+    <Route Method="POST" Url="/json/settings/google/:type" Call="Stc.Web.JsonAdmin:SaveGoogleSettings"/>
+    
+    
+    <!-- Get settings for mail from globals -->
+    <Route Method="GET" Url="/json/settings/mail/:type" Call="Stc.Web.JsonAdmin:GetMailSettings"/>
+    
+    <!-- Save settings for mail from client -->
+    <Route Method="POST" Url="/json/settings/mail/:type" Call="Stc.Web.JsonAdmin:SaveMailSettings"/>
+    
+
+    <!-- Get preview of settings for mail from last training -->
+    <Route Method="GET" Url="/json/settings/mail/preview/:type" Call="Stc.Web.JsonAdmin:GetMailPreview"/>
+    
+    <!-- Get preview of settings for google from last training -->
+    <Route Method="GET" Url="/json/settings/google/preview/:type" Call="Stc.Web.JsonAdmin:GetGooglePreview"/>
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- MAILING GROUPS AND ITEMS                                                                                  MAILING GROUPS AND ITEMS -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Get mailing groups for table -->
+    <Route Method="POST" Url="/json/mailing/group/grid" Call="Stc.Web.JsonAdmin:GetMailingGroupsForGrid"/>
+    
+    <!-- Save mailing group -->
+    <Route Method="POST" Url="/json/mailing/group" Call="Stc.Web.JsonAdmin:SaveMailingGroup"/>
+
+    <!-- Get mailing groups for combobox -->
+    <Route Method="GET" Url="/json/mailing/group" Call="Stc.Web.JsonAdmin:GetMailingGroups"/>
+    
+    <!-- Get mailing group by ID -->
+    <Route Method="GET" Url="/json/mailing/group/:id" Call="Stc.Web.JsonAdmin:GetMailingGroup"/>
+    
+    <!-- Get mailing group contacts by ID -->
+    <Route Method="GET" Url="/json/mailing/group/:id/contact" Call="Stc.Web.JsonAdmin:GetMailingGroupContacts"/>
+    
+    <!-- Get mailing group mail by group ID -->
+    <Route Method="GET" Url="/json/mailing/group/:id/mail" Call="Stc.Web.JsonAdmin:GetMailingGroupMail"/>
+    
+    <!-- Delete mailing group by ID -->
+    <Route Method="DELETE" Url="/json/mailing/group/:id" Call="Stc.Web.JsonAdmin:DeleteMailingGroup"/>
+    
+    <!-- Get mailing items in the group for table  -->
+    <Route Method="POST" Url="/json/mailing/group/item/grid" Call="Stc.Web.JsonAdmin:GetMailingGroupItemsForGrid"/>
+    
+    <!-- Save mailing item -->
+    <Route Method="POST" Url="/json/mailing/group/item" Call="Stc.Web.JsonAdmin:SaveMailingItem"/>
+    
+    <!-- Get mailing item by ID -->
+    <Route Method="GET" Url="/json/mailing/group/item/:id" Call="Stc.Web.JsonAdmin:GetMailingItem"/>
+    
+    <!-- Delete mailing item by ID -->
+    <Route Method="DELETE" Url="/json/mailing/group/item/:id" Call="Stc.Web.JsonAdmin:DeleteMailingItem"/>
+    
+    <!-- Send mail to Mailing group items -->
+    <Route Method="POST" Url="/json/mailing/mail/send" Call="Stc.Web.JsonAdmin:SendMailToMailingGroup"/>
+    
+    <!-- Get mailing journal -->
+    <Route Method="POST" Url="/json/mailing/journal/grid" Call="Stc.Web.JsonAdmin:GetMailingJournalItemsForGrid"/>
+    
+    <!-- Get mailing journal parts -->
+    <Route Method="POST" Url="/json/mailing/journal/parts/grid" Call="Stc.Web.JsonAdmin:GetMailingJournalPartsForGrid"/>
+    
+    
+    <!-- Get current mailing status -->
+    <Route Method="GET" Url="/json/mailing/status" Call="Stc.Web.JsonAdmin:GetMailingStatus"/>
+    
+    <!-- Change mailing status (on|off) -->
+    <Route Method="POST" Url="/json/mailing/status/:status" Call="Stc.Web.JsonAdmin:ChangeMailingStatus"/>
+    
+    <!-- Delete mailing journal item -->
+    <Route Method="DELETE" Url="/json/mailing/journal/:id" Call="Stc.Web.JsonAdmin:DeleteMailingJournalItem"/>
+    
+    <!-- Delete mailing journal part -->
+    <Route Method="DELETE" Url="/json/mailing/journal/part/:groupNumber" Call="Stc.Web.JsonAdmin:DeleteMailingJournalPart"/>
+    
+    <!-- ================================================================================================================================== -->
+    <!-- MAIL                                                                                                                          MAIL -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Send email -->
+    <Route Method="POST" Url="/json/mail/send" Call="Stc.Web.JsonAdmin:SendEmail"/>
+        
+    <!-- Get email pattern from CacheMsg -->
+    <Route Method="GET" Url="/json/mail/pattern/:type" Call="Stc.Web.JsonAdmin:GetEmailPattern"/>
+
+    
+    
+    <!-- ================================================================================================================================== -->
+    <!-- OTHER                                                                                                                        OTHER -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Check access, authorization call, if needed -->
+    <Route Method="GET" Url="/json/checkAdmin/:isLogin" Call="Stc.Web.JsonAdmin:CheckAdmin"/>
+        
+    <!-- Report, certificates of training -->
+    <Route Method="GET" Url="/text/:lang/certificates/:trainingId" Call="Stc.Web.Report:Certificates"/>
+
+    <!-- All currencies -->
+    <Route Method="GET" Url="/json/currency" Call="Stc.Web.JsonAdmin:GetCurrencies"/>
+    
+    <!-- All logs -->
+    <Route Method="POST" Url="/json/log/grid" Call="Stc.Web.JsonAdmin:GetLogsForGrid"/>
+    
 
 </Routes>
 ]]></Data>
@@ -387,11 +395,11 @@ Dispatch a REST request according to URL and Method</Description>
 <FormalSpec>pUrl:%String,pMethod:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	
-	set lang = $CASE(%request.CgiEnvs("HTTP_ACCEPT_LANGUAGE"), "en":"en", :"ru")
-	do ##class(%MessageDictionary).SetSessionLanguage(lang)
-	set %session.Language = lang
-	
+    
+    set lang = $CASE(%request.CgiEnvs("HTTP_ACCEPT_LANGUAGE"), "en":"en", :"ru")
+    do ##class(%MessageDictionary).SetSessionLanguage(lang)
+    set %session.Language = lang
+    
     #dim tSC As %Status = $$$OK
     #dim e As %Exception.AbstractException
     

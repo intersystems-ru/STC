@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/listOfFilesForCombine.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/listOfFilesForCombine.js" application="/csp/stc_loc/" default="1"><![CDATA[
 controllers/MainCtrl.js
 controllers/ScheduleFrameCtrl.js
 controllers/TrainingCtrl.js
@@ -16,6 +16,7 @@ controllers/AllCertificatesCtrl.js
 controllers/PersonCtrl.js
 controllers/PersonTeacherCtrl.js
 controllers/PersonStudentCtrl.js
+controllers/PersonCompanyContactCtrl.js
 controllers/AllPersonsCtrl.js
 controllers/AllCoursesCtrl.js    
 controllers/CourseCtrl.js

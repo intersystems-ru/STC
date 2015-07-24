@@ -1,169 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/trainings.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/trainings.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <!--
 <div class="row-fluid" style="padding-bottom: 5px;">
-	<div class="span10 offset1">
-		<span ng-bind="'Обучения'|localize" style="font-weight: bold;"></span>
-		
-		<div class="btn-group pull-right">
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.status" btn-radio="'All'" ng-bind="'Все'|localize"></button>
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.status" btn-radio="0"     ng-bind="'Незавершённые'|localize"></button>
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.status" btn-radio="1"     ng-bind="'Завершённые'|localize"></button>
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="0"  ng-bind="'Сертификаты выданы'|localize"></button>
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="1"  ng-bind="'Сертификаты не выданы'|localize"></button>
-		</div>
-		
-		<div class="btn-group pull-right">
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="'All'" ng-bind="'Все'|localize"></button>
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="0"  ng-bind="'Сертификаты выданы'|localize"></button>
-			<button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="1"  ng-bind="'Сертификаты не выданы'|localize"></button>
-		</div>
-	</div>
+    <div class="span10 offset1">
+        <span ng-bind="'Обучения'|localize" style="font-weight: bold;"></span>
+        
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.status" btn-radio="'All'" ng-bind="'Все'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.status" btn-radio="0"     ng-bind="'Незавершённые'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.status" btn-radio="1"     ng-bind="'Завершённые'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="0"  ng-bind="'Сертификаты выданы'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="1"  ng-bind="'Сертификаты не выданы'|localize"></button>
+        </div>
+        
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="'All'" ng-bind="'Все'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="0"  ng-bind="'Сертификаты выданы'|localize"></button>
+            <button type="button" class="btn btn-mini btnRadio" ng-model="training.certStatus" btn-radio="1"  ng-bind="'Сертификаты не выданы'|localize"></button>
+        </div>
+    </div>
 </div>
 
 -->
-	<div class="row-fluid">
-		<div class="span1">
-		</div>
-		<div class="span5">
-			<label style="padding: 5px 5px 0 5px; font-weight: bold;" ng-bind="'Обучения'|localize"></label>
-		</div>
-		<div class="span5">
-			<select class="span6 pull-right" 
-					title="{{'Фильтр: Статус обучения'|localize}}" 
-					style="margin-bottom: 0; border-bottom:none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" 
-					ng-model="training.selectedStatus" 
-					ng-options="st.id as st.name for st in statuses" 
-					ng-change="training.refresh()">
+    <div class="row-fluid">
+        <div class="span1">
+        </div>
+        <div class="span5">
+            <label style="padding: 5px 5px 0 5px; font-weight: bold;" ng-bind="'Обучения'|localize"></label>
+        </div>
+        <div class="span5">
+            <select class="span6 pull-right" 
+                    title="{{'Фильтр: Статус обучения'|localize}}" 
+                    style="margin-bottom: 0; border-bottom:none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" 
+                    ng-model="training.selectedStatus" 
+                    ng-options="st.id as st.name for st in statuses" 
+                    ng-change="training.refresh()">
                 <option value="">-- {{'Статус обучения'|localize}} --</option>
             </select>
             <select class="span6 pull-right" 
-            		title="{{'Фильтр: Сертификаты случаштелей'|localize}}" 
-            		style="margin-bottom: 0; border-bottom:none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" 
-            		ng-model="training.selectedCertStatus" 
-            		ng-options="certSt.id as certSt.name for certSt in certStatuses" 
-            		ng-change="training.refresh()">
+                    title="{{'Фильтр: Сертификаты случаштелей'|localize}}" 
+                    style="margin-bottom: 0; border-bottom:none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" 
+                    ng-model="training.selectedCertStatus" 
+                    ng-options="certSt.id as certSt.name for certSt in certStatuses" 
+                    ng-change="training.refresh()">
                 <option value="">-- {{'Сертификаты'|localize}} --</option>
             </select>
         </div>
         <div class="span1">
-		</div>
-	</div>
+        </div>
+    </div>
 <div class="row-fluid">
-	<div class="span10 offset1">
-	   <stcgrid
-	    style="border-radius: 4px 0 4px 4px;"
-	   	grid="pageStore.trainings.grid"
-	    table-class="table table-bordered table-hover"
-	    caption=""
-	    columns="training.columns"
-	    items="training.items"
-	    properties="training.properties"
-	    update-items="training.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+    <div class="span10 offset1">
+       <stcgrid
+        style="border-radius: 4px 0 4px 4px;"
+        grid="pageStore.trainings.grid"
+        table-class="table table-bordered table-hover"
+        caption=""
+        columns="training.columns"
+        items="training.items"
+        properties="training.properties"
+        update-items="training.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
 
-	    page-curr="training.pageCurr"
-	    page-total="training.pageTotal"
-	    page-size="training.pageSize"
-	    navigator-visible="true"
+        page-curr="training.pageCurr"
+        page-total="training.pageTotal"
+        page-size="training.pageSize"
+        navigator-visible="true"
 
-	    selectable="true"
-	    selected-items="training.selectedItems"
-	    multi-select-mode="training.multiSelectMode"
+        selectable="true"
+        selected-items="training.selectedItems"
+        multi-select-mode="training.multiSelectMode"
 
-	    action-column-visible="true"
-	    action-column-icon="training.actionColumnIcon"
-	    action-column-title="'Добавить обучение'|localize"
-	    action-column-method="training.add()"
+        action-column-visible="true"
+        action-column-icon="training.actionColumnIcon"
+        action-column-title="'Добавить обучение'|localize"
+        action-column-method="training.add()"
 
-	    first-row-action-icon="'icon-eye-open'"
-	    first-row-action-title="'Открыть обучение'|localize"
-	    first-row-action-method="training.open(item)"
-	    
-	    second-row-action-icon="training.secondRowActionIcon"
-	    second-row-action-title="'Удалить обучение'|localize"
-	    second-row-action-method="training.remove(item)"
+        first-row-action-icon="'icon-eye-open'"
+        first-row-action-title="'Открыть обучение'|localize"
+        first-row-action-method="training.open(item)"
+        
+        second-row-action-icon="training.secondRowActionIcon"
+        second-row-action-title="'Удалить обучение'|localize"
+        second-row-action-method="training.remove(item)"
 
-	    forcibly-update="training.forciblyUpdate"
-	/>
-	</div>
+        forcibly-update="training.forciblyUpdate"
+    />
+    </div>
 </div>
 
 <div class="row-fluid" ng-show="training.selectedItems.length==0 || training.items==0" style="text-align: center;">
-	<i ng-bind="'Выберите обучение для отображения подробной информации.'|localize"></i>
-</div>	
+    <i ng-bind="'Выберите обучение для отображения подробной информации.'|localize"></i>
+</div>  
 
 <div class="row-fluid" ng-hide="training.selectedItems.length==0 || training.items==0">
-	<div class="span10 offset1">
-		 <tabset>
-			<tab heading="{{'Информация'|localize}}">
-				<div class="row-fluid" >
-					<div class="span6">
-						<p><span class="spnTitle" ng-bind="'Курс'|localize"></span>: <span ng-bind="training.selectedItems[0].course.name"></span></p>
-						<p style="padding-top: 10px;"><span class="spnTitle" ng-bind="'Преподаватель'|localize"></span>: <span ng-bind="training.selectedItems[0].teacher.lastName + ' ' + training.selectedItems[0].teacher.firstName + ' ' + training.selectedItems[0].teacher.middleName"></span></p>
-						<p>
-							<span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{training.selectedItems[0].teacher.email}}</span>
-							<span ng-hide="training.selectedItems[0].teacher.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{training.selectedItems[0].teacher.phone}}</span>
-							<span ng-hide="training.selectedItems[0].teacher.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{training.selectedItems[0].teacher.skype}}</span>
-						</p>
-						<p ng-hide="training.selectedItems[0].curator.fullName==''" style="padding-top: 12px;"><span class="spnTitle" ng-bind="'Куратор'|localize"></span>: <span ng-bind="training.selectedItems[0].curator.fullName"></span></p>
-						<p ng-hide="training.selectedItems[0].curator.fullName==''">
-							<span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{training.selectedItems[0].curator.email}}</span>
-							<span ng-hide="training.selectedItems[0].curator.phoneSecret==''" style="padding-left:12px"><i class="icon-phone"></i> {{training.selectedItems[0].curator.phoneSecret}}</span>
-						</p>
-						<p style="padding-top: 10px;">
-							<span class="spnTitle" ng-bind="('Подгруппы'|localize)"></span>: <span ng-bind="training.selectedItems[0].sgroups"></span>
-							&nbsp;&nbsp;
-							<span class="spnTitle" ng-bind="('Слушатели'|localize)"></span>: <span ng-bind="training.selectedItems[0].students"></span>
-							&nbsp;&nbsp;
-							<span class="spnTitle" ng-bind="('Отзывы'|localize)"></span>: <span ng-bind="training.selectedItems[0].feedBacks.count"></span>
-							&nbsp;&nbsp;
-							<span class="spnTitle" ng-bind="('Заявки'|localize)"></span>: <span ng-bind="training.selectedItems[0].newStudents"></span>
-						</p>
-						<a target="_blank" style="text-decoration: none;" ng-href="{{'#/training/' + training.selectedItems[0].id+'/order'}}"><i ng-bind="'Заявка на обучение'|localize"></i></a></p>
-					</div>
-					<div class="span6">
-						<p><span class="spnTitle" ng-bind="'Место обучения'|localize"         ></span>: <span ng-bind="training.selectedItems[0].city.name + ', ' + training.selectedItems[0].city.parentName + ', ' + training.selectedItems[0].city.greatParentName"></span></p>
-						<p><span class="spnTitle" ng-bind="'Адрес'|localize"                  ></span>: <span ng-bind="training.selectedItems[0].address.title + ', ' + training.selectedItems[0].room"></span></p>
-						<p><span class="spnTitle" ng-bind="'Дата начала / окончания обучения'|localize"   ></span>: <span ng-bind="(training.selectedItems[0].dateStart|convertCacheDate:('d MMMM y'|localize)) + ' / ' + (training.selectedItems[0].dateFinish|convertCacheDate:('d MMMM y'|localize))"></span></p>
-						<p><span class="spnTitle" ng-bind="'Время'|localize"      ></span>: <span ng-bind="training.selectedItems[0].timeStartFinish"></span></p>
-						<p ng-hide="training.selectedItems[0].otherInfo==''"><span class="spnTitle" ng-bind="'Примечание'|localize" ></span>: <span ng-bind="training.selectedItems[0].otherInfo"></span></p>
-						<p><span class="label label-success"   ng-bind="'Событие есть в календаре'|localize" ng-hide="training.selectedItems[0].event==''"></span></p>
-						<p><span class="label label-important" ng-bind="'События нет в календаре'|localize"  ng-show="training.selectedItems[0].event==''"></span></span></p>
-						<!--
-						<div class="row-fluid">
-							<div class="span6">
-								<label class="checkbox"  style="padding-top: 5px;" >
-							    	<input type="checkbox" ng-click="training.changeStatusAutoMailing('students')" ng-model="training.selectedItems[0].isStudentsAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка слушателям'|localize}}
-							    </label>
-							    <label class="checkbox"  style="padding-top: 5px;" >
-							    	<input type="checkbox" ng-click="training.changeStatusAutoMailing('teacher')" ng-model="training.selectedItems[0].isTeacherAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка преподавателю'|localize}}
-							    </label>
-					    	</div>
-					    	<div class="span6">
-							    <label class="checkbox"  style="padding-top: 5px;" >
-							    	<input type="checkbox" ng-click="training.changeStatusAutoMailing('curator')" ng-model="training.selectedItems[0].isCuratorAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка куратору'|localize}}
-							    </label>
-							    <label class="checkbox"  style="padding-top: 5px;" >
-							    	<input type="checkbox" ng-click="training.changeStatusAutoMailing('feedback')" ng-model="training.selectedItems[0].isFeedBackAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка анкеты'|localize}}
-							    </label>
-							</div>
-					    </div>
-					    -->		
-					</div>
-				</div>
-				</br>
-			</tab>
-		</tabset>
-	</div>
+    <div class="span10 offset1">
+         <tabset>
+            <tab heading="{{'Информация'|localize}}">
+                <div class="row-fluid" >
+                    <div class="span6">
+                        <p><span class="spnTitle" ng-bind="'Курс'|localize"></span>: <span ng-bind="training.selectedItems[0].course.name"></span></p>
+                        <p style="padding-top: 10px;"><span class="spnTitle" ng-bind="'Преподаватель'|localize"></span>: <span ng-bind="getFullNameForCurLang(training.selectedItems[0].teacher.lastName, training.selectedItems[0].teacher.firstName, training.selectedItems[0].teacher.middleName)"></span></p>
+                        <p>
+                            <span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{training.selectedItems[0].teacher.email}}</span>
+                            <span ng-hide="training.selectedItems[0].teacher.phone==''" style="padding-left:12px"><i class="icon-phone"></i> {{training.selectedItems[0].teacher.phone}}</span>
+                            <span ng-hide="training.selectedItems[0].teacher.skype==''" style="padding-left:12px"><i class="icon-skype"></i> {{training.selectedItems[0].teacher.skype}}</span>
+                        </p>
+                        <p ng-hide="training.selectedItems[0].curator.fullName==''" style="padding-top: 12px;"><span class="spnTitle" ng-bind="'Куратор'|localize"></span>: <span ng-bind="training.selectedItems[0].curator.fullName"></span></p>
+                        <p ng-hide="training.selectedItems[0].curator.fullName==''">
+                            <span><i class="icon-envelope" style="font-size: 0.9em;"></i> {{training.selectedItems[0].curator.email}}</span>
+                            <span ng-hide="training.selectedItems[0].curator.phoneSecret==''" style="padding-left:12px"><i class="icon-phone"></i> {{training.selectedItems[0].curator.phoneSecret}}</span>
+                        </p>
+                        <p style="padding-top: 10px;">
+                            <span class="spnTitle" ng-bind="('Подгруппы'|localize)"></span>: <span ng-bind="training.selectedItems[0].sgroups"></span>
+                            &nbsp;&nbsp;
+                            <span class="spnTitle" ng-bind="('Слушатели'|localize)"></span>: <span ng-bind="training.selectedItems[0].students"></span>
+                            &nbsp;&nbsp;
+                            <span class="spnTitle" ng-bind="('Отзывы'|localize)"></span>: <span ng-bind="training.selectedItems[0].feedBacks.count"></span>
+                            &nbsp;&nbsp;
+                            <span class="spnTitle" ng-bind="('Заявки'|localize)"></span>: <span ng-bind="training.selectedItems[0].newStudents"></span>
+                        </p>
+                        <a target="_blank" style="text-decoration: none;" ng-href="{{'#/training/' + training.selectedItems[0].id+'/order'}}"><i ng-bind="'Заявка на обучение'|localize"></i></a></p>
+                    </div>
+                    <div class="span6">
+                        <p><span class="spnTitle" ng-bind="'Место обучения'|localize"         ></span>: <span ng-bind="training.selectedItems[0].city.name + ', ' + training.selectedItems[0].city.parentName + ', ' + training.selectedItems[0].city.greatParentName"></span></p>
+                        <p><span class="spnTitle" ng-bind="'Адрес'|localize"                  ></span>: <span ng-bind="training.selectedItems[0].street + ', ' + training.selectedItems[0].room"></span></p>
+                        <p><span class="spnTitle" ng-bind="'Дата начала / окончания обучения'|localize"   ></span>: <span ng-bind="(training.selectedItems[0].dateStart|convertCacheDate:('d MMMM y'|localize)) + ' / ' + (training.selectedItems[0].dateFinish|convertCacheDate:('d MMMM y'|localize))"></span></p>
+                        <p><span class="spnTitle" ng-bind="'Время'|localize"      ></span>: <span ng-bind="training.selectedItems[0].timeStartFinish"></span></p>
+                        <p ng-hide="training.selectedItems[0].otherInfo==''"><span class="spnTitle" ng-bind="'Примечание'|localize" ></span>: <span ng-bind="training.selectedItems[0].otherInfo"></span></p>
+                        <p><span class="label label-success"   ng-bind="'Событие есть в календаре'|localize" ng-hide="training.selectedItems[0].event==''"></span></p>
+                        <p><span class="label label-important" ng-bind="'События нет в календаре'|localize"  ng-show="training.selectedItems[0].event==''"></span></span></p>
+                        <!--
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <label class="checkbox"  style="padding-top: 5px;" >
+                                    <input type="checkbox" ng-click="training.changeStatusAutoMailing('students')" ng-model="training.selectedItems[0].isStudentsAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка слушателям'|localize}}
+                                </label>
+                                <label class="checkbox"  style="padding-top: 5px;" >
+                                    <input type="checkbox" ng-click="training.changeStatusAutoMailing('teacher')" ng-model="training.selectedItems[0].isTeacherAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка преподавателю'|localize}}
+                                </label>
+                            </div>
+                            <div class="span6">
+                                <label class="checkbox"  style="padding-top: 5px;" >
+                                    <input type="checkbox" ng-click="training.changeStatusAutoMailing('curator')" ng-model="training.selectedItems[0].isCuratorAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка куратору'|localize}}
+                                </label>
+                                <label class="checkbox"  style="padding-top: 5px;" >
+                                    <input type="checkbox" ng-click="training.changeStatusAutoMailing('feedback')" ng-model="training.selectedItems[0].isFeedBackAutoMailing" ng-disabled="menu.readOnlyMode">{{'Авторассылка анкеты'|localize}}
+                                </label>
+                            </div>
+                        </div>
+                        -->     
+                    </div>
+                </div>
+                </br>
+            </tab>
+        </tabset>
+    </div>
 </div>
 
-		
+        
 
 <div class="row-fluid">
-	<div class="span10  offset1">
-		<stcalert data="training.alert"/>
-	</div>
+    <div class="span10  offset1">
+        <stcalert data="training.alert"/>
+    </div>
 </div>
 ]]></CSP>
 </Export>

@@ -13,7 +13,7 @@ Get error status by key</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>errorKey:%String,additionalMsg:%String=""</FormalSpec>
 <ReturnType>%Status</ReturnType>
-<Implementation><![CDATA[	quit $system.Status.Error(5001, ..GetMsg(errorKey)_" "_additionalMsg)
+<Implementation><![CDATA[    quit $system.Status.Error(5001, ..GetMsg(errorKey)_" "_additionalMsg)
 ]]></Implementation>
 </Method>
 
@@ -23,7 +23,7 @@ Get localized error message</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>key</FormalSpec>
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	quit $GET(^CacheMsg("Stc", $$$SessionLanguage, key), "- "_key_" -")
+<Implementation><![CDATA[    quit $GET(^CacheMsg("Stc", $$$SessionLanguage, key), "- "_key_" -")
 ]]></Implementation>
 </Method>
 
@@ -34,369 +34,399 @@ Set localized </Description>
 <FormalSpec>key,value</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	s ^CacheMsg("Stc", $$$SessionLanguage, key) = value
-	quit $$$OK
+    s ^CacheMsg("Stc", $$$SessionLanguage, key) = value
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
 <Method name="Init">
 <Description>
-Write all messages into global</Description>
+Write all messages into global do ##class(Stc.Utils.Msg).Init()</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	
-	set ^CacheMsg("Stc", "ru", "Curator") = "Куратор"
-	set ^CacheMsg("Stc", "en", "Curator") = "Curator"
-	
-	set ^CacheMsg("Stc", "ru", "OtherInfo") = "Примечание"
-	set ^CacheMsg("Stc", "en", "OtherInfo") = "Other information"
-	
-	// Email subject
-	set ^CacheMsg("Stc", "ru", "emailSubject") = "Заявка на обучение"
-	set ^CacheMsg("Stc", "en", "emailSubject") = "Order for training"
-	
-	
-	
-	// MAILING ================================================================================================
-	
-	// Students
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Students") = "InterSystems. Обучение"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Training-Students") = ""_
-	"Здравствуйте! Напоминаем Вам о предстоящем обучении.<br>"_
-	"Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
-	"Курс: %Course.Name<br>"_
-	"Город: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Адрес: %Street, %Room<br>"_
-	"Преподаватель: %Teacher.FullName, %Teacher.Email <br>"_
-	"Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
-	"На обучение обязательно возьмите с собой ноутбук с ОС Windows (любой) или виртуальной машиной Windows."
+    set ^CacheMsg("Stc", "ru", "MailingFromTraining") = "Рассылка из обучения"
+    set ^CacheMsg("Stc", "en", "MailingFromTraining") = "Mailing from training"
+    
+    set ^CacheMsg("Stc", "ru", "CreateSubscr") = "Оформление подписки"
+    set ^CacheMsg("Stc", "en", "CreateSubscr") = "Create subscription"
+    
+    set ^CacheMsg("Stc", "ru", "AddNewStudent") = "Добавление слушателя"
+    set ^CacheMsg("Stc", "en", "AddNewStudent") = "Add new attendee"
+    
 
-	set ^CacheMsg("Stc", "en", "mail_Subject_Training-Students") = "InterSystems. Training"
-	set ^CacheMsg("Stc", "en", "mail_Message_Training-Students") = ""_
-	"Hello! We remind you of upcoming training.<br>"_
-	"Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
-	"Course: %Course.Name<br>"_
-	"City: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Address: %Street, %Room<br>"_
-	"Teacher: %Teacher.FullName, %Teacher.Email <br>"_
-	"Curator: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
-	"Training is required to bring a laptop running Windows (any) or virtual machines Windows."
-	
-	
-	
-	// Teacher
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Teacher") = "InterSystems. Слушатели курса"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Training-Teacher") = ""_
-	"Здравствуйте!<br>"_
-	"Перейдите по <a target='_blank' href='%ListOfStudentsUrl'>ссылке</a> для просмотра списка слушателей курса.<br>"_
-	"Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
-	"Курс: %Course.Name<br>"_
-	"Город: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Адрес: %Street, %Room<br>"_
-	"Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhoneSecret"
-	
-	set ^CacheMsg("Stc", "en", "mail_Subject_Training-Teacher") = "InterSystems. List of students"
-	set ^CacheMsg("Stc", "en", "mail_Message_Training-Teacher") = ""_
-	"Hello!<br>"_
-	"Go to <a target='_blank' href='%ListOfStudentsUrl'>link</a> view a list of students.<br>"_
-	"Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
-	"Course: %Course.Name<br>"_
-	"City: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Address: %Street, %Room<br>"_
-	"Curator: %Curator.FullName, %Curator.Email, %Curator.PhoneSecret"
-	
-	
-	
-	// Curator
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Curator") = "InterSystems. Слушатели курса"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Training-Curator") = ""_
-	"Здравствуйте!<br>"_
-	"Перейдите по <a target='_blank' href='%ListOfStudentsUrl'>ссылке</a> для просмотра списка слушателей курса.<br>"_
-	"Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
-	"Курс: %Course.Name<br>"_
-	"Город: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Адрес: %Street, %Room<br>"_
-	"Преподаватель: %Teacher.FullName, %Teacher.Email, %Teacher.Phone"
-	
-	set ^CacheMsg("Stc", "en", "mail_Subject_Training-Curator") = "InterSystems. List of students"
-	set ^CacheMsg("Stc", "en", "mail_Message_Training-Curator") = ""_
-	"Hello!<br>"_
-	"Go to <a target='_blank' href='%ListOfStudentsUrl'>link</a> view a list of students.<br>"_
-	"Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
-	"Course: %Course.Name<br>"_
-	"City: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Address: %Street, %Room<br>"_
-	"Teacher: %Teacher.FullName, %Teacher.Email, %Teacher.Phone"
-	
+    
+    
+    set ^CacheMsg("Stc", "ru", "StudentsAccessToFeedBack") = "Слушатели - доступ к анкете"
+    set ^CacheMsg("Stc", "en", "StudentsAccessToFeedBack") = "Students - access to survey"
+    
+    set ^CacheMsg("Stc", "ru", "StudentsRemainder") = "Слушатели - напоминание"
+    set ^CacheMsg("Stc", "en", "StudentsRemainder") = "Students - remainder"
+    
+    set ^CacheMsg("Stc", "ru", "CuratorListOfStudents") = "Куратор - список слушателей"
+    set ^CacheMsg("Stc", "en", "CuratorListOfStudents") = "Curator - list of attendees"
+    
+    set ^CacheMsg("Stc", "ru", "TeacherListOfStudents") = "Преподаватель - список слушателей"
+    set ^CacheMsg("Stc", "en", "TeacherListOfStudents") = "Trainer - list of attendees"
+    
+    set ^CacheMsg("Stc", "ru", "OrdersLinkForRegistration") = "Заявки - ссылка на регистрацию"
+    set ^CacheMsg("Stc", "en", "OrdersLinkForRegistration") = "Requests - link for registration"
+    
+    
+    
+    set ^CacheMsg("Stc", "ru", "Curator") = "Куратор"
+    set ^CacheMsg("Stc", "en", "Curator") = "Curator"
+    
+    set ^CacheMsg("Stc", "ru", "OtherInfo") = "Примечание"
+    set ^CacheMsg("Stc", "en", "OtherInfo") = "Other information"
+    
+    // Email subject
+    set ^CacheMsg("Stc", "ru", "emailSubject") = "Заявка на обучение"
+    set ^CacheMsg("Stc", "en", "emailSubject") = "Request for training"
+    
+    
+    
+    // MAILING ================================================================================================
+    
+    // Students
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Students") = "InterSystems. Обучение"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Training-Students") = ""_
+    "Здравствуйте! Напоминаем Вам о предстоящем обучении.<br>"_
+    "Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
+    "Курс: %Course.Name<br>"_
+    "Город: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Адрес: %Street, %Room<br>"_
+    "Преподаватель: %Trainer.FullName, %Trainer.Email <br>"_
+    "Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
+    "На обучение обязательно возьмите с собой ноутбук с ОС Windows (любой) или виртуальной машиной Windows."
+
+    set ^CacheMsg("Stc", "en", "mail_Subject_Training-Students") = "InterSystems. Training"
+    set ^CacheMsg("Stc", "en", "mail_Message_Training-Students") = ""_
+    "Hello! We remind you of upcoming training.<br>"_
+    "Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
+    "Course: %Course.Name<br>"_
+    "City: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Address: %Street, %Room<br>"_
+    "Trainer: %Trainer.FullName, %Trainer.Email <br>"_
+    "Curator: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
+    "Training is required to bring a laptop running Windows (any) or virtual machines Windows."
+    
+    
+    
+    // Teacher
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Teacher") = "InterSystems. Слушатели курса"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Training-Teacher") = ""_
+    "Здравствуйте!<br>"_
+    "Перейдите по <a target='_blank' href='%ListOfAttendeesUrl'>ссылке</a> для просмотра списка слушателей курса.<br>"_
+    "Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
+    "Курс: %Course.Name<br>"_
+    "Город: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Адрес: %Street, %Room<br>"_
+    "Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhoneSecret"
+    
+    set ^CacheMsg("Stc", "en", "mail_Subject_Training-Teacher") = "InterSystems. List of attendees"
+    set ^CacheMsg("Stc", "en", "mail_Message_Training-Teacher") = ""_
+    "Hello!<br>"_
+    "Go to <a target='_blank' href='%ListOfAttendeesUrl'>link</a> view a list of students.<br>"_
+    "Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
+    "Course: %Course.Name<br>"_
+    "City: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Address: %Street, %Room<br>"_
+    "Curator: %Curator.FullName, %Curator.Email, %Curator.PhoneSecret"
+    
+    
+    
+    // Curator
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Curator") = "InterSystems. Слушатели курса"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Training-Curator") = ""_
+    "Здравствуйте!<br>"_
+    "Перейдите по <a target='_blank' href='%ListOfAttendeesUrl'>ссылке</a> для просмотра списка слушателей курса.<br>"_
+    "Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
+    "Курс: %Course.Name<br>"_
+    "Город: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Адрес: %Street, %Room<br>"_
+    "Преподаватель: %Trainer.FullName, %Trainer.Email, %Trainer.Phone"
+    
+    set ^CacheMsg("Stc", "en", "mail_Subject_Training-Curator") = "InterSystems. List of students"
+    set ^CacheMsg("Stc", "en", "mail_Message_Training-Curator") = ""_
+    "Hello!<br>"_
+    "Go to <a target='_blank' href='%ListOfAttendeesUrl'>link</a> view a list of students.<br>"_
+    "Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
+    "Course: %Course.Name<br>"_
+    "City: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Address: %Street, %Room<br>"_
+    "Trainer: %Trainer.FullName, %Trainer.Email, %Trainer.Phone"
+    
 
 
 
-	// FeedBack
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Training-FeedBack") = "InterSystems. Анкета слушателя"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Training-FeedBack") = ""_
-	"Здравствуйте!<br>"_
-	"Перейдите по <a target='_blank' href='%FeedBackUrl'>ссылке</a> для заполнения анкеты, там вы можете оставить свои замечания и предложения по пройденному курсу - '%Course.Name'"
+    // FeedBack
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Training-FeedBack") = "InterSystems. Анкета слушателя"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Training-FeedBack") = ""_
+    "Здравствуйте!<br>"_
+    "Перейдите по <a target='_blank' href='%SurveyUrl'>ссылке</a> для заполнения анкеты, там вы можете оставить свои замечания и предложения по пройденному курсу - '%Course.Name'"
 
-	set ^CacheMsg("Stc", "en", "mail_Subject_Training-FeedBack") = "InterSystems. FeedBack"
-	set ^CacheMsg("Stc", "en", "mail_Message_Training-FeedBack") = ""_
-	"Hello!<br>"_
-	"Go to <a target='_blank' href='%FeedBackUrl'>link</a> to complete the questionnaire, where you can leave your comments and suggestions on the course - '%Course.Name'"
-	
-	
-	
-	
-	// Registration
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Registration") = "InterSystems. Регистрация на курс"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Training-Registration") = ""_
-	"Здравствуйте! Ваша заявка на обучение принята.<br>"_
-	"Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
-	"Курс: %Course.Name<br>"_
-	"Город: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Адрес: %Street, %Room<br>"_
-	"Преподаватель: %Teacher.FullName, %Teacher.Email <br>"_
-	"Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhonePublic"
-	
-	set ^CacheMsg("Stc", "en", "mail_Subject_Training-Registration") = "InterSystems. Register for a course"
-	set ^CacheMsg("Stc", "en", "mail_Message_Training-Registration") = ""_
-	"Hello! Your order is accepted for training.<br>"_
-	"Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
-	"Course: %Course.Name<br>"_
-	"City: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Address: %Street, %Room<br>"_
-	"Teacher: %Teacher.FullName, %Teacher.Email <br>"_
-	"Curator: %Curator.FullName, %Curator.Email, %Curator.PhonePublic"
-	
-	
-	
-	// Orders
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Orders") = "InterSystems. Анонс нового обучения"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Training-Orders") = ""_
-	"Здравствуйте!<br>"_
-	"Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
-	"Курс: %Course.Name<br>"_
-	"Город: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Адрес: %Street, %Room<br>"_
-	"Преподаватель: %Teacher.FullName, %Teacher.Email <br>"_
-	"Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
-	"Для регистрации перейдите по <a target='_blank' href='%JoinUrl'>ссылке</a>."
+    set ^CacheMsg("Stc", "en", "mail_Subject_Training-FeedBack") = "InterSystems. Survey"
+    set ^CacheMsg("Stc", "en", "mail_Message_Training-FeedBack") = ""_
+    "Hello!<br>"_
+    "Go to <a target='_blank' href='%SurveyUrl'>link</a> to complete the questionnaire, where you can leave your comments and suggestions on the course - '%Course.Name'"
+    
+    
+    
+    
+    // Registration
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Registration") = "InterSystems. Регистрация на курс"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Training-Registration") = ""_
+    "Здравствуйте! Ваша заявка на обучение принята.<br>"_
+    "Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
+    "Курс: %Course.Name<br>"_
+    "Город: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Адрес: %Street, %Room<br>"_
+    "Преподаватель: %Trainer.FullName, %Trainer.Email <br>"_
+    "Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhonePublic"
+    
+    set ^CacheMsg("Stc", "en", "mail_Subject_Training-Registration") = "InterSystems. Register for a course"
+    set ^CacheMsg("Stc", "en", "mail_Message_Training-Registration") = ""_
+    "Hello! Your order is accepted for training.<br>"_
+    "Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
+    "Course: %Course.Name<br>"_
+    "City: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Address: %Street, %Room<br>"_
+    "Trainer: %Trainer.FullName, %Trainer.Email <br>"_
+    "Curator: %Curator.FullName, %Curator.Email, %Curator.PhonePublic"
+    
+    
+    
+    // Orders
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Training-Orders") = "InterSystems. Анонс нового обучения"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Training-Orders") = ""_
+    "Здравствуйте!<br>"_
+    "Дата начала обучения: %DateStart, время: %TimeStart - %TimeEnd<br>"_
+    "Курс: %Course.Name<br>"_
+    "Город: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Адрес: %Street, %Room<br>"_
+    "Преподаватель: %Trainer.FullName, %Trainer.Email <br>"_
+    "Контактное лицо: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
+    "Для регистрации перейдите по <a target='_blank' href='%JoinUrl'>ссылке</a>."
 
-	set ^CacheMsg("Stc", "en", "mail_Subject_Training-Orders") = "InterSystems. New training"
-	set ^CacheMsg("Stc", "en", "mail_Message_Training-Orders") = ""_
-	"Hello!<br>"_
-	"Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
-	"Course: %Course.Name<br>"_
-	"City: %City.Name, %Region.Name, %Country.Name<br>"_
-	"Address: %Street, %Room<br>"_
-	"Teacher: %Teacher.FullName, %Teacher.Email <br>"_
-	"Curator: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
-	"Go to <a target='_blank' href='%JoinUrl'>link</a> for registration."
-	
-	
-	
-	// Apply order
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Order-Apply") = "InterSystems. Заявка на обучение"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Order-Apply") = ""_
-	"Здравствуйте!<br>"_
-	"Ваша заявка на обучение по курсу '%Course.Name' принята."
-	
-	set ^CacheMsg("Stc", "en", "mail_Subject_Order-Apply") = "InterSystems. Order for training"
-	set ^CacheMsg("Stc", "en", "mail_Message_Order-Apply") = ""_
-	"Hello!<br>"_
-	"Your order for training '%Course.Name' is accepted."
-	
-	//=========================================================================================
-	
-	
-	set ^CacheMsg("Stc", "ru", "CalendarEvent") = ""_
-		"<a href='http://%1'>Программа курса</a><br><br>"_
-		"<a href='http://%2'>Записаться на обучение</a><br><br>"_
-		"Место проведения:<br>"_
-		"%3<br><br>"_
-		"Преподаватель:<br>"_
-		"%4<br><br>"_
-		"Время проведения: %5<br>"_
-		"%6%7"
+    set ^CacheMsg("Stc", "en", "mail_Subject_Training-Orders") = "InterSystems. New training"
+    set ^CacheMsg("Stc", "en", "mail_Message_Training-Orders") = ""_
+    "Hello!<br>"_
+    "Start date: %DateStart, time: %TimeStart - %TimeEnd<br>"_
+    "Course: %Course.Name<br>"_
+    "City: %City.Name, %Region.Name, %Country.Name<br>"_
+    "Address: %Street, %Room<br>"_
+    "Tainer: %Trainer.FullName, %Trainer.Email <br>"_
+    "Curator: %Curator.FullName, %Curator.Email, %Curator.PhonePublic<br>"_
+    "Go to <a target='_blank' href='%JoinUrl'>link</a> for registration."
+    
+    
+    
+    // Apply order
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Order-Apply") = "InterSystems. Заявка на обучение"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Order-Apply") = ""_
+    "Здравствуйте!<br>"_
+    "Ваша заявка на обучение по курсу '%Course.Name' принята."
+    
+    set ^CacheMsg("Stc", "en", "mail_Subject_Order-Apply") = "InterSystems. Order for training"
+    set ^CacheMsg("Stc", "en", "mail_Message_Order-Apply") = ""_
+    "Hello!<br>"_
+    "Your order for training '%Course.Name' is accepted."
+    
+    //=========================================================================================
+    
+    
+    set ^CacheMsg("Stc", "ru", "CalendarEvent") = ""_
+        "<a href='http://%1'>Программа курса</a><br><br>"_
+        "<a href='http://%2'>Записаться на обучение</a><br><br>"_
+        "Место проведения:<br>"_
+        "%3<br><br>"_
+        "Преподаватель:<br>"_
+        "%4<br><br>"_
+        "Время проведения: %5<br>"_
+        "%6%7"
 
-	set ^CacheMsg("Stc", "en", "CalendarEvent") = ""_
-		"<a href='http://%1'>Course program</a><br><br>"_
-		"<a href='http://%2'>Registration</a><br><br>"_
-		"Location:<br>"_
-		"%3<br><br>"_
-		"Teacher:<br>"_
-		"%4<br><br>"_
-		"Time: %5<br>"_
-		"%6%7"
-		
-	// Mailing subscription
-	set ^CacheMsg("Stc", "ru", "mail_Subject_Confirmation-Subscription") = "InterSystems. Активация подписки на анонсы обучающих курсов"
-	set ^CacheMsg("Stc", "ru", "mail_Message_Confirmation-Subscription") = "Здравствуйте, для активации подписки перейдите по <a href='%ActivationUrl' target='_blank'>ссылке</a>."
-	
-	set ^CacheMsg("Stc", "ru", "SubscriptionAlreadyExists") = "Подписка уже оформлена"
-	
-	set ^CacheMsg("Stc", "ru", "SendSubscriptionConfirmationCodeError") = "Отправка кода активации завершилась неудачей"
-	set ^CacheMsg("Stc", "en", "SendSubscriptionConfirmationCodeError") = "Sending an activation code failed"
-	
-	set ^CacheMsg("Stc", "ru", "WrongConfirmationCode") = "Неверный код активации"
-	set ^CacheMsg("Stc", "en", "WrongConfirmationCode") = "Wrong activation code"
-	
-	set ^CacheMsg("Stc", "ru", "WrongAccessCode") = "Неверный код доступа"
-	set ^CacheMsg("Stc", "en", "WrongAccessCode") = "Wrong access code"
-	
-	
-	
-	set ^CacheMsg("Stc", "ru", "contactPerson") = "Контактное лицо"
-	set ^CacheMsg("Stc", "en", "contactPerson") = "Contact person"
-	
-	set ^CacheMsg("Stc", "ru", "certificatesReport") = "Сертификаты для [%1] [%2] [%3]"
-	set ^CacheMsg("Stc", "en", "certificatesReport") = "Certificates for [%1] [%2] [%3]"
+    set ^CacheMsg("Stc", "en", "CalendarEvent") = ""_
+        "<a href='http://%1'>Course program</a><br><br>"_
+        "<a href='http://%2'>Registration</a><br><br>"_
+        "Location:<br>"_
+        "%3<br><br>"_
+        "Teacher:<br>"_
+        "%4<br><br>"_
+        "Time: %5<br>"_
+        "%6%7"
+        
+    // Mailing subscription
+    set ^CacheMsg("Stc", "ru", "mail_Subject_Confirmation-Subscription") = "InterSystems. Активация подписки на анонсы обучающих курсов"
+    set ^CacheMsg("Stc", "ru", "mail_Message_Confirmation-Subscription") = "Здравствуйте, для активации подписки перейдите по <a href='%ActivationUrl' target='_blank'>ссылке</a>."
+    
+    set ^CacheMsg("Stc", "ru", "SubscriptionAlreadyExists") = "Подписка уже оформлена"
+    
+    set ^CacheMsg("Stc", "ru", "SendSubscriptionConfirmationCodeError") = "Отправка кода активации завершилась неудачей"
+    set ^CacheMsg("Stc", "en", "SendSubscriptionConfirmationCodeError") = "Sending an activation code failed"
+    
+    set ^CacheMsg("Stc", "ru", "WrongConfirmationCode") = "Неверный код активации"
+    set ^CacheMsg("Stc", "en", "WrongConfirmationCode") = "Wrong activation code"
+    
+    set ^CacheMsg("Stc", "ru", "WrongAccessCode") = "Неверный код доступа"
+    set ^CacheMsg("Stc", "en", "WrongAccessCode") = "Wrong access code"
+    
+    
+    
+    set ^CacheMsg("Stc", "ru", "contactPerson") = "Контактное лицо"
+    set ^CacheMsg("Stc", "en", "contactPerson") = "Contact person"
+    
+    set ^CacheMsg("Stc", "ru", "certificatesReport") = "Сертификаты для [%1] [%2] [%3]"
+    set ^CacheMsg("Stc", "en", "certificatesReport") = "Certificates for [%1] [%2] [%3]"
 
-	set ^CacheMsg("Stc", "ru", "studentsReport") = "Слушатели [%1] [%2] [%3]"
-	set ^CacheMsg("Stc", "en", "studentsReport") = "Students [%1] [%2] [%3]"	
-	
-	
-	// Errors
+    set ^CacheMsg("Stc", "ru", "studentsReport") = "Слушатели [%1] [%2] [%3]"
+    set ^CacheMsg("Stc", "en", "studentsReport") = "Students [%1] [%2] [%3]"    
 
-	set ^CacheMsg("Stc", "ru", "feedBackSpam") = "Слишком много отзывов для этого курса"
-	set ^CacheMsg("Stc", "en", "feedBackSpam") = "Too much feedbacks for this training"
+    set ^CacheMsg("Stc", "ru", "ordernewstudentsReport") = "Заявки [%1] [%2] [%3]"
+    set ^CacheMsg("Stc", "en", "ordernewstudentsReport") = "Orders [%1] [%2] [%3]"        
+    
+    // Errors
 
-	set ^CacheMsg("Stc", "ru", "feedBackErrorCode") = "Неверный код доступа"
-	set ^CacheMsg("Stc", "en", "feedBackErrorCode") = "Wrong access code"
-	
-	set ^CacheMsg("Stc", "ru", "feedBackSave") = "Отзыв не сохранен."
-	set ^CacheMsg("Stc", "en", "feedBackSave") = "Feedback have not been saved."
-	
-	set ^CacheMsg("Stc", "ru", "emailAddNewStudent") = "Слушатель добавлен, но письмо не было отправлено."
-	set ^CacheMsg("Stc", "en", "emailAddNewStudent") = "Student has been added into training, but email was not sent."
-	
-	set ^CacheMsg("Stc", "ru", "createCompany") = "Создание организации"
-	set ^CacheMsg("Stc", "en", "createCompany") = "Creation organization"
-	
-	set ^CacheMsg("Stc", "ru", "saveCompany") = "Сохранение организации"
-	set ^CacheMsg("Stc", "en", "saveCompany") = "Saving organization"
-	
-	set ^CacheMsg("Stc", "ru", "openCompany") = "Загрузка организации"
-	set ^CacheMsg("Stc", "en", "openCompany") = "Loading organization"
-	
-	set ^CacheMsg("Stc", "ru", "createPerson") = "Создание сотрудника"
-	set ^CacheMsg("Stc", "en", "createPerson") = "Create employee"
-	
-	set ^CacheMsg("Stc", "ru", "savePerson") = "Сохранение сотрудника"
-	set ^CacheMsg("Stc", "en", "savePerson") = "Saving employee"
-	
-	set ^CacheMsg("Stc", "ru", "deletePerson") = "Удаление сотрудника"
-	set ^CacheMsg("Stc", "en", "deletePerson") = "Remove employee"
-	
-	set ^CacheMsg("Stc", "ru", "deletePersonImpossible") = "Удаление сотрудника невозможно, на него ссылаются из других таблиц."
-	set ^CacheMsg("Stc", "en", "deletePersonImpossible") = "Deleting employee impossible it is referenced from other tables."
-	
-	set ^CacheMsg("Stc", "ru", "openPerson") = "Загрузка сотрудника"
-	set ^CacheMsg("Stc", "en", "openPerson") = "Loading employee"
-	
-	set ^CacheMsg("Stc", "ru", "createCompanyContact") = "Создание контакта организации"
-	set ^CacheMsg("Stc", "en", "createCompanyContact") = "Creation organization contact"
-	
-	set ^CacheMsg("Stc", "ru", "wrongOrderAccessCode") = "Неверный код доступа к заявке"
-	set ^CacheMsg("Stc", "en", "wrongOrderAccessCode") = "Invalid access code for order"
-	
-	set ^CacheMsg("Stc", "ru", "createDirtyOrder") = "Создание новой заявки"
-	set ^CacheMsg("Stc", "en", "createDirtyOrder") = "Creation new order"
-	
-	set ^CacheMsg("Stc", "ru", "openOrder") = "Загрузка заявки"
-	set ^CacheMsg("Stc", "en", "openOrder") = "Load order"
-	
-	set ^CacheMsg("Stc", "ru", "saveOrder") = "Сохранение заявки"
-	set ^CacheMsg("Stc", "en", "saveOrder") = "Saving order"
-	
-	set ^CacheMsg("Stc", "ru", "saveApprovedOrder") = "Сохранение одобренной заявки"
-	set ^CacheMsg("Stc", "en", "saveApprovedOrder") = "Saving approved order"
-	
-	set ^CacheMsg("Stc", "ru", "saveOrderStudent") = "Сохранение слушателя" 
-	set ^CacheMsg("Stc", "en", "saveOrderStudent") = "Saving student"
-	
-	set ^CacheMsg("Stc", "ru", "doNotHaveAccessToEditOrderStudent") = "Нет прав для редактирования слушателя"
-	set ^CacheMsg("Stc", "en", "doNotHaveAccessToEditOrderStudent") = "Do not have access to edit order student"
-	
-	set ^CacheMsg("Stc", "ru", "createOrderStudent") = "Создание слушателя"
-	set ^CacheMsg("Stc", "en", "createOrderStudent") = "Creatio"
-	
-	set ^CacheMsg("Stc", "ru", "saveDirtyOrder") = "Сохранение новой заявки"
-	set ^CacheMsg("Stc", "en", "saveDirtyOrder") = "Saving new order"
-	
-	set ^CacheMsg("Stc", "ru", "saveCourse") = "Сохранение курса"
-	set ^CacheMsg("Stc", "en", "saveCourse") = "Saving course"
-	
-	set ^CacheMsg("Stc", "ru", "createCourse") = "Создание курса"
-	set ^CacheMsg("Stc", "en", "createCourse") = "Creation course"
-	
-	set ^CacheMsg("Stc", "ru", "saveSubGroup") = "Сохранение подгруппы"
-	set ^CacheMsg("Stc", "en", "saveSubGroup") = "Saving sub-group"
-	
-	set ^CacheMsg("Stc", "ru", "createSubGroup") = "Создание подгруппы"
-	set ^CacheMsg("Stc", "en", "createSubGroup") = "Creation sub-group"
-	
-	set ^CacheMsg("Stc", "ru", "deleteSubGroup") = "Удаление подгруппы"
-	set ^CacheMsg("Stc", "en", "deleteSubGroup") = "Removing sub-group"
-	
-	set ^CacheMsg("Stc", "ru", "createTraining") = "Создание обучения"
-	set ^CacheMsg("Stc", "en", "createTraining") = "Creating a training"
-	
-	set ^CacheMsg("Stc", "ru", "saveTraining") = "Сохранение обучения"
-	set ^CacheMsg("Stc", "en", "saveTraining") = "Saving training"
-	
-	set ^CacheMsg("Stc", "ru", "isAlreadyCompleteTraining") = "Обучение уже было завершено"
-	set ^CacheMsg("Stc", "en", "isAlreadyCompleteTraining") = "Training is already completed"
-	
-	set ^CacheMsg("Stc", "ru", "createCertificate") = "Создание сертификата"
-	set ^CacheMsg("Stc", "en", "createCertificate") = "Creating a cretificate"
-	
-	
-	set ^CacheMsg("Stc", "ru", "saveLoc") = "Сохранение локализации"
-	set ^CacheMsg("Stc", "en", "saveLoc") = "Saving localization"
-		
-	set ^CacheMsg("Stc", "ru", "deleteLoc") = "Удаление локализации"
-	set ^CacheMsg("Stc", "en", "deleteLoc") = "Deleting localization"
-		
-	set ^CacheMsg("Stc", "ru", "createLoc") = "Создание локализации"
-	set ^CacheMsg("Stc", "en", "createLoc") = "Creating localization"
-	
-	set ^CacheMsg("Stc", "ru", "sendEmail") = "Отправка почты"
-	set ^CacheMsg("Stc", "en", "sendEmail") = "Sending email"
-	
-	set ^CacheMsg("Stc", "ru", "deleteCompany") = "Удаление организации"
-	set ^CacheMsg("Stc", "en", "deleteCompany") = "Removing company"
-	
-	set ^CacheMsg("Stc", "ru", "deleteCompanyImpossible") = "Удаление организации невозможно, на неё ссылаются из других таблиц."
-	set ^CacheMsg("Stc", "en", "deleteCompanyImpossible") = "Deleting company impossible it is referenced from other tables."
-	
-	set ^CacheMsg("Stc", "ru", "deleteCertificate") = "Удаление сертификата"
-	set ^CacheMsg("Stc", "en", "deleteCertificate") = "Removing certificate"
-	
-	set ^CacheMsg("Stc", "ru", "deleteTraining") = "Удаление обучения"
-	set ^CacheMsg("Stc", "en", "deleteTraining") = "Removing training"
+    set ^CacheMsg("Stc", "ru", "feedBackSpam") = "Слишком много отзывов для этого курса"
+    set ^CacheMsg("Stc", "en", "feedBackSpam") = "Too much surveys for this training"
 
-	set ^CacheMsg("Stc", "ru", "deleteOrderNewStudent") = "Удаление заявки от слушателя"
-	set ^CacheMsg("Stc", "en", "deleteOrderNewStudent") = "Removing order from student"
-	
-	set ^CacheMsg("Stc", "ru", "tooMuchOrderNewStudent") = "Слишком много заявок для выбранного обучения"
-	set ^CacheMsg("Stc", "en", "tooMuchOrderNewStudent") = "Too much new orders for this training"
-	
-	set ^CacheMsg("Stc", "ru", "deleteTrainingImpossible") = "Удаление обучения невозможно, на него ссылаются из других таблиц."
-	set ^CacheMsg("Stc", "en", "deleteTrainingImpossible") = "Deleting training impossible it is referenced from other tables."
+    set ^CacheMsg("Stc", "ru", "feedBackErrorCode") = "Неверный код доступа"
+    set ^CacheMsg("Stc", "en", "feedBackErrorCode") = "Wrong access code"
+    
+    set ^CacheMsg("Stc", "ru", "feedBackSave") = "Отзыв не сохранен."
+    set ^CacheMsg("Stc", "en", "feedBackSave") = "Survey have not been saved."
+    
+    set ^CacheMsg("Stc", "ru", "emailAddNewStudent") = "Слушатель добавлен, но письмо не было отправлено."
+    set ^CacheMsg("Stc", "en", "emailAddNewStudent") = "Attendee has been added into training, but email was not sent."
+    
+    set ^CacheMsg("Stc", "ru", "createCompany") = "Создание организации"
+    set ^CacheMsg("Stc", "en", "createCompany") = "Creation organization"
+    
+    set ^CacheMsg("Stc", "ru", "saveCompany") = "Сохранение организации"
+    set ^CacheMsg("Stc", "en", "saveCompany") = "Saving organization"
+    
+    set ^CacheMsg("Stc", "ru", "openCompany") = "Загрузка организации"
+    set ^CacheMsg("Stc", "en", "openCompany") = "Loading organization"
+    
+    set ^CacheMsg("Stc", "ru", "createPerson") = "Создание сотрудника"
+    set ^CacheMsg("Stc", "en", "createPerson") = "Create employee"
+    
+    set ^CacheMsg("Stc", "ru", "savePerson") = "Сохранение сотрудника"
+    set ^CacheMsg("Stc", "en", "savePerson") = "Saving employee"
+    
+    set ^CacheMsg("Stc", "ru", "deletePerson") = "Удаление сотрудника"
+    set ^CacheMsg("Stc", "en", "deletePerson") = "Remove employee"
+    
+    set ^CacheMsg("Stc", "ru", "deletePersonImpossible") = "Удаление сотрудника невозможно, на него ссылаются из других таблиц."
+    set ^CacheMsg("Stc", "en", "deletePersonImpossible") = "Deleting employee impossible it is referenced from other tables."
+    
+    set ^CacheMsg("Stc", "ru", "openPerson") = "Загрузка сотрудника"
+    set ^CacheMsg("Stc", "en", "openPerson") = "Loading employee"
+    
+    set ^CacheMsg("Stc", "ru", "createCompanyContact") = "Создание контакта организации"
+    set ^CacheMsg("Stc", "en", "createCompanyContact") = "Creation organization contact"
+    
+    set ^CacheMsg("Stc", "ru", "wrongOrderAccessCode") = "Неверный код доступа к заявке"
+    set ^CacheMsg("Stc", "en", "wrongOrderAccessCode") = "Invalid access code for request"
+    
+    set ^CacheMsg("Stc", "ru", "createDirtyOrder") = "Создание новой заявки"
+    set ^CacheMsg("Stc", "en", "createDirtyOrder") = "Creation new request"
+    
+    set ^CacheMsg("Stc", "ru", "openOrder") = "Загрузка заявки"
+    set ^CacheMsg("Stc", "en", "openOrder") = "Load request"
+    
+    set ^CacheMsg("Stc", "ru", "saveOrder") = "Сохранение заявки"
+    set ^CacheMsg("Stc", "en", "saveOrder") = "Saving request"
+    
+    set ^CacheMsg("Stc", "ru", "saveApprovedOrder") = "Сохранение одобренной заявки"
+    set ^CacheMsg("Stc", "en", "saveApprovedOrder") = "Saving approved request"
+    
+    set ^CacheMsg("Stc", "ru", "saveOrderStudent") = "Сохранение слушателя" 
+    set ^CacheMsg("Stc", "en", "saveOrderStudent") = "Saving attendee"
+    
+    set ^CacheMsg("Stc", "ru", "doNotHaveAccessToEditOrderStudent") = "Нет прав для редактирования слушателя"
+    set ^CacheMsg("Stc", "en", "doNotHaveAccessToEditOrderStudent") = "Do not have access to edit order attendee"
+    
+    set ^CacheMsg("Stc", "ru", "createOrderStudent") = "Создание слушателя"
+    set ^CacheMsg("Stc", "en", "createOrderStudent") = "Creation attendee"
+    
+    set ^CacheMsg("Stc", "ru", "saveDirtyOrder") = "Сохранение новой заявки"
+    set ^CacheMsg("Stc", "en", "saveDirtyOrder") = "Saving new order"
+    
+    set ^CacheMsg("Stc", "ru", "saveCourse") = "Сохранение курса"
+    set ^CacheMsg("Stc", "en", "saveCourse") = "Saving course"
+    
+    set ^CacheMsg("Stc", "ru", "createCourse") = "Создание курса"
+    set ^CacheMsg("Stc", "en", "createCourse") = "Creation course"
+    
+    set ^CacheMsg("Stc", "ru", "saveSubGroup") = "Сохранение подгруппы"
+    set ^CacheMsg("Stc", "en", "saveSubGroup") = "Saving sub-group"
+    
+    set ^CacheMsg("Stc", "ru", "createSubGroup") = "Создание подгруппы"
+    set ^CacheMsg("Stc", "en", "createSubGroup") = "Creation sub-group"
+    
+    set ^CacheMsg("Stc", "ru", "deleteSubGroup") = "Удаление подгруппы"
+    set ^CacheMsg("Stc", "en", "deleteSubGroup") = "Removing sub-group"
+    
+    set ^CacheMsg("Stc", "ru", "createTraining") = "Создание обучения"
+    set ^CacheMsg("Stc", "en", "createTraining") = "Creating a training"
+    
+    set ^CacheMsg("Stc", "ru", "saveTraining") = "Сохранение обучения"
+    set ^CacheMsg("Stc", "en", "saveTraining") = "Saving training"
+    
+    set ^CacheMsg("Stc", "ru", "isAlreadyCompleteTraining") = "Обучение уже было завершено"
+    set ^CacheMsg("Stc", "en", "isAlreadyCompleteTraining") = "Training is already completed"
+    
+    set ^CacheMsg("Stc", "ru", "createCertificate") = "Создание сертификата"
+    set ^CacheMsg("Stc", "en", "createCertificate") = "Creating a cretificate"
+    
+    
+    set ^CacheMsg("Stc", "ru", "saveLoc") = "Сохранение локализации"
+    set ^CacheMsg("Stc", "en", "saveLoc") = "Saving localization"
+        
+    set ^CacheMsg("Stc", "ru", "deleteLoc") = "Удаление локализации"
+    set ^CacheMsg("Stc", "en", "deleteLoc") = "Deleting localization"
+        
+    set ^CacheMsg("Stc", "ru", "createLoc") = "Создание локализации"
+    set ^CacheMsg("Stc", "en", "createLoc") = "Creating localization"
+    
+    set ^CacheMsg("Stc", "ru", "sendEmail") = "Отправка почты"
+    set ^CacheMsg("Stc", "en", "sendEmail") = "Sending email"
+    
+    set ^CacheMsg("Stc", "ru", "deleteCompany") = "Удаление организации"
+    set ^CacheMsg("Stc", "en", "deleteCompany") = "Removing company"
+    
+    set ^CacheMsg("Stc", "ru", "deleteCompanyImpossible") = "Удаление организации невозможно, на неё ссылаются из других таблиц."
+    set ^CacheMsg("Stc", "en", "deleteCompanyImpossible") = "Deleting company impossible it is referenced from other tables."
+    
+    set ^CacheMsg("Stc", "ru", "deleteCertificate") = "Удаление сертификата"
+    set ^CacheMsg("Stc", "en", "deleteCertificate") = "Removing certificate"
+    
+    set ^CacheMsg("Stc", "ru", "deleteTraining") = "Удаление обучения"
+    set ^CacheMsg("Stc", "en", "deleteTraining") = "Removing training"
 
-	set ^CacheMsg("Stc", "ru", "personContainsInTraining") = "Слушатель уже есть в этом обучении"
-	set ^CacheMsg("Stc", "en", "personContainsInTraining") = "Student is already in this training"
-	
-	
-	set ^CacheMsg("Stc", "ru", "NoPrivilege") = "Нет доступа!"
-	set ^CacheMsg("Stc", "en", "NoPrivilege") = "No privileges!"
-	
-	set ^CacheMsg("Stc", "ru", "copyOfOrderNewStudent") = "Вы уже зарегистрированы!"
-	set ^CacheMsg("Stc", "en", "copyOfOrderNewStudent") = "You are already registered!"
-	
-	
-	set ^CacheMsg("Stc", "ru", "createOrderNewStudent") = "Ошибка при создании заявки!"
-	set ^CacheMsg("Stc", "en", "createOrderNewStudent") = "Error creating order!"
+    set ^CacheMsg("Stc", "ru", "deleteOrderNewStudent") = "Удаление заявки от слушателя"
+    set ^CacheMsg("Stc", "en", "deleteOrderNewStudent") = "Removing order from student"
+    
+    set ^CacheMsg("Stc", "ru", "tooMuchOrderNewStudent") = "Слишком много заявок для выбранного обучения"
+    set ^CacheMsg("Stc", "en", "tooMuchOrderNewStudent") = "Too much new requests for this training"
+    
+    set ^CacheMsg("Stc", "ru", "deleteTrainingImpossible") = "Удаление обучения невозможно, на него ссылаются из других таблиц."
+    set ^CacheMsg("Stc", "en", "deleteTrainingImpossible") = "Deleting training impossible it is referenced from other tables."
+
+    set ^CacheMsg("Stc", "ru", "personContainsInTraining") = "Слушатель уже есть в этом обучении"
+    set ^CacheMsg("Stc", "en", "personContainsInTraining") = "Student is already in this training"
+    
+    
+    set ^CacheMsg("Stc", "ru", "NoPrivilege") = "Нет доступа!"
+    set ^CacheMsg("Stc", "en", "NoPrivilege") = "No privileges!"
+    
+    set ^CacheMsg("Stc", "ru", "copyOfOrderNewStudent") = "Вы уже зарегистрированы!"
+    set ^CacheMsg("Stc", "en", "copyOfOrderNewStudent") = "You are already registered!"
+    
+    
+    set ^CacheMsg("Stc", "ru", "createOrderNewStudent") = "Ошибка при создании заявки!"
+    set ^CacheMsg("Stc", "en", "createOrderNewStudent") = "Error creating request!"
 ]]></Implementation>
 </Method>
 
@@ -406,71 +436,71 @@ do ##class(Stc.Utils.Msg).DeepSeeMsg()</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	
-	// ------- Дашборды -----------------
-	// Курсы
-	do ..AddDeepSeeMsg("Курсы и слушатели", "Courses and students")
-	do ..AddDeepSeeMsg("Количество слушателей по курсам за все годы", "Number of students by courses for all years")
-	
-	do ..AddDeepSeeMsg("Курсы и обучения", "Courses and trainings")
-	do ..AddDeepSeeMsg("Количество обучений по курсам за все годы", "Number of trainings by courses for all years")
-	
-	// Организации
-	do ..AddDeepSeeMsg("Организации и слушатели", "Organizations and students")
-	do ..AddDeepSeeMsg("Количество слушателей по организациям за все годы", "Number of students by organizations for all years")
-	
-	do ..AddDeepSeeMsg("Организации и обучения", "Organizations and trainings")
-	do ..AddDeepSeeMsg("Количество обучений по организациям за все годы", "Number of trainings by organizations for all years")
-	
-	// Преподаватели
-	do ..AddDeepSeeMsg("Преподаватели и слушатели", "Teachers and students")
-	do ..AddDeepSeeMsg("Количество слушателей по преподавателям за все годы", "Number of students by teachers for all years")
-	
-	do ..AddDeepSeeMsg("Преподаватели и обучения", "Teachers and trainings")
-	do ..AddDeepSeeMsg("Количество обучений по преподавателям за все годы", "Number of trainings by teachers for all years")
-	// ---------------------------------
+    
+    // ------- Дашборды -----------------
+    // Курсы
+    do ..AddDeepSeeMsg("Курсы и слушатели", "Courses and attendees")
+    do ..AddDeepSeeMsg("Количество слушателей по курсам за все годы", "Number of attendees by courses for all years")
+    
+    do ..AddDeepSeeMsg("Курсы и обучения", "Courses and trainings")
+    do ..AddDeepSeeMsg("Количество обучений по курсам за все годы", "Number of trainings by courses for all years")
+    
+    // Организации
+    do ..AddDeepSeeMsg("Организации и слушатели", "Organizations and attendees")
+    do ..AddDeepSeeMsg("Количество слушателей по организациям за все годы", "Number of attendees by organizations for all years")
+    
+    do ..AddDeepSeeMsg("Организации и обучения", "Organizations and trainings")
+    do ..AddDeepSeeMsg("Количество обучений по организациям за все годы", "Number of trainings by organizations for all years")
+    
+    // Преподаватели
+    do ..AddDeepSeeMsg("Преподаватели и слушатели", "Trainers and attendee")
+    do ..AddDeepSeeMsg("Количество слушателей по преподавателям за все годы", "Number of attendees by trainers for all years")
+    
+    do ..AddDeepSeeMsg("Преподаватели и обучения", "Trainers and trainings")
+    do ..AddDeepSeeMsg("Количество обучений по преподавателям за все годы", "Number of trainings by trainers for all years")
+    // ---------------------------------
 
-	
-	do ..AddDeepSeeMsg("Количество слушателей по годам", "Number of students by years")
-	do ..AddDeepSeeMsg("Количество обучений по годам", "Number of trainings by years")
-	
-	
-	do ..AddDeepSeeMsg("Адрес", "Address")
-	do ..AddDeepSeeMsg("Год", "Year")
-	do ..AddDeepSeeMsg("Город", "City")
-	do ..AddDeepSeeMsg("Дата начала", "Start date")
-	do ..AddDeepSeeMsg("Дата обучения", "Date of training")
-	do ..AddDeepSeeMsg("Дата окончания", "End date")
-	do ..AddDeepSeeMsg("Дата", "Date")
-	do ..AddDeepSeeMsg("Завершённые", "Completed")
-	do ..AddDeepSeeMsg("Карта точек обучения", "Map of training points")
-	do ..AddDeepSeeMsg("Количество обучений", "Trainings count")
-	do ..AddDeepSeeMsg("Перейти к обучениям", "Go to trainings")
-	do ..AddDeepSeeMsg("Перейти к слушателям", "Go to students")
-	
-	do ..AddDeepSeeMsg("Анализ обучений", "Analysis of trainings")
-	do ..AddDeepSeeMsg("Анализ по слушателям", "Analysis of students")		
-	
-	do ..AddDeepSeeMsg("Курс", "Course")
-	do ..AddDeepSeeMsg("Незавершённые", "Uncompleted")
-	do ..AddDeepSeeMsg("Организация", "Organization")
-	do ..AddDeepSeeMsg("Партнёр", "Partner")
-	do ..AddDeepSeeMsg("Подгруппы", "Sub-groups")
-	do ..AddDeepSeeMsg("Преподаватель", "Teacher")
-	do ..AddDeepSeeMsg("Слушатели выбранного обучения", "Students of selected training")
-	do ..AddDeepSeeMsg("Слушатели", "Students")
-	do ..AddDeepSeeMsg("Обучения", "Trainings")
-	do ..AddDeepSeeMsg("Слушатель", "Student")
-	do ..AddDeepSeeMsg("Статус", "Status")
-	do ..AddDeepSeeMsg("Телефон", "Phone")
-	do ..AddDeepSeeMsg("Тип организации", "Type of organization")
-	do ..AddDeepSeeMsg("Университет", "University")
-	
-	do ..AddDeepSeeMsg("Количество слушателей", "Number of students")
-	do ..AddDeepSeeMsg("Количество слушателей в заявках по курсам", "Number of students in orders for courses")
-	do ..AddDeepSeeMsg("Количество заявок по курсам", "The number of orders for courses")
+    
+    do ..AddDeepSeeMsg("Количество слушателей по годам", "Number of attendees by years")
+    do ..AddDeepSeeMsg("Количество обучений по годам", "Number of trainings by years")
+    
+    
+    do ..AddDeepSeeMsg("Адрес", "Address")
+    do ..AddDeepSeeMsg("Год", "Year")
+    do ..AddDeepSeeMsg("Город", "City")
+    do ..AddDeepSeeMsg("Дата начала", "Start date")
+    do ..AddDeepSeeMsg("Дата обучения", "Date of training")
+    do ..AddDeepSeeMsg("Дата окончания", "End date")
+    do ..AddDeepSeeMsg("Дата", "Date")
+    do ..AddDeepSeeMsg("Завершённые", "Finished")
+    do ..AddDeepSeeMsg("Карта точек обучения", "Map of training points")
+    do ..AddDeepSeeMsg("Количество обучений", "Trainings count")
+    do ..AddDeepSeeMsg("Перейти к обучениям", "Go to trainings")
+    do ..AddDeepSeeMsg("Перейти к слушателям", "Go to attendees")
+    
+    do ..AddDeepSeeMsg("Анализ обучений", "Analysis of trainings")
+    do ..AddDeepSeeMsg("Анализ по слушателям", "Analysis of students")      
+    
+    do ..AddDeepSeeMsg("Курс", "Course")
+    do ..AddDeepSeeMsg("Незавершённые", "Scheduled")
+    do ..AddDeepSeeMsg("Организация", "Organization")
+    do ..AddDeepSeeMsg("Партнёр", "Partner")
+    do ..AddDeepSeeMsg("Подгруппы", "Sub-groups")
+    do ..AddDeepSeeMsg("Преподаватель", "Trainer")
+    do ..AddDeepSeeMsg("Слушатели выбранного обучения", "Attendees of selected training")
+    do ..AddDeepSeeMsg("Слушатели", "Attendees")
+    do ..AddDeepSeeMsg("Обучения", "Trainings")
+    do ..AddDeepSeeMsg("Слушатель", "Attendee")
+    do ..AddDeepSeeMsg("Статус", "Status")
+    do ..AddDeepSeeMsg("Телефон", "Phone")
+    do ..AddDeepSeeMsg("Тип организации", "Type of organization")
+    do ..AddDeepSeeMsg("Университет", "University")
+    
+    do ..AddDeepSeeMsg("Количество слушателей", "Number of attendees")
+    do ..AddDeepSeeMsg("Количество слушателей в заявках по курсам", "Number of attendees in requests for training")
+    do ..AddDeepSeeMsg("Количество заявок по курсам", "The number of requests for training")
 
-	q $$$OK
+    q $$$OK
 ]]></Implementation>
 </Method>
 
@@ -478,10 +508,10 @@ do ##class(Stc.Utils.Msg).DeepSeeMsg()</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>rusString:%String,engString:%String</FormalSpec>
 <Implementation><![CDATA[
-	set code = $ZCRC(rusString, 7)
-	set ^CacheMsg("Stc", "ru", code) = rusString
-	set ^CacheMsg("Stc", "en", code) = engString
-	set ^CacheMsg("Stc", "en-us", code) = engString
+    set code = $ZCRC(rusString, 7)
+    set ^CacheMsg("Stc", "ru", code) = rusString
+    set ^CacheMsg("Stc", "en", code) = engString
+    set ^CacheMsg("Stc", "en-us", code) = engString
 ]]></Implementation>
 </Method>
 </Class>

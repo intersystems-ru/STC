@@ -99,6 +99,7 @@ do ##class(Stc.Utils.Init.BaseInit).Init()</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	/*
 	// Namespace of CSP-application
 	set ^Settings("Stc", "WebApp") = "/csp/third"
 	// Name of private CSP-application (BrokerAdmin)
@@ -115,6 +116,7 @@ do ##class(Stc.Utils.Init.BaseInit).Init()</Description>
 	set ^Settings("Stc","EmailSMTPPASSWORD") = "simplepassword"
 	set ^Settings("Stc","EmailSMTPSERVER") = "smtp.mail.ru"
 	set ^Settings("Stc","EmailSMTPPORT") = 25
+	*/
 ]]></Implementation>
 </Method>
 </Class>

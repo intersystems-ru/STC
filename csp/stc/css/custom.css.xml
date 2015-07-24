@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/css/custom.css" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/css/custom.css" application="/csp/stc_loc/" default="1"><![CDATA[
 #gcalendar .accordion-inner{
-	padding: 0;
+    padding: 0;
 }
 
 .tableNumber,.atableAction{
@@ -51,18 +51,18 @@ background-image: linear-gradient(to bottom,#fff,#F7F7F7);
 
 }
 .accordion-heading a:hover{
-	color: #444;
-	text-decoration: none;
+    color: #444;
+    text-decoration: none;
 }
 
 .accordion-heading a{
-	color: #777;
-	text-decoration: none;
+    color: #777;
+    text-decoration: none;
 }
 
 .aSelected{
 background-color: #C4E3F3;
-	
+    
 }
 
 .collapse {
@@ -118,8 +118,8 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
    .gridInput{
- 	line-height: 12px!important;
-	}
+    line-height: 12px!important;
+    }
 }
 
 .emailContact:hover {
@@ -209,66 +209,66 @@ border-radius: 5px;
 */
 
 .univer{
-	color: green;
+    color: green;
 }
 
 
 .cellLink,.cellCoupleLink{
-	color: #339;
-	text-decoration: underline;
+    color: #339;
+    text-decoration: underline;
 }
 
 .cellLink:hover{
-	color: #d36d00;
-	cursor: pointer;
+    color: #d36d00;
+    cursor: pointer;
 }
 
 
 
 .cellLinkDisabled{
-	color: rgb(139, 135, 135)!important;
-	
+    color: rgb(139, 135, 135)!important;
+    
 }
 
 .cellLinkDisabled:hover{
-	text-decoration: line-through;
+    text-decoration: line-through;
 }
 
 .cellCoupleLink:hover{
-	text-decoration: underline!important;
-	text-shadow: 0px 0px 0px blue;
+    text-decoration: underline!important;
+    text-shadow: 0px 0px 0px blue;
 }
 
 .cellCoupleLink{
-	margin-top: 10px!important;
+    margin-top: 10px!important;
 }
 
 pre {
-	display: block!important;
-	padding: 0px!important;
-	margin: 0!important;
-	font-size: 1em!important;
-	line-height: inherit!important;
-	word-break: break-all!important;
-	word-wrap: break-word!important;
-	white-space: pre!important;
-	white-space: pre-wrap!important;
-	background-color: inherit!important;
-	border: none!important;
-	-webkit-border-radius: 0px!important;
-	-moz-border-radius: 0px!important;
-	border-radius: 0px!important;
+    display: block!important;
+    padding: 0px!important;
+    margin: 0!important;
+    font-size: 1em!important;
+    line-height: inherit!important;
+    word-break: break-all!important;
+    word-wrap: break-word!important;
+    white-space: pre!important;
+    white-space: pre-wrap!important;
+    background-color: inherit!important;
+    border: none!important;
+    -webkit-border-radius: 0px!important;
+    -moz-border-radius: 0px!important;
+    border-radius: 0px!important;
 }
 
 
 code, pre {
-	padding: 0px!important;
-	font-family: inherit!important;
-	font-size: 1em!important;
-	color: inherit!important;
-	-webkit-border-radius: 0px!important;
-	-moz-border-radius: 0px!important;
-	border-radius: 0px!important;
+    padding: 0px!important;
+    font-family: inherit!important;
+    font-size: 1em!important;
+    color: inherit!important;
+    -webkit-border-radius: 0px!important;
+    -moz-border-radius: 0px!important;
+    border-radius: 0px!important;
 }
 
 
@@ -355,21 +355,6 @@ pre.badge-inverse[href] {
 }
 
 
-.scheduleTable{
-	margin: 0;
-}
-
-.scheduleTable td{
-	padding: 4px 8px 4px 8px;
-}
-
-.scheduleTableTrainingHead{
-	cursor: pointer;
-}
-
-.scheduleTableTrainingHead:hover{
-	color: rgb(175,0,0);
-}
 
 .unselectable{
   -webkit-user-select:none;
@@ -403,22 +388,22 @@ pre.badge-inverse[href] {
 
 
 .scheduleDetails{
-	color: inherit;
-	border-bottom: 1px dashed black;
-	border-color: inherit;
+    color: inherit;
+    border-bottom: 1px dashed black;
+    border-color: inherit;
 }
 
 .scheduleDetails:hover{
-	color: inherit;
-	border-bottom: 1px dashed black;
-	border-color: inherit;
-	cursor: pointer;
-	text-decoration: none;
+    color: inherit;
+    border-bottom: 1px dashed black;
+    border-color: inherit;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 
 .table th, .table td {
-	padding: 4px 8px 4px 8px!important;
+    padding: 4px 8px 4px 8px!important;
 }
 
 
@@ -429,10 +414,92 @@ border-left: 1px solid rgb(241, 241, 241);
 
 
 body{
-	min-width: 900px;
+    min-width: 900px;
 }
 
 .scheduleCourseName{
-	background-color: rgb(247,247,247);
+    background: none repeat scroll 0% 0% #45A0C2;
+    color: white;
+    cursor: pointer;
+}
+
+.scheduleCourseName:hover{
+    background: none repeat scroll 0% 0% #666;
+}
+
+
+.courseCityIcon{
+  color: #0F5F7C;
+}
+
+.courseIcon{
+  margin-right: 5px;
+  color: white;
+  font-size: 14px;
+}
+
+
+.scheduleTable{
+    margin: 0;
+}
+
+.scheduleTable td{
+    padding: 4px 8px 4px 8px;
+}
+
+.scheduleTableTrainingHead{
+    cursor: pointer;
+}
+
+.scheduleTableTrainingHead:hover{
+    color: rgb(5, 63, 84);
+}
+
+.scheduleTable td {
+  border-top: 1px solid #7CB0C7;
+}
+
+.scheduleCourse{
+    margin: 0 0 15px 0; 
+    border-bottom: 1px solid #7CB0C7; 
+    border-right: 1px solid #7CB0C7; 
+    border-left: 1px solid #7CB0C7; 
+    border-radius: 0px; 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 12px; 
+    color: #000;
+}
+
+.scheduleBtn {
+      -pie-background: linear-gradient(to bottom, #6e9be4, #255097);
+      background: #6e9be4;
+      background: -webkit-gradient(linear, left top, left bottom, from(#6e9be4), to(#255097));
+      background: -webkit-linear-gradient(top, #6e9be4, #255097);
+      background: -moz-linear-gradient(top, #6e9be4, #255097);
+      background: -ms-linear-gradient(top, #6e9be4, #255097);
+      background: -o-linear-gradient(top, #6e9be4, #255097);
+      border: 1px solid #3468bc;
+      border-radius: 4px;
+      color: #fff !important;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 8px 12px !important;
+      text-decoration: none !important;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+      text-transform: uppercase;
+}
+
+.scheduleBtn:hover {
+  -pie-background: linear-gradient(to bottom, #45a0c2, #39839f);
+  background: #45a0c2;
+  background: -webkit-gradient(linear, left top, left bottom, from(#45a0c2), to(#39839f));
+  background: -webkit-linear-gradient(top, #45a0c2, #39839f);
+  background: -moz-linear-gradient(top, #45a0c2, #39839f);
+  background: -ms-linear-gradient(top, #45a0c2, #39839f);
+  background: -o-linear-gradient(top, #45a0c2, #39839f);
+  border-color: #4198b9;
+  color: #fff !important;
 }]]></CSP>
 </Export>

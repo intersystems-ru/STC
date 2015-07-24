@@ -275,14 +275,14 @@ PORTLET Methods ----------------------------------------------------------------
 </Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	quit "KZ Map"
+<Implementation><![CDATA[    quit "KZ Map"
 ]]></Implementation>
 </Method>
 
 <Method name="%OnGetPortletIcon">
 <ClassMethod>1</ClassMethod>
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	quit "deepsee/world_48.gif"
+<Implementation><![CDATA[    quit "deepsee/world_48.gif"
 ]]></Implementation>
 </Method>
 
@@ -291,280 +291,280 @@ PORTLET Methods ----------------------------------------------------------------
 <FormalSpec>*pInfo:%List</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	kill pInfo
+    kill pInfo
 
-	set tTypeList = "ENUM^"_
-			$$$Text("Roadmap","%DeepSee")_":yandex#map,"_
-			$$$Text("Satellite","%DeepSee")_":yandex#satellite,"_
-			$$$Text("Hybrid","%DeepSee")_":yandex#hybrid"
-	
-	set pInfo($I(pInfo)) = $LB("mapType","",tTypeList,$$$Text("Map Type","%DeepSee"),$$$Text("Initial display type for the map","%DeepSee"))
-	set pInfo($I(pInfo)) = $LB("zoom",2,"%Integer",$$$Text("Zoom","%DeepSee"),$$$Text("Initial zoom level for the map","%DeepSee"))
-	set pInfo($I(pInfo)) = $LB("latitude",60,"%Number",$$$Text("Starting latitude","%DeepSee"),$$$Text("Initial latitude for the map","%DeepSee"))
-	set pInfo($I(pInfo)) = $LB("longitude",85,"%Number",$$$Text("Starting longitude","%DeepSee"),$$$Text("Initial longitude for the map","%DeepSee"))
-	
-	set pInfo($I(pInfo)) = $LB("onclickplacemark","","%ZEN.Datatype.eventHandler","'onclickplacemark' event handler","User callback for onclickplacemark event")
-	set pInfo($I(pInfo)) = $LB("oncontextmenuplacemark","","%ZEN.Datatype.eventHandler","'oncontextmenuplacemark' event handler","User callback for oncontextmenuplacemark event")
-	
-	set pInfo($I(pInfo)) = $LB("placemarkLatitudeProperty","","%ZEN.Datatype.string","Latitude property","Latitude property for placemarks")
-	set pInfo($I(pInfo)) = $LB("placemarkLongitudeProperty","","%ZEN.Datatype.string","Longitude property","Longitude property for placemarks")
-	set pInfo($I(pInfo)) = $LB("placemarkTitleProperty","","%ZEN.Datatype.string","Placemark title property","Title property for placemarks")
-	set pInfo($I(pInfo)) = $LB("placemarkDataProperties","","%ZEN.Datatype.string","Placemark data properties","List of data properties for placemarks")
-	set pInfo($I(pInfo)) = $LB("placemarkIconProperty","","%ZEN.Datatype.string","Placemark icon property","Placemark icon property")
-	set pInfo($I(pInfo)) = $LB("placemarkIcon","","%ZEN.Datatype.string","Placemark icon","Default placemark icon")
-	set pInfo($I(pInfo)) = $LB("placemarkSpecialIcon","","%ZEN.Datatype.string","Placemark special icon","Placemark icon for special place")
-	set pInfo($I(pInfo)) = $LB("placemarkSpecialProperty","","%ZEN.Datatype.string","Placemark special property","Placemark special property for special icon")
-	set pInfo($I(pInfo)) = $LB("placemarkIconSize","","%ZEN.Datatype.string","Placemark icon size","Default placemark icon size (ingored if Placemark icon is not set)")
-	
-	set pInfo($I(pInfo)) = $LB("polygonCoordsJsFile","","%ZEN.Datatype.string","JS file with coords","JS file with javascript 'function loadCoordinates(polygonCoordsArray) {...}' that populates polygonCoordsArray argument with polygon coordinates keyed by values from the data source property specified in 'Polygon coords property' setting.")
-	set pInfo($I(pInfo)) = $LB("polygonCoordsProperty","","%ZEN.Datatype.string","Polygon coords property","Data source property that provides coordinates for polygons if 'JS file with coords' is not specified. Otherwise this setting should contain name of data source property that provides keys for associative array which is populated by javascript code in 'JS file with coords'.")
-	
-	set pInfo($I(pInfo)) = $LB("onclickpolygon","","%ZEN.Datatype.eventHandler","'onclickpolygon' event handler","User callback for onclickpolygon event")	
-	set pInfo($I(pInfo)) = $LB("oncontextmenupolygon","","%ZEN.Datatype.eventHandler","'oncontextmenupolygon' event handler","User callback for oncontextmenupolygon event")	
-	
-	
-	set pInfo($I(pInfo)) = $LB("polygonColorProperty","","%ZEN.Datatype.string","Polygon сolor property","Color property for polygons")
-	set pInfo($I(pInfo)) = $LB("polygonTitleProperty","","%ZEN.Datatype.string","Polygon title property","Title property for polygons")
-	set pInfo($I(pInfo)) = $LB("polygonDataProperties","","%ZEN.Datatype.string","Polygon data properties","List of data properties for polygons")
-	set pInfo($I(pInfo)) = $LB("polygonFillOpacityProperty","","%ZEN.Datatype.string","Fill opacity property","Fill opacity property for polygons")
-	set pInfo($I(pInfo)) = $LB("isClickableProperty","","%ZEN.Datatype.string","IsClickable flag property","IsClickable flag property for polygons")
-	
-	set pInfo($I(pInfo)) = $LB("polygonFillOpacity","","%ZEN.Datatype.string","Fill opacity","Default fill opacity for polygons")
-	set pInfo($I(pInfo)) = $LB("polygonHoverOpacity","","%ZEN.Datatype.string","Hover opacity","Hover opacity for clickable polygons")
-	set pInfo($I(pInfo)) = $LB("polygonStrokeOpacity","","%ZEN.Datatype.string","Stroke opacity","Stroke opacity for polygons")
-	set pInfo($I(pInfo)) = $LB("polygonStrokeWeight","","%ZEN.Datatype.string","Stroke weight","Stroke weight for polygons")
-	
-	set pInfo($I(pInfo)) = $LB("drillUpButtonPosition","top","ENUM^top,bottom","Drill-up button position","Where ""<< Back"" button is located")
-		
-	set pInfo($I(pInfo)) = $LB("ondrilldown","","%ZEN.Datatype.eventHandler","'ondrilldown' event handler","User callback for ondrilldown event")
-	set pInfo($I(pInfo)) = $LB("ondrillup","","%ZEN.Datatype.eventHandler","'ondrillup' event handler","User callback for ondrillup event")
-	
-	set pInfo($I(pInfo)) = $LB("onapplyfilters","","%ZEN.Datatype.eventHandler","'onapplyfilters' event handler","User callback for onapplyfilters event")
-	set pInfo($I(pInfo)) = $LB("onaddpolygon","","%ZEN.Datatype.eventHandler","'onaddpolygon' event handler","User callback for onaddpolygon event")
-	set pInfo($I(pInfo)) = $LB("onaddplacemark","","%ZEN.Datatype.eventHandler","'onaddplacemark' event handler","User callback for onaddplacemark event")
-	
+    set tTypeList = "ENUM^"_
+            $$$Text("Roadmap","%DeepSee")_":yandex#map,"_
+            $$$Text("Satellite","%DeepSee")_":yandex#satellite,"_
+            $$$Text("Hybrid","%DeepSee")_":yandex#hybrid"
+    
+    set pInfo($I(pInfo)) = $LB("mapType","",tTypeList,$$$Text("Map Type","%DeepSee"),$$$Text("Initial display type for the map","%DeepSee"))
+    set pInfo($I(pInfo)) = $LB("zoom",2,"%Integer",$$$Text("Zoom","%DeepSee"),$$$Text("Initial zoom level for the map","%DeepSee"))
+    set pInfo($I(pInfo)) = $LB("latitude",60,"%Number",$$$Text("Starting latitude","%DeepSee"),$$$Text("Initial latitude for the map","%DeepSee"))
+    set pInfo($I(pInfo)) = $LB("longitude",85,"%Number",$$$Text("Starting longitude","%DeepSee"),$$$Text("Initial longitude for the map","%DeepSee"))
+    
+    set pInfo($I(pInfo)) = $LB("onclickplacemark","","%ZEN.Datatype.eventHandler","'onclickplacemark' event handler","User callback for onclickplacemark event")
+    set pInfo($I(pInfo)) = $LB("oncontextmenuplacemark","","%ZEN.Datatype.eventHandler","'oncontextmenuplacemark' event handler","User callback for oncontextmenuplacemark event")
+    
+    set pInfo($I(pInfo)) = $LB("placemarkLatitudeProperty","","%ZEN.Datatype.string","Latitude property","Latitude property for placemarks")
+    set pInfo($I(pInfo)) = $LB("placemarkLongitudeProperty","","%ZEN.Datatype.string","Longitude property","Longitude property for placemarks")
+    set pInfo($I(pInfo)) = $LB("placemarkTitleProperty","","%ZEN.Datatype.string","Placemark title property","Title property for placemarks")
+    set pInfo($I(pInfo)) = $LB("placemarkDataProperties","","%ZEN.Datatype.string","Placemark data properties","List of data properties for placemarks")
+    set pInfo($I(pInfo)) = $LB("placemarkIconProperty","","%ZEN.Datatype.string","Placemark icon property","Placemark icon property")
+    set pInfo($I(pInfo)) = $LB("placemarkIcon","","%ZEN.Datatype.string","Placemark icon","Default placemark icon")
+    set pInfo($I(pInfo)) = $LB("placemarkSpecialIcon","","%ZEN.Datatype.string","Placemark special icon","Placemark icon for special place")
+    set pInfo($I(pInfo)) = $LB("placemarkSpecialProperty","","%ZEN.Datatype.string","Placemark special property","Placemark special property for special icon")
+    set pInfo($I(pInfo)) = $LB("placemarkIconSize","","%ZEN.Datatype.string","Placemark icon size","Default placemark icon size (ingored if Placemark icon is not set)")
+    
+    set pInfo($I(pInfo)) = $LB("polygonCoordsJsFile","","%ZEN.Datatype.string","JS file with coords","JS file with javascript 'function loadCoordinates(polygonCoordsArray) {...}' that populates polygonCoordsArray argument with polygon coordinates keyed by values from the data source property specified in 'Polygon coords property' setting.")
+    set pInfo($I(pInfo)) = $LB("polygonCoordsProperty","","%ZEN.Datatype.string","Polygon coords property","Data source property that provides coordinates for polygons if 'JS file with coords' is not specified. Otherwise this setting should contain name of data source property that provides keys for associative array which is populated by javascript code in 'JS file with coords'.")
+    
+    set pInfo($I(pInfo)) = $LB("onclickpolygon","","%ZEN.Datatype.eventHandler","'onclickpolygon' event handler","User callback for onclickpolygon event")  
+    set pInfo($I(pInfo)) = $LB("oncontextmenupolygon","","%ZEN.Datatype.eventHandler","'oncontextmenupolygon' event handler","User callback for oncontextmenupolygon event")    
+    
+    
+    set pInfo($I(pInfo)) = $LB("polygonColorProperty","","%ZEN.Datatype.string","Polygon сolor property","Color property for polygons")
+    set pInfo($I(pInfo)) = $LB("polygonTitleProperty","","%ZEN.Datatype.string","Polygon title property","Title property for polygons")
+    set pInfo($I(pInfo)) = $LB("polygonDataProperties","","%ZEN.Datatype.string","Polygon data properties","List of data properties for polygons")
+    set pInfo($I(pInfo)) = $LB("polygonFillOpacityProperty","","%ZEN.Datatype.string","Fill opacity property","Fill opacity property for polygons")
+    set pInfo($I(pInfo)) = $LB("isClickableProperty","","%ZEN.Datatype.string","IsClickable flag property","IsClickable flag property for polygons")
+    
+    set pInfo($I(pInfo)) = $LB("polygonFillOpacity","","%ZEN.Datatype.string","Fill opacity","Default fill opacity for polygons")
+    set pInfo($I(pInfo)) = $LB("polygonHoverOpacity","","%ZEN.Datatype.string","Hover opacity","Hover opacity for clickable polygons")
+    set pInfo($I(pInfo)) = $LB("polygonStrokeOpacity","","%ZEN.Datatype.string","Stroke opacity","Stroke opacity for polygons")
+    set pInfo($I(pInfo)) = $LB("polygonStrokeWeight","","%ZEN.Datatype.string","Stroke weight","Stroke weight for polygons")
+    
+    set pInfo($I(pInfo)) = $LB("drillUpButtonPosition","top","ENUM^top,bottom","Drill-up button position","Where ""<< Back"" button is located")
+        
+    set pInfo($I(pInfo)) = $LB("ondrilldown","","%ZEN.Datatype.eventHandler","'ondrilldown' event handler","User callback for ondrilldown event")
+    set pInfo($I(pInfo)) = $LB("ondrillup","","%ZEN.Datatype.eventHandler","'ondrillup' event handler","User callback for ondrillup event")
+    
+    set pInfo($I(pInfo)) = $LB("onapplyfilters","","%ZEN.Datatype.eventHandler","'onapplyfilters' event handler","User callback for onapplyfilters event")
+    set pInfo($I(pInfo)) = $LB("onaddpolygon","","%ZEN.Datatype.eventHandler","'onaddpolygon' event handler","User callback for onaddpolygon event")
+    set pInfo($I(pInfo)) = $LB("onaddplacemark","","%ZEN.Datatype.eventHandler","'onaddplacemark' event handler","User callback for onaddplacemark event")
+    
 
-	//[+]
-	set pInfo($I(pInfo)) = $LB("polygonSaveBordersMethod","ClassName;MethodName","%String","Save borders method","Method for save range borders, pattern - 'ClassName;MethodName', method takes a single parameter(object) - {parameterId: X, level: X, parentRegionId:X, minValue: X, maxValue: X}. parentRegionId - may be null if this first level")		
-	set pInfo($I(pInfo)) = $LB("polygonLoadBordersMethod","ClassName;MethodName","%String","Get borders method","Method to get an range borders, pattern - 'ClassName;MethodName', method takes a single parameter(object) - {parameterId: X, level: X, parentRegionId:X}. parentRegionId - may be null if this first level")		
-	set pInfo($I(pInfo)) = $LB("getAdditionInfoForObjectById","ClassName;MethodName","%String","Get addition info for object","Method to get an proxyObject with other information, pattern - 'ClassName;MethodName', method takes a single parameter(string) - object id. Call this method like this - 'var otherInfo = zenThis.GetAdditionInformationForObjectById(id);'")		
-	
+    //[+]
+    set pInfo($I(pInfo)) = $LB("polygonSaveBordersMethod","ClassName;MethodName","%String","Save borders method","Method for save range borders, pattern - 'ClassName;MethodName', method takes a single parameter(object) - {parameterId: X, level: X, parentRegionId:X, minValue: X, maxValue: X}. parentRegionId - may be null if this first level")     
+    set pInfo($I(pInfo)) = $LB("polygonLoadBordersMethod","ClassName;MethodName","%String","Get borders method","Method to get an range borders, pattern - 'ClassName;MethodName', method takes a single parameter(object) - {parameterId: X, level: X, parentRegionId:X}. parentRegionId - may be null if this first level")       
+    set pInfo($I(pInfo)) = $LB("getAdditionInfoForObjectById","ClassName;MethodName","%String","Get addition info for object","Method to get an proxyObject with other information, pattern - 'ClassName;MethodName', method takes a single parameter(string) - object id. Call this method like this - 'var otherInfo = zenThis.GetAdditionInformationForObjectById(id);'")        
+    
 
-	quit $$$OK
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
 <Method name="%DrawHTML">
 <Implementation><![CDATA[
-	
-	// This causes ZEN to render this component on the client.
-	set ..renderFlag = ..renderFlag + 1
-	
-	// copy ..settings into properties
-	#dim propName As %String = $order(..settings(""))
-	while (propName '= ""){
-		if ("" '= $get(..settings(propName)))
-			try{
-				set $property($this, propName) = ..settings(propName)
-			}
-			catch {}
+    
+    // This causes ZEN to render this component on the client.
+    set ..renderFlag = ..renderFlag + 1
+    
+    // copy ..settings into properties
+    #dim propName As %String = $order(..settings(""))
+    while (propName '= ""){
+        if ("" '= $get(..settings(propName)))
+            try{
+                set $property($this, propName) = ..settings(propName)
+            }
+            catch {}
 
-		set propName = $order(..settings(propName))
-	}
-	
-	&html<	
-	<script type="text/javascript">
-		
-	function hsv2rgb(h,s,v){
-		// Adapted from http://www.easyrgb.com/math.html
-		// hsv values = 0 - 1, rgb values = 0 - 255
-		var r, g, b;
-		var RGB = new Array();
-		if(s == 0){
-		  RGB['red']=RGB['green']=RGB['blue']=Math.round(v*255);
-		}
-		else{
-		  var var_h = h * 6;  // h must be < 1
-		  if (var_h == 6) var_h = 0;
-		  var var_i = Math.floor( var_h );
-		  var var_1 = v*(1-s);
-		  var var_2 = v*(1-s*(var_h-var_i));
-		  var var_3 = v*(1-s*(1-(var_h-var_i)));
-		  if (var_i == 0){
-		    var_r = v; 
-		    var_g = var_3; 
-		    var_b = var_1;
-		  }
-		  else if (var_i == 1){
-		    var_r = var_2;
-		    var_g = v;
-		    var_b = var_1;
-		  }
-		  else if (var_i == 2){
-		    var_r = var_1;
-		    var_g = v;
-		    var_b = var_3
-		  }
-		  else if (var_i == 3){
-		    var_r = var_1;
-		    var_g = var_2;
-		    var_b = v;
-		  }
-		  else if (var_i == 4){
-		    var_r = var_3;
-		    var_g = var_1;
-		    var_b = v;
-		  }
-		  else{
-		    var_r = v;
-		    var_g = var_1;
-		    var_b = var_2
-		  }
-		  RGB['red'] = Math.round(var_r * 255);
-		  RGB['green'] = Math.round(var_g * 255);
-		  RGB['blue'] = Math.round(var_b * 255);
-		}
-		return '#' + RGB['red'].toString(16) + RGB['green'].toString(16) + RGB['blue'].toString(16);
-	};
-	</script>
-	>
-	
-	if (..polygonCoordsJsFile '= ""){
-		&html<<script type='text/javascript' src='#(..polygonCoordsJsFile)#'></script>>
-	}
-	
-	if (..polygonColorProperty = ""){
-		/*/ JQUERY Libraries
-		&html<
-		  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-	    >
-	    */
-	}
-	
-	
-	&html<
-	<script type='text/javascript'>
-	
-	var selectTrTableRow = function(data){
-		data = data.split(';');
-		var portlet = zenPage.getComponent(data[0]);
-		
-		var idx = 0, isFound = false;
-		for(idx=0; idx < portlet._markers.length; idx++){
-			if (portlet._markers[idx].data.ID == data[1]){
-				isFound = true;
-				break;
-			}
-		}
-		
-		if (!isFound) return;
-	
-		portlet.openInfoWindowForSingleTraining(portlet._markers[idx], true);	
-	};
+        set propName = $order(..settings(propName))
+    }
+    
+    &html<  
+    <script type="text/javascript">
+        
+    function hsv2rgb(h,s,v){
+        // Adapted from http://www.easyrgb.com/math.html
+        // hsv values = 0 - 1, rgb values = 0 - 255
+        var r, g, b;
+        var RGB = new Array();
+        if(s == 0){
+          RGB['red']=RGB['green']=RGB['blue']=Math.round(v*255);
+        }
+        else{
+          var var_h = h * 6;  // h must be < 1
+          if (var_h == 6) var_h = 0;
+          var var_i = Math.floor( var_h );
+          var var_1 = v*(1-s);
+          var var_2 = v*(1-s*(var_h-var_i));
+          var var_3 = v*(1-s*(1-(var_h-var_i)));
+          if (var_i == 0){
+            var_r = v; 
+            var_g = var_3; 
+            var_b = var_1;
+          }
+          else if (var_i == 1){
+            var_r = var_2;
+            var_g = v;
+            var_b = var_1;
+          }
+          else if (var_i == 2){
+            var_r = var_1;
+            var_g = v;
+            var_b = var_3
+          }
+          else if (var_i == 3){
+            var_r = var_1;
+            var_g = var_2;
+            var_b = v;
+          }
+          else if (var_i == 4){
+            var_r = var_3;
+            var_g = var_1;
+            var_b = v;
+          }
+          else{
+            var_r = v;
+            var_g = var_1;
+            var_b = var_2
+          }
+          RGB['red'] = Math.round(var_r * 255);
+          RGB['green'] = Math.round(var_g * 255);
+          RGB['blue'] = Math.round(var_b * 255);
+        }
+        return '#' + RGB['red'].toString(16) + RGB['green'].toString(16) + RGB['blue'].toString(16);
+    };
+    </script>
+    >
+    
+    if (..polygonCoordsJsFile '= ""){
+        &html<<script type='text/javascript' src='#(..polygonCoordsJsFile)#'></script>>
+    }
+    
+    if (..polygonColorProperty = ""){
+        /*/ JQUERY Libraries
+        &html<
+          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+          <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        >
+        */
+    }
+    
+    
+    &html<
+    <script type='text/javascript'>
+    
+    var selectTrTableRow = function(data){
+        data = data.split(';');
+        var portlet = zenPage.getComponent(data[0]);
+        
+        var idx = 0, isFound = false;
+        for(idx=0; idx < portlet._markers.length; idx++){
+            if (portlet._markers[idx].data.ID == data[1]){
+                isFound = true;
+                break;
+            }
+        }
+        
+        if (!isFound) return;
+    
+        portlet.openInfoWindowForSingleTraining(portlet._markers[idx], true);   
+    };
 
-	var backToTable=function(portletIdx, trainingId){
-		var portlet = zenPage.getComponent(portletIdx);
-		
-		var idx = 0;
-		for(idx=0; idx < portlet._markers.length; idx++){
-			if (portlet._markers[idx].data.ID == trainingId)
-				break;
-		}
-		
-		portlet.markerClickHandler(idx);
-	};
-	
-	var changeTraining = function(id){
-		window.open('/csp/stc/stc/index.csp#/training/'+id,  'trEdit');
-	};
-	
-	 var findScoreCardWidgetByName = function(name)
-	 {
-	  	var result = null;
-	  	var desktop = zen('desktop');
-	  	if (desktop) {
-	    	for (var n = 0; desktop.children.length; n++) {
-	      		var widget = desktop.children[n];
-	      		if (widget && name==widget.name) {
-	        		result = zen(widget.id+'/scoreCard');
-	        		break;
-	      		}
-	    	}
-	  	}
-	  	return result;
-	 };
+    var backToTable=function(portletIdx, trainingId){
+        var portlet = zenPage.getComponent(portletIdx);
+        
+        var idx = 0;
+        for(idx=0; idx < portlet._markers.length; idx++){
+            if (portlet._markers[idx].data.ID == trainingId)
+                break;
+        }
+        
+        portlet.markerClickHandler(idx);
+    };
+    
+    var changeTraining = function(id){
+        window.open('/csp/stc/stc/index.csp#/training/'+id,  'trEdit');
+    };
+    
+     var findScoreCardWidgetByName = function(name)
+     {
+        var result = null;
+        var desktop = zen('desktop');
+        if (desktop) {
+            for (var n = 0; desktop.children.length; n++) {
+                var widget = desktop.children[n];
+                if (widget && name==widget.name) {
+                    result = zen(widget.id+'/scoreCard');
+                    break;
+                }
+            }
+        }
+        return result;
+     };
    </script>>
    
    
    set lang = ##class(%MessageDictionary).GetSessionLanguage()
-	
-	// Словарь для контента в окнах
-	&html<<script language="javascript">
-		var dict = {lang: '#(lang)#',
-					dict:{
-					'Город': 
-						{'ru':'Город', 
-						 'en': 'City'},
-					'Адрес'  : 
-						{'ru': 'Адрес', 
-						 'en': 'Address'},
-					'Дата начала обучения': 
-						{'ru': 'Дата начала обучения', 
-						 'en': 'Training start date'},
-					'Дата окончания обучения': 
-						{'ru': 'Дата окончания обучения', 
-						 'en': 'Training end date'},
-					'Подгрупп / слушателей':
-						{'ru': 'Подгрупп / слушателей', 
-						 'en': 'Sub-groups / students'},
-					'Преподаватель':
-						{'ru': 'Преподаватель', 
-						 'en': 'Teacher'},
-					'Назад': 
-						{'ru': 'Назад', 
-						 'en': 'Back'},
-					'Детали': 
-						{'ru': 'Детали', 
-						 'en': 'Details'},
-					'ФИО': 
-						{'ru': 'ФИО', 
-						 'en': 'Full name'},
-					'Телефон': 
-						{'ru': 'Телефон', 
-						 'en': 'Phone'},
-					'Организация': 
-						{'ru': 'Организация', 
-						 'en': 'Organization'},
-					'Слушатели курса': 
-						{'ru': 'Слушатели курса', 
-						 'en': 'Students'},	
-					'Вернуться к таблице': 
-						{'ru': 'Вернуться к таблице', 
-						 'en': 'Back to table'},
-					'Открыть в другом окне': 
-						{'ru': 'Открыть в другом окне', 
-						 'en': 'Open in another window'}	
-					}, localize: function(str){
-									var value;
-									
-									try{
-										value = this.dict[str][this.lang];
-									}catch(ex){
-										value = str;
-									}
-									return value ? value : str;
-							   }};
-	</script>>
-	
-	set lang = $CASE(lang, "en" : "en-Us", : "ru-Ru")
-	
-	// Подключение google API для текущего языка
-	&html<<script src="http://maps.google.com/maps/api/js?v=3&sensor=false&language=#(lang)#"></script>>
-	&html<
-		<script src="http://api-maps.yandex.ru/2.1/?load=package.full&lang=#(lang)#"></script>
-		<script src="http://yandex.github.io/ymaps-pie-chart-clusterer/build/pie-chart-clusterer.min.js"></script>
-		>
+    
+    // Словарь для контента в окнах
+    &html<<script language="javascript">
+        var dict = {lang: '#(lang)#',
+                    dict:{
+                    'Город': 
+                        {'ru':'Город', 
+                         'en': 'City'},
+                    'Адрес'  : 
+                        {'ru': 'Адрес', 
+                         'en': 'Address'},
+                    'Дата начала обучения': 
+                        {'ru': 'Дата начала обучения', 
+                         'en': 'Training start date'},
+                    'Дата окончания обучения': 
+                        {'ru': 'Дата окончания обучения', 
+                         'en': 'Training end date'},
+                    'Подгрупп / слушателей':
+                        {'ru': 'Подгрупп / слушателей', 
+                         'en': 'Sub-groups / students'},
+                    'Преподаватель':
+                        {'ru': 'Преподаватель', 
+                         'en': 'Trainer'},
+                    'Назад': 
+                        {'ru': 'Назад', 
+                         'en': 'Back'},
+                    'Детали': 
+                        {'ru': 'Детали', 
+                         'en': 'Details'},
+                    'ФИО': 
+                        {'ru': 'ФИО', 
+                         'en': 'Full name'},
+                    'Телефон': 
+                        {'ru': 'Телефон', 
+                         'en': 'Phone'},
+                    'Организация': 
+                        {'ru': 'Организация', 
+                         'en': 'Organization'},
+                    'Слушатели курса': 
+                        {'ru': 'Слушатели курса', 
+                         'en': 'Attendees'},   
+                    'Вернуться к таблице': 
+                        {'ru': 'Вернуться к таблице', 
+                         'en': 'Back to table'},
+                    'Открыть в другом окне': 
+                        {'ru': 'Открыть в другом окне', 
+                         'en': 'Open in another window'}    
+                    }, localize: function(str){
+                                    var value;
+                                    
+                                    try{
+                                        value = this.dict[str][this.lang];
+                                    }catch(ex){
+                                        value = str;
+                                    }
+                                    return value ? value : str;
+                               }};
+    </script>>
+    
+    set lang = $CASE(lang, "en" : "en-Us", : "ru-Ru")
+    
+    // Подключение google API для текущего языка
+    //&html<<script src="http://maps.google.com/maps/api/js?v=3&sensor=false&language=#(lang)#"></script>>-->
+    &html<
+        <script src="http://api-maps.yandex.ru/2.1/?load=package.full&lang=#(lang)#"></script>
+        <script src="http://yandex.github.io/ymaps-pie-chart-clusterer/build/pie-chart-clusterer.min.js"></script>
+        >
 ]]></Implementation>
 </Method>
 
@@ -574,7 +574,7 @@ Obtain a reference to a filter (or any other widget control).</Description>
 <FormalSpec>ind</FormalSpec>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
-<Implementation><![CDATA[	return zenPage.getComponent(this.parent.parent.controlIndices[ind]);
+<Implementation><![CDATA[    return zenPage.getComponent(this.parent.parent.controlIndices[ind]);
 ]]></Implementation>
 </Method>
 
@@ -583,7 +583,7 @@ Obtain a reference to a filter (or any other widget control).</Description>
 Get the array of filter state information for the widget.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
-<Implementation><![CDATA[	return this.parent.parent.getFilterStateArray();
+<Implementation><![CDATA[    return this.parent.parent.getFilterStateArray();
 ]]></Implementation>
 </Method>
 
@@ -592,7 +592,7 @@ Get the array of filter state information for the widget.</Description>
 <FormalSpec>refresh</FormalSpec>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
-<Implementation><![CDATA[	zenInvokeCallbackMethod(this.onapplyfilters,this,'onapplyfilters','refresh',refresh);
+<Implementation><![CDATA[    zenInvokeCallbackMethod(this.onapplyfilters,this,'onapplyfilters','refresh',refresh);
 ]]></Implementation>
 </Method>
 
@@ -603,19 +603,19 @@ Notification that the dataController associated with this dataView has raised an
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	switch(reason) {
-		case 'dataChange':
-			this.onApplyFilters(true);		
-		case 'modelChange':
-			// some change in dataController
-			this.acquireData();
-			this.syncPlacemarks();
-			this.syncPolygons();
-			break;
-		
-		case 'seriesChange':
-			break;
-	}
+    switch(reason) {
+        case 'dataChange':
+            this.onApplyFilters(true);      
+        case 'modelChange':
+            // some change in dataController
+            this.acquireData();
+            this.syncPlacemarks();
+            this.syncPolygons();
+            break;
+        
+        case 'seriesChange':
+            break;
+    }
 ]]></Implementation>
 </Method>
 
@@ -626,238 +626,238 @@ Internal method: acquire data for this view and store a copy in a local cache.</
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	
-	var controller = this.getController();
-	if (null == controller){
-		// try to connect to dataController
-		this.connectToController();
-		controller = this.getController();
-	}
+    
+    var controller = this.getController();
+    if (null == controller){
+        // try to connect to dataController
+        this.connectToController();
+        controller = this.getController();
+    }
 
-	// array of placemark data
-	this._placemarkData = [];
-	
-	if (controller && (this.placemarkLatitudeProperty != '') && (this.placemarkLongitudeProperty != '')){
-		// get data from controller (make sure data is loaded)
-		var dims = controller.getDimensions();
-		
-		// are we connected to a pivot table?
-		var invert = controller.getSelectedRange;
-		if (!invert){
-			var seriesSize = controller.getDimSize(1);
-			var seriesCount = controller.getDimSize(2);
-			var labelDim = 2;
-			var titleCol = -1;
-			var latCol = -1;
-			var longCol = -1;
-			var clickableCol = -1;
-			var miCol = -1;
-			var specIconCol = -1;
-		}
-		else{
-			var seriesSize = controller.getDimSize(2);
-			var seriesCount = controller.getDimSize(1);
-			var labelDim = 1;
-		}
-		
-		if (seriesCount > 0){
-			// find long and lat and title columns
-			if (!invert){
-				for (var p = 0; p < seriesSize; p++){
-					var pname = controller.getPropertyName(p);
-					if (pname == this.placemarkLatitudeProperty) {
-						latCol = p;
-					}
-					if (pname == this.placemarkLongitudeProperty) {
-						longCol = p;
-					}
-					if (pname == this.placemarkTitleProperty) {
-						titleCol = p;
-					}
-					if (pname == this.isClickableProperty) {
-						clickableCol = p;
-					}
-					if (pname == this.placemarkIconProperty) {
-						miCol = p;
-					}
-					if (pname == this.placemarkSpecialProperty) {
-						specIconCol = p;
-					}
-				}
-			}
-			
-			// each series corresponds to a placemark
-			if (invert || (latCol >= 0 && longCol >= 0)){
-				for (var n = 0; n < seriesCount; n++){
-					var isClickable = 1;
-					var mi = null;
-					var specIcon = 0;
-					var sname = controller.getLabel(n,labelDim);
+    // array of placemark data
+    this._placemarkData = [];
+    
+    if (controller && (this.placemarkLatitudeProperty != '') && (this.placemarkLongitudeProperty != '')){
+        // get data from controller (make sure data is loaded)
+        var dims = controller.getDimensions();
+        
+        // are we connected to a pivot table?
+        var invert = controller.getSelectedRange;
+        if (!invert){
+            var seriesSize = controller.getDimSize(1);
+            var seriesCount = controller.getDimSize(2);
+            var labelDim = 2;
+            var titleCol = -1;
+            var latCol = -1;
+            var longCol = -1;
+            var clickableCol = -1;
+            var miCol = -1;
+            var specIconCol = -1;
+        }
+        else{
+            var seriesSize = controller.getDimSize(2);
+            var seriesCount = controller.getDimSize(1);
+            var labelDim = 1;
+        }
+        
+        if (seriesCount > 0){
+            // find long and lat and title columns
+            if (!invert){
+                for (var p = 0; p < seriesSize; p++){
+                    var pname = controller.getPropertyName(p);
+                    if (pname == this.placemarkLatitudeProperty) {
+                        latCol = p;
+                    }
+                    if (pname == this.placemarkLongitudeProperty) {
+                        longCol = p;
+                    }
+                    if (pname == this.placemarkTitleProperty) {
+                        titleCol = p;
+                    }
+                    if (pname == this.isClickableProperty) {
+                        clickableCol = p;
+                    }
+                    if (pname == this.placemarkIconProperty) {
+                        miCol = p;
+                    }
+                    if (pname == this.placemarkSpecialProperty) {
+                        specIconCol = p;
+                    }
+                }
+            }
+            
+            // each series corresponds to a placemark
+            if (invert || (latCol >= 0 && longCol >= 0)){
+                for (var n = 0; n < seriesCount; n++){
+                    var isClickable = 1;
+                    var mi = null;
+                    var specIcon = 0;
+                    var sname = controller.getLabel(n,labelDim);
 
-					if (!invert){
-						var lat = controller.getData(latCol,n);
-						var long = controller.getData(longCol,n);
-						if (titleCol >= 0) sname = controller.getData(titleCol,n);
-						if (clickableCol >= 0) isClickable = controller.getData(clickableCol,n);
-						if (miCol >= 0) mi = controller.getData(miCol,n);
-						if (specIconCol >= 0) specIcon = controller.getData(specIconCol,n);
-					}
-					else{
-						var lat = controller.getDataByName(this.placemarkLatitudeProperty,n);
-						var long = controller.getDataByName(this.placemarkLongitudeProperty,n);
-						if (this.placemarkTitleProperty != '') sname = controller.getDataByName(this.placemarkTitleProperty,n);
-						if (this.isClickableProperty != '') isClickable = controller.getDataByName(this.isClickableProperty,n);
-						if (this.placemarkIconProperty != '') mi = controller.getDataByName(this.placemarkIconProperty,n);
-						if (this.placemarkSpecialProperty != '') specIcon = controller.getDataByName(this.placemarkSpecialProperty,n);
-					}
-			
-					if (!isNaN(parseFloat(lat)) && !isNaN(parseFloat(long))){
-						var data = [];
-						if (this.placemarkDataProperties != ''){
-							var props = this.placemarkDataProperties.split(",");
-							for (var i = 0; i < props.length; i++){
-							    data[props[i]] = controller.getDataByName(props[i],n);
-							}
-						}
-						
-						if (!mi) mi = this.placemarkIcon;
-					
-						this._placemarkData[this._placemarkData.length] = {
-							title: sname,
-							latitude: lat,
-							longitude: long,
-							isClickable: (!isClickable ? 1 : isClickable),
-							icon: mi,
-							specialIcon: specIcon,
-							data: data
-						};
-					}
-				}
-			}
-		}
-	} // end if (controller && (this.placemarkLatitudeProperty != '') && (this.placemarkLongitudeProperty != ''))
-	
-	// array of polygon data
-	this._polygonData = [];
-	
-	if (this.polygonCoordsJsFile && !this._polygonCoords){
-		this._polygonCoords = [];
-		loadCoordinates(this._polygonCoords);
-	}
-	
-	if (controller && (this.polygonCoordsProperty != '')){
-		// get data from controller (make sure data is loaded)
-		var dims = controller.getDimensions();
-		
-		// are we connected to a pivot table?
-		var invert = controller.getSelectedRange;
-		if (!invert){
-			var seriesSize = controller.getDimSize(1);
-			var seriesCount = controller.getDimSize(2);
-			var labelDim = 2;
-			var titleCol = -1;
-			var coordsCol = -1;
-			var colorCol = -1;
-			var foCol = -1;
-			var clickableCol = -1;
-		}
-		else{
-			var seriesSize = controller.getDimSize(2);
-			var seriesCount = controller.getDimSize(1);
-			var labelDim = 1;
-		}
+                    if (!invert){
+                        var lat = controller.getData(latCol,n);
+                        var long = controller.getData(longCol,n);
+                        if (titleCol >= 0) sname = controller.getData(titleCol,n);
+                        if (clickableCol >= 0) isClickable = controller.getData(clickableCol,n);
+                        if (miCol >= 0) mi = controller.getData(miCol,n);
+                        if (specIconCol >= 0) specIcon = controller.getData(specIconCol,n);
+                    }
+                    else{
+                        var lat = controller.getDataByName(this.placemarkLatitudeProperty,n);
+                        var long = controller.getDataByName(this.placemarkLongitudeProperty,n);
+                        if (this.placemarkTitleProperty != '') sname = controller.getDataByName(this.placemarkTitleProperty,n);
+                        if (this.isClickableProperty != '') isClickable = controller.getDataByName(this.isClickableProperty,n);
+                        if (this.placemarkIconProperty != '') mi = controller.getDataByName(this.placemarkIconProperty,n);
+                        if (this.placemarkSpecialProperty != '') specIcon = controller.getDataByName(this.placemarkSpecialProperty,n);
+                    }
+            
+                    if (!isNaN(parseFloat(lat)) && !isNaN(parseFloat(long))){
+                        var data = [];
+                        if (this.placemarkDataProperties != ''){
+                            var props = this.placemarkDataProperties.split(",");
+                            for (var i = 0; i < props.length; i++){
+                                data[props[i]] = controller.getDataByName(props[i],n);
+                            }
+                        }
+                        
+                        if (!mi) mi = this.placemarkIcon;
+                    
+                        this._placemarkData[this._placemarkData.length] = {
+                            title: sname,
+                            latitude: lat,
+                            longitude: long,
+                            isClickable: (!isClickable ? 1 : isClickable),
+                            icon: mi,
+                            specialIcon: specIcon,
+                            data: data
+                        };
+                    }
+                }
+            }
+        }
+    } // end if (controller && (this.placemarkLatitudeProperty != '') && (this.placemarkLongitudeProperty != ''))
+    
+    // array of polygon data
+    this._polygonData = [];
+    
+    if (this.polygonCoordsJsFile && !this._polygonCoords){
+        this._polygonCoords = [];
+        loadCoordinates(this._polygonCoords);
+    }
+    
+    if (controller && (this.polygonCoordsProperty != '')){
+        // get data from controller (make sure data is loaded)
+        var dims = controller.getDimensions();
+        
+        // are we connected to a pivot table?
+        var invert = controller.getSelectedRange;
+        if (!invert){
+            var seriesSize = controller.getDimSize(1);
+            var seriesCount = controller.getDimSize(2);
+            var labelDim = 2;
+            var titleCol = -1;
+            var coordsCol = -1;
+            var colorCol = -1;
+            var foCol = -1;
+            var clickableCol = -1;
+        }
+        else{
+            var seriesSize = controller.getDimSize(2);
+            var seriesCount = controller.getDimSize(1);
+            var labelDim = 1;
+        }
 
-		if (seriesCount > 0){
-			// find coords and color columns
-			if (!invert){
-				for (var p = 0; p < seriesSize; p++){
-					var pname = controller.getPropertyName(p);
-					if (pname == this.polygonCoordsProperty){
-						coordsCol = p;
-					}
-					if (pname == this.polygonColorProperty){
-						colorCol = p;
-					}
-					if (pname == this.polygonFillOpacityProperty){
-						foCol = p;
-					}
-					if (pname == this.isClickableProperty){
-						clickableCol = p;
-					}					
-					if (pname == this.polygonTitleProperty){
-						titleCol = p;
-					}
-				}
-			}
-			
-			// each series corresponds to a poly
-			for (var n = 0; n < seriesCount; n++){
-				var color = 'purple';
-				var fo = this.polygonFillOpacity;  // default opacity
-				var isClickable = 1;
-				
-				var sname = controller.getLabel(n,labelDim);
+        if (seriesCount > 0){
+            // find coords and color columns
+            if (!invert){
+                for (var p = 0; p < seriesSize; p++){
+                    var pname = controller.getPropertyName(p);
+                    if (pname == this.polygonCoordsProperty){
+                        coordsCol = p;
+                    }
+                    if (pname == this.polygonColorProperty){
+                        colorCol = p;
+                    }
+                    if (pname == this.polygonFillOpacityProperty){
+                        foCol = p;
+                    }
+                    if (pname == this.isClickableProperty){
+                        clickableCol = p;
+                    }                   
+                    if (pname == this.polygonTitleProperty){
+                        titleCol = p;
+                    }
+                }
+            }
+            
+            // each series corresponds to a poly
+            for (var n = 0; n < seriesCount; n++){
+                var color = 'purple';
+                var fo = this.polygonFillOpacity;  // default opacity
+                var isClickable = 1;
+                
+                var sname = controller.getLabel(n,labelDim);
 
-				if (!invert){
-					if (coordsCol<0) break;
-					var coords = controller.getData(coordsCol,n);
-					if (colorCol >= 0) color = controller.getData(colorCol,n);
-					if (foCol >= 0) fo = controller.getData(foCol,n);
-					if (clickableCol >= 0) isClickable = controller.getData(clickableCol,n);
-					if (titleCol >= 0) sname = controller.getData(titleCol,n);
-				}
-				else{
-					var coords = controller.getDataByName(this.polygonCoordsProperty,n);
-					if (this.polygonColorProperty != '') color = controller.getDataByName(this.polygonColorProperty,n);
-					if (this.polygonFillOpacityProperty != '') fo = controller.getDataByName(this.polygonFillOpacityProperty,n);
-					if (this.isClickableProperty != '') isClickable = controller.getDataByName(this.isClickableProperty,n);
-					if (this.polygonTitleProperty != '') sname = controller.getDataByName(this.polygonTitleProperty,n);
-				}
-				
-				if (!fo) fo = this.polygonFillOpacity;  // default opacity
+                if (!invert){
+                    if (coordsCol<0) break;
+                    var coords = controller.getData(coordsCol,n);
+                    if (colorCol >= 0) color = controller.getData(colorCol,n);
+                    if (foCol >= 0) fo = controller.getData(foCol,n);
+                    if (clickableCol >= 0) isClickable = controller.getData(clickableCol,n);
+                    if (titleCol >= 0) sname = controller.getData(titleCol,n);
+                }
+                else{
+                    var coords = controller.getDataByName(this.polygonCoordsProperty,n);
+                    if (this.polygonColorProperty != '') color = controller.getDataByName(this.polygonColorProperty,n);
+                    if (this.polygonFillOpacityProperty != '') fo = controller.getDataByName(this.polygonFillOpacityProperty,n);
+                    if (this.isClickableProperty != '') isClickable = controller.getDataByName(this.isClickableProperty,n);
+                    if (this.polygonTitleProperty != '') sname = controller.getDataByName(this.polygonTitleProperty,n);
+                }
+                
+                if (!fo) fo = this.polygonFillOpacity;  // default opacity
 
-				if (this.polygonCoordsJsFile) coords = this._polygonCoords[coords];
-				
-				if (!coords) continue;
-				
-				var pathsSets = coords.split(";");
-				for (var j = 0; j < pathsSets.length; j++){
-					var paths = pathsSets[j].split(" ");
-					for (var i = 0; i < paths.length; i++){
-						var p = paths[i].split(",");
-					    paths[i] = [p[1], p[0]];
-					}
-					pathsSets[j] = paths;
-				}
-				
-				var data = [];
-			
-				if (this.polygonDataProperties != ''){
-					var props = this.polygonDataProperties.split(",");
-					for (var i = 0; i < props.length; i++){
-					    data[props[i]] = controller.getDataByName(props[i],n);
-					}
-				}
-				
-				this._polygonData[this._polygonData.length] = {
-					title: sname,
-					coords: pathsSets,
-					color: (!color ? 'purple' : color),
-					fo: (!fo ? 0.1 : fo),
-					isClickable: (!isClickable ? 1 : isClickable),
-					data: data
-				};
-			}
-		}
-	}// end if (controller && (this.polygonCoordsProperty != ''))
-	/* FOR-SLIDER
-	if (!this.polygonColorProperty){
-		if ($("#divSliderRangesPart").is(":visible") == true){
-			this.getSliderData().isChanged = false;
-			this.closeSlider();
-		}
-	}
-	*/
+                if (this.polygonCoordsJsFile) coords = this._polygonCoords[coords];
+                
+                if (!coords) continue;
+                
+                var pathsSets = coords.split(";");
+                for (var j = 0; j < pathsSets.length; j++){
+                    var paths = pathsSets[j].split(" ");
+                    for (var i = 0; i < paths.length; i++){
+                        var p = paths[i].split(",");
+                        paths[i] = [p[1], p[0]];
+                    }
+                    pathsSets[j] = paths;
+                }
+                
+                var data = [];
+            
+                if (this.polygonDataProperties != ''){
+                    var props = this.polygonDataProperties.split(",");
+                    for (var i = 0; i < props.length; i++){
+                        data[props[i]] = controller.getDataByName(props[i],n);
+                    }
+                }
+                
+                this._polygonData[this._polygonData.length] = {
+                    title: sname,
+                    coords: pathsSets,
+                    color: (!color ? 'purple' : color),
+                    fo: (!fo ? 0.1 : fo),
+                    isClickable: (!isClickable ? 1 : isClickable),
+                    data: data
+                };
+            }
+        }
+    }// end if (controller && (this.polygonCoordsProperty != ''))
+    /* FOR-SLIDER
+    if (!this.polygonColorProperty){
+        if ($("#divSliderRangesPart").is(":visible") == true){
+            this.getSliderData().isChanged = false;
+            this.closeSlider();
+        }
+    }
+    */
 ]]></Implementation>
 </Method>
 
@@ -867,36 +867,37 @@ Client-side method to render control.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	// get data from controller, if present.
-	this.acquireData();
-	
-	zenPage.dashboardEventHandler('', '', '', 'refresh', '*', '');
-	
-	//============================ Локализация столбцов в виджете-таблице со студунтами ================
-	try{
-		var sc = findScoreCardWidgetByName('TrainingStudents');
-		for(var i=0; i < sc.parent.parent.children[1].children[0].columns.length; i++){
-			sc.parent.parent.children[1].children[0].columns[i].label = dict.localize(sc.parent.parent.children[1].children[0].columns[i].label);
-		}
-	}
-	catch(ex){
-		console.log('Portlet Map Error, renderContents(), localize scorecard columns');
-	}
-	
-	
-	var portlet = this;
-	ymaps.ready(function(){
-		portlet.initMap();
-		
-		
-		// Подключение плагина для круговых диаграмм
-		ymaps.modules.require(['PieChartClusterer'], function (PieChartClusterer) {
-    		/**
-     		* Supports all Clusterer constructor options.
-     		* @see https://tech.yandex.ru/maps/doc/jsapi/2.1/ref/reference/Clusterer-docpage/
-     		*/
-    		// Создаем собственный макет с информацией о выбранном геообъекте.
-        	var customBalloonContentLayout = ymaps.templateLayoutFactory.createClass([
+    // get data from controller, if present.
+    this.acquireData();
+    
+    zenPage.dashboardEventHandler('', '', '', 'refresh', '*', '');
+    
+    //============================ Локализация столбцов в виджете-таблице со студунтами ================
+    try{
+        var sc = findScoreCardWidgetByName('TrainingStudents');
+        for(var i=0; i < sc.parent.parent.children[1].children[0].columns.length; i++){
+            sc.parent.parent.children[1].children[0].columns[i].label = dict.localize(sc.parent.parent.children[1].children[0].columns[i].label);
+        }
+    }
+    catch(ex){
+        console.log('Portlet Map Error, renderContents(), localize scorecard columns');
+    }
+    
+    
+    var portlet = this;
+    ymaps.ready(function(){
+        portlet.initMap();
+        console.log('ymaps.ready(function(){');
+        
+        // Подключение плагина для круговых диаграмм
+        ymaps.modules.require(['PieChartClusterer'], function (PieChartClusterer) {
+            console.log('ymaps.modules.require');
+            /**
+            * Supports all Clusterer constructor options.
+            * @see https://tech.yandex.ru/maps/doc/jsapi/2.1/ref/reference/Clusterer-docpage/
+            */
+            // Создаем собственный макет с информацией о выбранном геообъекте.
+            var customBalloonContentLayout = ymaps.templateLayoutFactory.createClass([
                 '<ul class=list>',
                 // Выводим в цикле список всех геообъектов.
                 '{% for geoObject in properties.geoObjects %}',
@@ -904,32 +905,33 @@ Client-side method to render control.</Description>
                 '{% endfor %}',
                 '</ul>'
             ].join(''));
-    		
-    		portlet._clusterer =  new PieChartClusterer({
-	            clusterDisableClickZoom: true,
-	            clusterOpenBalloonOnClick: true,
-	            // Устанавливаем режим открытия балуна. 
-	            // В данном примере балун никогда не будет открываться в режиме панели.
-	            clusterBalloonPanelMaxMapArea: 0,
-	            // По умолчанию опции балуна balloonMaxWidth и balloonMaxHeight не установлены для кластеризатора,
-	            // так как все стандартные макеты имеют определенные размеры.
-	            clusterBalloonMaxHeight: 200,
-	            // Устанавливаем собственный макет контента балуна.
-	            clusterBalloonContentLayout: customBalloonContentLayout
-	        });
-    	
-    		portlet._clusterer.events.add("contextmenu", function (e) {  
-				var cluster = e.get('target');
-				var clusterer = cluster.getParent();
-				clusterer.balloon.open(cluster);                                                           
-    		});
-    		
-    		portlet.syncPlacemarks();
-			portlet.syncPolygons();
-			
-			
-		});
-	});
+            
+            portlet._clusterer =  new PieChartClusterer({
+                clusterDisableClickZoom: true,
+                clusterOpenBalloonOnClick: true,
+                // Устанавливаем режим открытия балуна. 
+                // В данном примере балун никогда не будет открываться в режиме панели.
+                clusterBalloonPanelMaxMapArea: 0,
+                // По умолчанию опции балуна balloonMaxWidth и balloonMaxHeight не установлены для кластеризатора,
+                // так как все стандартные макеты имеют определенные размеры.
+                clusterBalloonMaxHeight: 200,
+                // Устанавливаем собственный макет контента балуна.
+                clusterBalloonContentLayout: customBalloonContentLayout
+            });
+        
+            portlet._clusterer.events.add("contextmenu", function (e) {  
+                var cluster = e.get('target');
+                var clusterer = cluster.getParent();
+                clusterer.balloon.open(cluster);                                                           
+            });
+            
+            console.log(portlet._clusterer);
+            portlet.syncPlacemarks();
+            portlet.syncPolygons();
+            
+            
+        });
+    });
 ]]></Implementation>
 </Method>
 
@@ -942,62 +944,62 @@ Initialize the map</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	this._mapObject = null;
-	var mapDiv = this.getEnclosingDiv();
-	
-	// test if we have not been rendered yet
-	if (mapDiv == null) return;
-	
- 	if (('undefined' == typeof ymaps) || ('undefined' == typeof ymaps.Map)) {
-		mapDiv.innerHTML = $$$Text('Unable to load yandex map api.');
-		return;
-	}
-	
-	this.latitude = parseFloat(this.latitude);
-	if (isNaN(this.latitude)) this.latitude = 60;
-	
-	this.longitude = parseFloat(this.longitude);
-	if (isNaN(this.longitude)) this.longitude = 85;
-	
-	this.zoom = parseInt(this.zoom, 10);
-	if (isNaN(this.zoom)) this.zoom = 2;
+    this._mapObject = null;
+    var mapDiv = this.getEnclosingDiv();
+    
+    // test if we have not been rendered yet
+    if (mapDiv == null) return;
+    
+    if (('undefined' == typeof ymaps) || ('undefined' == typeof ymaps.Map)) {
+        mapDiv.innerHTML = $$$Text('Unable to load yandex map api.');
+        return;
+    }
+    
+    this.latitude = parseFloat(this.latitude);
+    if (isNaN(this.latitude)) this.latitude = 60;
+    
+    this.longitude = parseFloat(this.longitude);
+    if (isNaN(this.longitude)) this.longitude = 85;
+    
+    this.zoom = parseInt(this.zoom, 10);
+    if (isNaN(this.zoom)) this.zoom = 2;
 
     var mapOptions = {
-        		center: [this.latitude, this.longitude],
-       			zoom: this.zoom,
-       			controls: [],
-    			type: this.mapType ? this.mapType.split(":").pop() : 'yandex#map'
-    		};
-    		
-	this._mapObject = new ymaps.Map(mapDiv, mapOptions);
+                center: [this.latitude, this.longitude],
+                zoom: this.zoom,
+                controls: [],
+                type: this.mapType ? this.mapType.split(":").pop() : 'yandex#map'
+            };
+            
+    this._mapObject = new ymaps.Map(mapDiv, mapOptions);
     this._mapObject.behaviors.enable('scrollZoom',{smooth: false});
     this._mapObject.controls.add('zoomControl',{smooth: false});
     this._mapObject.controls.add(new ymaps.control.TypeSelector(['yandex#map', 'yandex#satellite', 'yandex#hybrid']));
-    	
-	// array of placemarks
-	this._placemarks = [];
-	
-	// array of polygons
-	this._polygons = [];
-	
-	// drilldown arrays
-	this._prevZoom = [];
-	this._prevCenter = [];
-	this._drillDownTitle = [];
-	
-	// colors for placemarks
-	this._presets = ['islands#redIcon',
-			     	 'islands#greenIcon',
-				 	 'islands#blueIcon', 
-			     	 'islands#orangeIcon', 
-			     	 'islands#yellowIcon',
-				 	 'islands#brownIcon',
-				 	 'islands#oliveIcon',
-				 	 'islands#violetIcon',
-				 	 'islands#pinkIcon',
-				 	 'islands#blackIcon'];
-				 
-	// create div for dirllUp button
+        
+    // array of placemarks
+    this._placemarks = [];
+    
+    // array of polygons
+    this._polygons = [];
+    
+    // drilldown arrays
+    this._prevZoom = [];
+    this._prevCenter = [];
+    this._drillDownTitle = [];
+    
+    // colors for placemarks
+    this._presets = ['islands#redIcon',
+                     'islands#greenIcon',
+                     'islands#blueIcon', 
+                     'islands#orangeIcon', 
+                     'islands#yellowIcon',
+                     'islands#brownIcon',
+                     'islands#oliveIcon',
+                     'islands#violetIcon',
+                     'islands#pinkIcon',
+                     'islands#blackIcon'];
+                 
+    // create div for dirllUp button
     var drillUpActionComponent = new ymaps.control.Button({
             options: {
                 layout: ymaps.templateLayoutFactory.createClass("<div id='" + this.id + "_drillUpActionComponent" + "'></div>")
@@ -1006,34 +1008,34 @@ Initialize the map</Description>
         
     var duPosition = {left: '5px', top: '10px'};
     if (this.drillUpButtonPosition == "bottom"){
-    	duPosition = {left: '5px', bottom: '10px'};
+        duPosition = {left: '5px', bottom: '10px'};
     }
     this._mapObject.controls.add(drillUpActionComponent, { float: 'none', position: duPosition });
 
-	
+    
 
-	/*/ Create slider range if we need tool for change color
-	if (!this.polygonColorProperty){
-	    var sliderComponent = new ymaps.control.Button({
-	            options: {
-	                layout: ymaps.templateLayoutFactory.createClass(""+
-	                "<div id='divSlider'>" + 
-	        		"    <div id='divSliderButtonsPart'>" +
-	        		"        <input id='btnOpenSlider'  type='button' value='Изменить диапазон'  onclick='zenPage.getComponentById(\"" + this.id + "\").openSlider();'/>" +
-	        		"        <input id='btnCloseSlider' type='button' value='Сохранить диапазон' onclick='zenPage.getComponentById(\"" + this.id + "\").closeSlider();'/>" + 
-	        		"    </div>" + 
-	        		"    <div id='divSliderRangesPart'>" + 
-	        		"        <input id='inputSliderMinValue' type='text' readonly='true' title='Минимальное значение параметра'/>" +  
-	        		"        <input id='inputSliderValues'   type='text' readonly='true' title='Границы диапазона'/>" + 
-	        		"        <input id='inputSliderMaxValue' type='text' readonly='true' title='Максимальное значение параметра'/>" + 
-	        		"        <div id='slider-range' widgetid=\"" + this.id + "\">" + 
-	        		"        </div>" + 
-	        		"    </div>" +
-	                "</div>")
-	            }
-	        });    
-    	this._mapObject.controls.add(sliderComponent, { float: 'right'});
-	}*/
+    /*/ Create slider range if we need tool for change color
+    if (!this.polygonColorProperty){
+        var sliderComponent = new ymaps.control.Button({
+                options: {
+                    layout: ymaps.templateLayoutFactory.createClass(""+
+                    "<div id='divSlider'>" + 
+                    "    <div id='divSliderButtonsPart'>" +
+                    "        <input id='btnOpenSlider'  type='button' value='Изменить диапазон'  onclick='zenPage.getComponentById(\"" + this.id + "\").openSlider();'/>" +
+                    "        <input id='btnCloseSlider' type='button' value='Сохранить диапазон' onclick='zenPage.getComponentById(\"" + this.id + "\").closeSlider();'/>" + 
+                    "    </div>" + 
+                    "    <div id='divSliderRangesPart'>" + 
+                    "        <input id='inputSliderMinValue' type='text' readonly='true' title='Минимальное значение параметра'/>" +  
+                    "        <input id='inputSliderValues'   type='text' readonly='true' title='Границы диапазона'/>" + 
+                    "        <input id='inputSliderMaxValue' type='text' readonly='true' title='Максимальное значение параметра'/>" + 
+                    "        <div id='slider-range' widgetid=\"" + this.id + "\">" + 
+                    "        </div>" + 
+                    "    </div>" +
+                    "</div>")
+                }
+            });    
+        this._mapObject.controls.add(sliderComponent, { float: 'right'});
+    }*/
 ]]></Implementation>
 </Method>
 
@@ -1042,7 +1044,7 @@ Initialize the map</Description>
 Return the google map API object used by the map view.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
-<Implementation><![CDATA[	return this._mapObject;
+<Implementation><![CDATA[    return this._mapObject;
 ]]></Implementation>
 </Method>
 
@@ -1053,11 +1055,11 @@ Show an ballon at the specified position.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var map = this.getMapObject();
-	
-	if (map && position){
-		map.balloon.open(position, {contentBody: content});
-	}
+    var map = this.getMapObject();
+    
+    if (map && position){
+        map.balloon.open(position, {contentBody: content});
+    }
 ]]></Implementation>
 </Method>
 
@@ -1073,30 +1075,30 @@ Returns the placemark object.]]></Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var map = this.getMapObject();
-	if (!map || isNaN(parseFloat(latitude)) || isNaN(parseFloat(longitude))) return null;
+    var map = this.getMapObject();
+    if (!map || isNaN(parseFloat(latitude)) || isNaN(parseFloat(longitude))) return null;
 
-	var geometry = [latitude, longitude];
-	var properties = {hintContent: title};
-	var options = { 
-		preset: data.PlacemarkPreset, 
-		iconColor: data.PlacemarkPreset.substring(data.PlacemarkPreset.indexOf("#") + 1, data.PlacemarkPreset.indexOf("Icon"))
-	};
-		
-	var placemark = new ymaps.Placemark(geometry, properties, options);
+    var geometry = [latitude, longitude];
+    var properties = {hintContent: title};
+    var options = { 
+        preset: data.PlacemarkPreset, 
+        iconColor: data.PlacemarkPreset.substring(data.PlacemarkPreset.indexOf("#") + 1, data.PlacemarkPreset.indexOf("Icon"))
+    };
+        
+    var placemark = new ymaps.Placemark(geometry, properties, options);
 
-	// add to list
-	placemark._id = id;
-	placemark.clickable = (isClickable == 1);
-	placemark.data = data;
-	
-	var index = this._placemarks.length;
-	this._placemarks[index] = placemark;
-	
-	placemark.events.add("click", new Function('zenPage.getComponent(' + this.index + ').placemarkEventHandler("' + index + '", "click");'));	
-	placemark.events.add("contextmenu", new Function('zenPage.getComponent(' + this.index + ').placemarkEventHandler("' + index + '", "contextmenu");'));
-	
-	return placemark;
+    // add to list
+    placemark._id = id;
+    placemark.clickable = (isClickable == 1);
+    placemark.data = data;
+    
+    var index = this._placemarks.length;
+    this._placemarks[index] = placemark;
+    
+    placemark.events.add("click", new Function('zenPage.getComponent(' + this.index + ').placemarkEventHandler("' + index + '", "click");'));   
+    placemark.events.add("contextmenu", new Function('zenPage.getComponent(' + this.index + ').placemarkEventHandler("' + index + '", "contextmenu");'));
+    
+    return placemark;
 ]]></Implementation>
 </Method>
 
@@ -1107,7 +1109,7 @@ Get placemark from array by index</Description>
 <FormalSpec>index</FormalSpec>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
-<Implementation><![CDATA[	return this._placemarks ? this._placemarks[index] : null;
+<Implementation><![CDATA[    return this._placemarks ? this._placemarks[index] : null;
 ]]></Implementation>
 </Method>
 
@@ -1119,17 +1121,17 @@ Handler for placemark events by type </Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var placemark = this.getPlacemark(index);
-	if (!placemark) return;
-	
-	switch(eventType){
-		case 'click':
-			zenInvokeCallbackMethod(this.onclickplacemark, this, 'onclickplacemark', 'placemark', placemark);
-			break;	
-		case 'contextmenu':
-			zenInvokeCallbackMethod(this.oncontextmenuplacemark, this, 'oncontextmenuplacemark', 'placemark', placemark);
-			break;
-	}
+    var placemark = this.getPlacemark(index);
+    if (!placemark) return;
+    
+    switch(eventType){
+        case 'click':
+            zenInvokeCallbackMethod(this.onclickplacemark, this, 'onclickplacemark', 'placemark', placemark);
+            break;  
+        case 'contextmenu':
+            zenInvokeCallbackMethod(this.oncontextmenuplacemark, this, 'oncontextmenuplacemark', 'placemark', placemark);
+            break;
+    }
 ]]></Implementation>
 </Method>
 
@@ -1140,48 +1142,48 @@ Internal method: sync placemarks to data from controller.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	this.clearPlacemarks();
-	
-	var map = this.getMapObject();
-	var controller = this.getController();
-	if (!map || !controller || !this._placemarkData) 
-		return;
+    this.clearPlacemarks();
+    
+    var map = this.getMapObject();
+    var controller = this.getController();
+    if (!map || !controller || !this._placemarkData) 
+        return;
 
-	
-   	//this._clusterer = new PieChartClusterer();
+    
+    //this._clusterer = new PieChartClusterer();
     this._clusterer.removeAll();
 
-   	
+    
    /*            
-   	this._clusterer.events.add("contextmenu", function (e) {  
-		var cluster = e.get('target');
-		var clusterer = cluster.getParent();
-		clusterer.balloon.open(cluster);                                                           
+    this._clusterer.events.add("contextmenu", function (e) {  
+        var cluster = e.get('target');
+        var clusterer = cluster.getParent();
+        clusterer.balloon.open(cluster);                                                           
     });
-   	*/				
-   	try {	
-		for (var n = 0; n < this._placemarkData.length; n++){
-			var md = this._placemarkData[n];
-			if (md){
+    */              
+    try {   
+        for (var n = 0; n < this._placemarkData.length; n++){
+            var md = this._placemarkData[n];
+            if (md){
                 if(this.placemarkSpecialIcon != "" && md.specialIcon == 1){
-					md.icon = this.placemarkSpecialIcon;
+                    md.icon = this.placemarkSpecialIcon;
                 }
-			
-				var placemark = this.addPlacemark(n, md.latitude, md.longitude, md.title, md.isClickable, md.icon, md.data);
-			
-				if (placemark){
-					zenInvokeCallbackMethod(this.onaddplacemark, this, 'onaddplacemark', 'placemark', placemark);
-				}
-			}
-		}
-		
-		///Добавляем массив маркеров в объект clusterer
-		this._clusterer.add(this._placemarks);
+            
+                var placemark = this.addPlacemark(n, md.latitude, md.longitude, md.title, md.isClickable, md.icon, md.data);
+            
+                if (placemark){
+                    zenInvokeCallbackMethod(this.onaddplacemark, this, 'onaddplacemark', 'placemark', placemark);
+                }
+            }
+        }
+        
+        ///Добавляем массив маркеров в объект clusterer
+        this._clusterer.add(this._placemarks);
         map.geoObjects.add(this._clusterer);
-	}
-	catch(ex) {
-		alert('Error in syncPlacemarks ' + ex.message);
-	}
+    }
+    catch(ex) {
+        alert('Error in syncPlacemarks ' + ex.message);
+    }
 ]]></Implementation>
 </Method>
 
@@ -1192,19 +1194,19 @@ Internal method: clear placemarks from map.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	try {
-		// kill old placemarks
-		if (this._placemarks && this._clusterer) {
-			for (var n = 0; n < this._placemarks.length; n++) {
-				this._clusterer.remove(this._placemarks[n]);
-			}
-		}
-		
-		this._placemarks = [];
-	}
-	catch(ex) {
-		alert('Error in clearPlacemarks ' + ex.message);
-	}
+    try {
+        // kill old placemarks
+        if (this._placemarks && this._clusterer) {
+            for (var n = 0; n < this._placemarks.length; n++) {
+                this._clusterer.remove(this._placemarks[n]);
+            }
+        }
+        
+        this._placemarks = [];
+    }
+    catch(ex) {
+        alert('Error in clearPlacemarks ' + ex.message);
+    }
 ]]></Implementation>
 </Method>
 
@@ -1213,35 +1215,35 @@ Internal method: clear placemarks from map.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	try{
-		// Обновить виджет со студентами
-		var sc = findScoreCardWidgetByName('TrainingStudents'); 
-	  	sc.parent.parent.parent.titleDiv.innerHTML = dict.localize("Слушатели курса")+" - " + placemark.data.Course + '. ' + placemark.data.City + '.';
-	  	
-	  	if (placemark.data.StudentsCount == 0){
-		  	zenPage.dashboardEventHandler(zenThis,'click', '0', 'applyFilter', 'TrainingStudents', 'Training');
-	  	}
-	  	else{
-	  		zenPage.dashboardEventHandler(zenThis,'click', placemark.data.ID, 'applyFilter', 'TrainingStudents', 'Training');
-	  	}
-	  	
-		var content = "<div style='font-size:12px; font-family:arial;'>" 
-		                + "<span style='font-weight: bold;'>" + placemark.data.Course + "</span><br><br>"
-			            + "<span>" + dict.localize("Город") + ": " + placemark.data.City + "</span><br>"
-			            + "<span>" + dict.localize("Адрес") + ": " + placemark.data.Street + (placemark.data.Room=='-' ? '' : ('; ' + placemark.data.Room)) + "</span><br>"
-			            + "<span>" + dict.localize("Дата начала обучения") + ": " + placemark.data.DateStart + "</span><br>"
-			            + "<span>" + dict.localize("Дата окончания обучения") + ": " + placemark.data.DateFinish + "</span><br>"
-			            + "<span>" + dict.localize("Преподаватель") + ": " + placemark.data.Teacher + "</span><br>"
-			            + "<span>" + dict.localize("Подгрупп / слушателей") + ": " + placemark.data.SubGroupsCount + ' / ' + placemark.data.StudentsCount + "</span><br>"
-			            + "<button class='trTableSingle_Btn' style='float: right;' title='"+dict.localize("Открыть в другом окне")+"' onclick='changeTraining(" + placemark.data.ID + ")'>" + dict.localize("Детали") + "</button>"
-					+ "</div>";
-					  
-		this.openBallonAtPosition(placemark.geometry.getCoordinates(), content);
-	}
-	catch(ex){
-		alert(ex);
-		console.log(ex);
-	}
+    try{
+        // Обновить виджет со студентами
+        var sc = findScoreCardWidgetByName('TrainingStudents'); 
+        sc.parent.parent.parent.titleDiv.innerHTML = dict.localize("Слушатели курса")+" - " + placemark.data.Course + '. ' + placemark.data.City + '.';
+        
+        if (placemark.data.StudentsCount == 0){
+            zenPage.dashboardEventHandler(zenThis,'click', '0', 'applyFilter', 'TrainingStudents', 'Training');
+        }
+        else{
+            zenPage.dashboardEventHandler(zenThis,'click', placemark.data.ID, 'applyFilter', 'TrainingStudents', 'Training');
+        }
+        
+        var content = "<div style='font-size:12px; font-family:arial;'>" 
+                        + "<span style='font-weight: bold;'>" + placemark.data.Course + "</span><br><br>"
+                        + "<span>" + dict.localize("Город") + ": " + placemark.data.City + "</span><br>"
+                        + "<span>" + dict.localize("Адрес") + ": " + placemark.data.Street + (placemark.data.Room=='-' ? '' : ('; ' + placemark.data.Room)) + "</span><br>"
+                        + "<span>" + dict.localize("Дата начала обучения") + ": " + placemark.data.DateStart + "</span><br>"
+                        + "<span>" + dict.localize("Дата окончания обучения") + ": " + placemark.data.DateFinish + "</span><br>"
+                        + "<span>" + dict.localize("Преподаватель") + ": " + placemark.data.Teacher + "</span><br>"
+                        + "<span>" + dict.localize("Подгрупп / слушателей") + ": " + placemark.data.SubGroupsCount + ' / ' + placemark.data.StudentsCount + "</span><br>"
+                        + "<button class='trTableSingle_Btn' style='float: right;' title='"+dict.localize("Открыть в другом окне")+"' onclick='changeTraining(" + placemark.data.ID + ")'>" + dict.localize("Детали") + "</button>"
+                    + "</div>";
+                      
+        this.openBallonAtPosition(placemark.geometry.getCoordinates(), content);
+    }
+    catch(ex){
+        alert(ex);
+        console.log(ex);
+    }
 ]]></Implementation>
 </Method>
 
@@ -1257,45 +1259,45 @@ Returns the polygon object.]]></Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var map = this.getMapObject();
+    var map = this.getMapObject();
     if (!map) return null;
 
-	if (color.substring(0, 4) === "rgb(" && color.indexOf(")") == (color.length - 1) && color.indexOf(".") > -1){
-		var colorAr = color.substring(4, color.length - 1).split(",");
-		color = "rgb(" + String(parseFloat(colorAr[0])).split(".")[0] + "," + String(parseFloat(colorAr[1])).split(".")[0] + "," + String(parseFloat(colorAr[2])).split(".")[0] + ")";
-	}
-	
+    if (color.substring(0, 4) === "rgb(" && color.indexOf(")") == (color.length - 1) && color.indexOf(".") > -1){
+        var colorAr = color.substring(4, color.length - 1).split(",");
+        color = "rgb(" + String(parseFloat(colorAr[0])).split(".")[0] + "," + String(parseFloat(colorAr[1])).split(".")[0] + "," + String(parseFloat(colorAr[2])).split(".")[0] + ")";
+    }
+    
     var polygon = new ymaps.Polygon(
-     		/* geometry */
-     		coords, 
-     		/* properties */
-     		{
-	     		hintContent: title
-	     	},
-	     	/* options */ 
-	     	{
-	     		fillColor: (color.substring(0, "hsv2rgb".length) === "hsv2rgb" ? eval(color) : color),
-        	 	fillOpacity: fo,
-        	 	strokeColor: (color.substring(0, "hsv2rgb".length) === "hsv2rgb" ? eval(color) : color),
-        	 	strokeOpacity: (this.polygonStrokeOpacity ? this.polygonStrokeOpacity : 0.5),
-        	 	strokeWeight: (this.polygonStrokeWeight ? this.polygonStrokeWeight : 3),
-    		});
+            /* geometry */
+            coords, 
+            /* properties */
+            {
+                hintContent: title
+            },
+            /* options */ 
+            {
+                fillColor: (color.substring(0, "hsv2rgb".length) === "hsv2rgb" ? eval(color) : color),
+                fillOpacity: fo,
+                strokeColor: (color.substring(0, "hsv2rgb".length) === "hsv2rgb" ? eval(color) : color),
+                strokeOpacity: (this.polygonStrokeOpacity ? this.polygonStrokeOpacity : 0.5),
+                strokeWeight: (this.polygonStrokeWeight ? this.polygonStrokeWeight : 3),
+            });
 
-   	// add to list
-	polygon._id = id;
-	polygon.defaultFO = fo;
-	polygon.clickable = (isClickable == 1);
-	polygon.data = data;
-		
-	var index = this._polygons.length;
-	this._polygons[index] = polygon;
-	
-	polygon.events.add("click", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
-	polygon.events.add("contextmenu", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
-	polygon.events.add("mouseenter", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
-	polygon.events.add("mouseleave", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
-	
-	return polygon;
+    // add to list
+    polygon._id = id;
+    polygon.defaultFO = fo;
+    polygon.clickable = (isClickable == 1);
+    polygon.data = data;
+        
+    var index = this._polygons.length;
+    this._polygons[index] = polygon;
+    
+    polygon.events.add("click", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
+    polygon.events.add("contextmenu", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
+    polygon.events.add("mouseenter", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
+    polygon.events.add("mouseleave", new Function('event', 'zenPage.getComponent(' + this.index + ').polygonEventHandler("' + index + '", event);'));
+    
+    return polygon;
 ]]></Implementation>
 </Method>
 
@@ -1306,7 +1308,7 @@ Get polygon from array by index</Description>
 <FormalSpec>index</FormalSpec>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
-<Implementation><![CDATA[	return this._polygons ? this._polygons[index] : null;
+<Implementation><![CDATA[    return this._polygons ? this._polygons[index] : null;
 ]]></Implementation>
 </Method>
 
@@ -1318,31 +1320,31 @@ Handler for polygon events by type </Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var polygon = this.getPolygon(index);
-	if (!polygon) return;
+    var polygon = this.getPolygon(index);
+    if (!polygon) return;
 
-	switch(event.get('type')){
-		case 'click':
-			zenInvokeCallbackMethod(this.onclickpolygon, this, 'onclickpolygon', 'polygon', polygon, 'position', event.get('coords'));
-			break;	
-		case 'contextmenu':
-			zenInvokeCallbackMethod(this.oncontextmenupolygon, this, 'oncontextmenupolygon', 'polygon', polygon, 'position', event.get('coords'));
-			break;
-		case 'mouseenter':{
-				if (polygon.clickable){ 
-					polygon.options.set({fillOpacity: (this.polygonHoverOpacity ? this.polygonHoverOpacity : 0.35)});		
-				}
-				break;
-			}
-			break;
-		case 'mouseleave':{
-				if (polygon.clickable){ 		
-					polygon.options.set({fillOpacity: polygon.defaultFO});		
-				}
-				break;
-			}
-			break;
-	}
+    switch(event.get('type')){
+        case 'click':
+            zenInvokeCallbackMethod(this.onclickpolygon, this, 'onclickpolygon', 'polygon', polygon, 'position', event.get('coords'));
+            break;  
+        case 'contextmenu':
+            zenInvokeCallbackMethod(this.oncontextmenupolygon, this, 'oncontextmenupolygon', 'polygon', polygon, 'position', event.get('coords'));
+            break;
+        case 'mouseenter':{
+                if (polygon.clickable){ 
+                    polygon.options.set({fillOpacity: (this.polygonHoverOpacity ? this.polygonHoverOpacity : 0.35)});       
+                }
+                break;
+            }
+            break;
+        case 'mouseleave':{
+                if (polygon.clickable){         
+                    polygon.options.set({fillOpacity: polygon.defaultFO});      
+                }
+                break;
+            }
+            break;
+    }
 ]]></Implementation>
 </Method>
 
@@ -1353,73 +1355,73 @@ Internal method: sync polygons to data from controller.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	this.clearPolygons();	
-	
-	var map = this.getMapObject();
-	var controller = this.getController();
-	
-	if (!map || !controller || !this._polygonData || this._polygonData.length == 0) 
-		return;
-	
-	try {
-		// Min and max value from all polygons data for calculate color 
-		var minValue = 0, maxValue = 0;
-		
-		if (!this.polygonColorProperty){
-			minValue = parseFloat(this._polygonData[0].data['Value']); 
-			if (isNaN(minValue)) 
-				minValue = 0;
-			
-			maxValue = minValue;
-			
-			for (var n = 1; n < this._polygonData.length; n++){
-				var nValue = parseFloat(this._polygonData[n].data['Value']);
-				if (isNaN(nValue)) nValue = 0;
-				
-				if (minValue > nValue)
-					minValue = nValue;
-				else if (maxValue < nValue)
-					maxValue = nValue;
-			}
-		
-			// Load and set borders data for slider range
-			if (!this.polygonColorProperty){
-				var sliderData = this.getSliderData();
-				
-				var bordersData = this.LoadBordersData(this._polygonData[0].data.ParameterId, this._polygonData[0].data.Level, sliderData.getGuid())
-				sliderData.setParameterId(this._polygonData[0].data.ParameterId);
-				sliderData.setLevel(this._polygonData[0].data.Level);
-				sliderData.setMin(minValue);
-				sliderData.setMax(maxValue);
-				sliderData.setValues(bordersData.minValue, bordersData.maxValue);
-				sliderData.setUnitName(bordersData.unitName);
-				sliderData.isChanged = false;		
-					
-				minValue = sliderData.getValues()[0];
-				maxValue = sliderData.getValues()[1];
-			}
-		}
-		
-		
-		for (var n = 0; n < this._polygonData.length; n++){
-			var md = this._polygonData[n];
-			if (md){	
-				if (!this.polygonColorProperty){
-					md.color = this.getPolygonColor(minValue, maxValue, md.data['Value']);
-				}
-					
-				var poly = this.addPolygon(n, md.coords, md.color, md.fo, md.isClickable, md.title, md.data);
-				
-				if (poly){ 
-					map.geoObjects.add(poly);
-					zenInvokeCallbackMethod(this.onaddpolygon, this, 'onaddpolygon', 'polygon', poly);
-				}	
-			}
-		}
-	}
-	catch(ex) {
-		alert('Error in syncPolygons ' + ex.message);
-	}
+    this.clearPolygons();   
+    
+    var map = this.getMapObject();
+    var controller = this.getController();
+    
+    if (!map || !controller || !this._polygonData || this._polygonData.length == 0) 
+        return;
+    
+    try {
+        // Min and max value from all polygons data for calculate color 
+        var minValue = 0, maxValue = 0;
+        
+        if (!this.polygonColorProperty){
+            minValue = parseFloat(this._polygonData[0].data['Value']); 
+            if (isNaN(minValue)) 
+                minValue = 0;
+            
+            maxValue = minValue;
+            
+            for (var n = 1; n < this._polygonData.length; n++){
+                var nValue = parseFloat(this._polygonData[n].data['Value']);
+                if (isNaN(nValue)) nValue = 0;
+                
+                if (minValue > nValue)
+                    minValue = nValue;
+                else if (maxValue < nValue)
+                    maxValue = nValue;
+            }
+        
+            // Load and set borders data for slider range
+            if (!this.polygonColorProperty){
+                var sliderData = this.getSliderData();
+                
+                var bordersData = this.LoadBordersData(this._polygonData[0].data.ParameterId, this._polygonData[0].data.Level, sliderData.getGuid())
+                sliderData.setParameterId(this._polygonData[0].data.ParameterId);
+                sliderData.setLevel(this._polygonData[0].data.Level);
+                sliderData.setMin(minValue);
+                sliderData.setMax(maxValue);
+                sliderData.setValues(bordersData.minValue, bordersData.maxValue);
+                sliderData.setUnitName(bordersData.unitName);
+                sliderData.isChanged = false;       
+                    
+                minValue = sliderData.getValues()[0];
+                maxValue = sliderData.getValues()[1];
+            }
+        }
+        
+        
+        for (var n = 0; n < this._polygonData.length; n++){
+            var md = this._polygonData[n];
+            if (md){    
+                if (!this.polygonColorProperty){
+                    md.color = this.getPolygonColor(minValue, maxValue, md.data['Value']);
+                }
+                    
+                var poly = this.addPolygon(n, md.coords, md.color, md.fo, md.isClickable, md.title, md.data);
+                
+                if (poly){ 
+                    map.geoObjects.add(poly);
+                    zenInvokeCallbackMethod(this.onaddpolygon, this, 'onaddpolygon', 'polygon', poly);
+                }   
+            }
+        }
+    }
+    catch(ex) {
+        alert('Error in syncPolygons ' + ex.message);
+    }
 ]]></Implementation>
 </Method>
 
@@ -1430,19 +1432,19 @@ Internal method: clear polygons from map.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	try {
-		// kill old polygons
-		var map = this.getMapObject();
-		if (this._polygons) {
-			for (var n = 0; n < this._polygons.length; n++) {
-				map.geoObjects.remove(this._polygons[n]);
-			}
-		}
-		this._polygons = [];
-	}
-	catch(ex) {
-		alert('Error in clearPolygons ' + ex.message);
-	}
+    try {
+        // kill old polygons
+        var map = this.getMapObject();
+        if (this._polygons) {
+            for (var n = 0; n < this._polygons.length; n++) {
+                map.geoObjects.remove(this._polygons[n]);
+            }
+        }
+        this._polygons = [];
+    }
+    catch(ex) {
+        alert('Error in clearPolygons ' + ex.message);
+    }
 ]]></Implementation>
 </Method>
 
@@ -1453,12 +1455,12 @@ Calculate color for polygon</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	if (!value || !min || !max) return 'rgb(255,255,255)';
-	
-	// Left color - red, right color - green. In the middle - yellow color
-	var middle = (max + min) / 2;
-	
-	if (value <= middle){
+    if (!value || !min || !max) return 'rgb(255,255,255)';
+    
+    // Left color - red, right color - green. In the middle - yellow color
+    var middle = (max + min) / 2;
+    
+    if (value <= middle){
         var redPart = (value - min) / (middle - min);
         return "rgb(" + Math.round(255 * redPart) + ",255, 0)";
     }
@@ -1475,91 +1477,91 @@ Get slider data object. Object stores information about borders.</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	if (this._sliderData) return this._sliderData;
-	
-	this._sliderData = {
-						setParameterId: function(id){
-							this._parameterId = id;
-						},
-						getParameterId: function(){
-							return this._parameterId;
-						},
-						setGuid: function(guid){
-							this._guid = guid;
-						},
-						getGuid: function(){
-							return this._guid;
-						},
-						setLevel: function(lvl){
-							this._level = lvl;
-						},
-						getLevel: function(){
-							return this._level;
-						},
-						setUnitName: function(name){
-							this._unitName = name ? name : '';
-						},
-						getUnitName: function(){
-							return this._unitName;
-						},
-						setMin: function(value){
-							this._min = Math.floor(value ? parseInt(value) : 0);
-						},
-						getMin: function(){
-							return this._min;
-						},
-						setMax: function(value){
-							this._max = Math.ceil(value ? parseInt(value) : 1000);
-						},
-						getMax: function(){
-							return this._max;
-						},
-						setValues: function(min, max){
-							this.isChanged = true;
-							
-							min = Math.floor(min ? parseInt(min) : 0);
-							min = (min == 0 && this.getMin()) ? this.getMin(): min;
-							
-							max = Math.ceil(max ? parseInt(max) : 0);
-							max = (max == 0 && this.getMax()) ? this.getMax(): max;
-							
-							this._values = [min, max];
-						},
-						getValues: function(){
-							return this._values;
-						},
-						getStep: function(){
-							var step = 1;
-							var range = this.getMax() - this.getMin();
+    if (this._sliderData) return this._sliderData;
+    
+    this._sliderData = {
+                        setParameterId: function(id){
+                            this._parameterId = id;
+                        },
+                        getParameterId: function(){
+                            return this._parameterId;
+                        },
+                        setGuid: function(guid){
+                            this._guid = guid;
+                        },
+                        getGuid: function(){
+                            return this._guid;
+                        },
+                        setLevel: function(lvl){
+                            this._level = lvl;
+                        },
+                        getLevel: function(){
+                            return this._level;
+                        },
+                        setUnitName: function(name){
+                            this._unitName = name ? name : '';
+                        },
+                        getUnitName: function(){
+                            return this._unitName;
+                        },
+                        setMin: function(value){
+                            this._min = Math.floor(value ? parseInt(value) : 0);
+                        },
+                        getMin: function(){
+                            return this._min;
+                        },
+                        setMax: function(value){
+                            this._max = Math.ceil(value ? parseInt(value) : 1000);
+                        },
+                        getMax: function(){
+                            return this._max;
+                        },
+                        setValues: function(min, max){
+                            this.isChanged = true;
+                            
+                            min = Math.floor(min ? parseInt(min) : 0);
+                            min = (min == 0 && this.getMin()) ? this.getMin(): min;
+                            
+                            max = Math.ceil(max ? parseInt(max) : 0);
+                            max = (max == 0 && this.getMax()) ? this.getMax(): max;
+                            
+                            this._values = [min, max];
+                        },
+                        getValues: function(){
+                            return this._values;
+                        },
+                        getStep: function(){
+                            var step = 1;
+                            var range = this.getMax() - this.getMin();
 
-							if (range >= 1e8) step = 100000;
-							else if (range >= 1e7) step = 10000;
-							else if (range >= 1e6) step = 1000;
-							else if (range >= 1e5) step = 100;
-							else if (range >= 1e4) step = 10;
-							this.step = step
-							var modulo = range % step;
-		
-							// Если диапазон не кратен шагу, то распределяем остаток по "бокам" - поровну. 
-							// Если слева уходим в минус, то остаток прибавлем к правой границе.
-							if (modulo != 0){
-								var halfModulo = (step - modulo) / 2;
-			
-								if (this.getMin() < Math.floor(halfModulo)){
-									this.setMax(this.getMax() + Math.ceil(halfModulo) + Math.floor(halfModulo) - this.getMin());
-									this.setMin(0);
-								}
-								else{
-									this.setMin(this.getMin() - Math.floor(halfModulo));
-									this.setMax(this.getMax() + Math.ceil(halfModulo));
-								}
-							}
+                            if (range >= 1e8) step = 100000;
+                            else if (range >= 1e7) step = 10000;
+                            else if (range >= 1e6) step = 1000;
+                            else if (range >= 1e5) step = 100;
+                            else if (range >= 1e4) step = 10;
+                            this.step = step
+                            var modulo = range % step;
+        
+                            // Если диапазон не кратен шагу, то распределяем остаток по "бокам" - поровну. 
+                            // Если слева уходим в минус, то остаток прибавлем к правой границе.
+                            if (modulo != 0){
+                                var halfModulo = (step - modulo) / 2;
+            
+                                if (this.getMin() < Math.floor(halfModulo)){
+                                    this.setMax(this.getMax() + Math.ceil(halfModulo) + Math.floor(halfModulo) - this.getMin());
+                                    this.setMin(0);
+                                }
+                                else{
+                                    this.setMin(this.getMin() - Math.floor(halfModulo));
+                                    this.setMax(this.getMax() + Math.ceil(halfModulo));
+                                }
+                            }
 
-							return step;
-						}
-					 };
-					 
-	return this._sliderData;
+                            return step;
+                        }
+                     };
+                     
+    return this._sliderData;
 ]]></Implementation>
 </Method>
 
@@ -1569,47 +1571,47 @@ Open slider dialog</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	/* FOR-SLIDER
-	$("#btnOpenSlider").hide();
-	$("#btnCloseSlider").show();
-	$("#divSliderRangesPart").show();
+    /* FOR-SLIDER
+    $("#btnOpenSlider").hide();
+    $("#btnCloseSlider").show();
+    $("#divSliderRangesPart").show();
 
-	// Init slider
-	var portlet = this;
-	var sliderData = this.getSliderData();
-	
-	var step = sliderData.getStep();
-	var unitName = sliderData.getUnitName();
-	var minValue = sliderData.getMin();
-	var maxValue = sliderData.getMax();
-	var values = sliderData.getValues(); 
+    // Init slider
+    var portlet = this;
+    var sliderData = this.getSliderData();
+    
+    var step = sliderData.getStep();
+    var unitName = sliderData.getUnitName();
+    var minValue = sliderData.getMin();
+    var maxValue = sliderData.getMax();
+    var values = sliderData.getValues(); 
 
-	$("#slider-range").slider({
-		range: true,
-		step: step,
-		min: minValue,
-		max: maxValue,
-		values: values,
-		slide: function(event, ui){
-			// Change current borders and color of polygons
-			var sliderData = portlet.getSliderData();
-			sliderData.setValues(ui.values[0], ui.values[1]);
-			
-			for(var n=0; n < portlet._polygons.length; n++){
-				var poly = portlet._polygons[n];
-				var color = portlet.getPolygonColor(ui.values[0], ui.values[1], poly.data['Value']);
-				poly.options.set("fillColor", color);
-				poly.options.set("strokeColor", color);
-			}
-			
-			$("#inputSliderValues" ).val(ui.values[0] + " - " + ui.values[1] + " " + unitName);
-		}
-	});
+    $("#slider-range").slider({
+        range: true,
+        step: step,
+        min: minValue,
+        max: maxValue,
+        values: values,
+        slide: function(event, ui){
+            // Change current borders and color of polygons
+            var sliderData = portlet.getSliderData();
+            sliderData.setValues(ui.values[0], ui.values[1]);
+            
+            for(var n=0; n < portlet._polygons.length; n++){
+                var poly = portlet._polygons[n];
+                var color = portlet.getPolygonColor(ui.values[0], ui.values[1], poly.data['Value']);
+                poly.options.set("fillColor", color);
+                poly.options.set("strokeColor", color);
+            }
+            
+            $("#inputSliderValues" ).val(ui.values[0] + " - " + ui.values[1] + " " + unitName);
+        }
+    });
 
-	$("#inputSliderMinValue").val(minValue + " " + unitName);
-	$("#inputSliderMaxValue").val(maxValue + " " + unitName);
-	$("#inputSliderValues").val(values[0] + " - " + values[1] + " " + unitName);
-	*/
+    $("#inputSliderMinValue").val(minValue + " " + unitName);
+    $("#inputSliderMaxValue").val(maxValue + " " + unitName);
+    $("#inputSliderValues").val(values[0] + " - " + values[1] + " " + unitName);
+    */
 ]]></Implementation>
 </Method>
 
@@ -1619,26 +1621,26 @@ Close slider dialog, save borders</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	/* FOR-SLIDER
-	$("#btnOpenSlider").show();
-	$("#btnCloseSlider").hide();
-	$("#divSliderRangesPart").hide();
-	
-	var sliderData = this.getSliderData();
-	
-	// Save changes
-	if (sliderData.isChanged){
-		
-		var res = this.SaveBorders(sliderData.getParameterId(), sliderData.getLevel(), sliderData.getGuid(), sliderData.getValues()[0], sliderData.getValues()[1]);
-		console.log('borders saved');
-		if (res != 1){ 
-			alert('Ошибка! Диапазон не сохранен.'+ '\n' + res);
-			return;
-		}
-		
-		sliderData.isChanged = false;
-	}
-	*/
+    /* FOR-SLIDER
+    $("#btnOpenSlider").show();
+    $("#btnCloseSlider").hide();
+    $("#divSliderRangesPart").hide();
+    
+    var sliderData = this.getSliderData();
+    
+    // Save changes
+    if (sliderData.isChanged){
+        
+        var res = this.SaveBorders(sliderData.getParameterId(), sliderData.getLevel(), sliderData.getGuid(), sliderData.getValues()[0], sliderData.getValues()[1]);
+        console.log('borders saved');
+        if (res != 1){ 
+            alert('Ошибка! Диапазон не сохранен.'+ '\n' + res);
+            return;
+        }
+        
+        sliderData.isChanged = false;
+    }
+    */
 ]]></Implementation>
 </Method>
 
@@ -1649,16 +1651,16 @@ Save borders for current level, parameter and parent region</Description>
 <ReturnType>%ZEN.Datatype.string</ReturnType>
 <ZenMethod>1</ZenMethod>
 <Implementation><![CDATA[
-	/* FOR-SLIDER
-	set data = ##class(%ZEN.proxyObject).%New()
-	set data.parameterId = paramId
-	set data.level = level
-	set data.parentRegionId = regionId
-	set data.minValue = min
-	set data.maxValue = max
-	
-	quit $CLASSMETHOD($P(..polygonSaveBordersMethod,";",1),$P(..polygonSaveBordersMethod,";",2), data)
-	*/
+    /* FOR-SLIDER
+    set data = ##class(%ZEN.proxyObject).%New()
+    set data.parameterId = paramId
+    set data.level = level
+    set data.parentRegionId = regionId
+    set data.minValue = min
+    set data.maxValue = max
+    
+    quit $CLASSMETHOD($P(..polygonSaveBordersMethod,";",1),$P(..polygonSaveBordersMethod,";",2), data)
+    */
 ]]></Implementation>
 </Method>
 
@@ -1669,25 +1671,25 @@ Get the minimum and maximum value, and unit name ("min;max;y.e")</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <ZenMethod>1</ZenMethod>
 <Implementation><![CDATA[
-	/* FOR-SLIDER
-	set bordersData = ""
-	
-	try{
-		set data = ##class(%ZEN.proxyObject).%New()
-		set data.parameterId = paramId
-		set data.level = level
-		set data.parentRegionId = regionId
-	
-		set bordersData = $CLASSMETHOD($P(..polygonLoadBordersMethod,";",1),$P(..polygonLoadBordersMethod,";",2), data)
-	}
-	catch(ex){
-		set bordersData = ##class(%ZEN.proxyObject).%New()
-		set bordersData.minValue = 0
-		set bordersData.maxValue = 0
-		set bordersData.unitName = "-"
-	}
-	
-	quit bordersData*/
+    /* FOR-SLIDER
+    set bordersData = ""
+    
+    try{
+        set data = ##class(%ZEN.proxyObject).%New()
+        set data.parameterId = paramId
+        set data.level = level
+        set data.parentRegionId = regionId
+    
+        set bordersData = $CLASSMETHOD($P(..polygonLoadBordersMethod,";",1),$P(..polygonLoadBordersMethod,";",2), data)
+    }
+    catch(ex){
+        set bordersData = ##class(%ZEN.proxyObject).%New()
+        set bordersData.minValue = 0
+        set bordersData.maxValue = 0
+        set bordersData.unitName = "-"
+    }
+    
+    quit bordersData*/
 ]]></Implementation>
 </Method>
 
@@ -1702,19 +1704,19 @@ Perform a drilldown</Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var map = this.getMapObject();
-	if (!map) return;
-	
-	this._prevZoom.push(map.getZoom());
-	this._prevCenter.push(map.getCenter());
-	
-	map.setZoom(parseInt(zoom));
-	map.setCenter(latLng);
-	
-	this._drillDownTitle.push(title);
-	this.setDrillDownTitle(title);
-	
-	zenInvokeCallbackMethod(this.ondrilldown, this, 'ondrilldown', 'data', data);
+    var map = this.getMapObject();
+    if (!map) return;
+    
+    this._prevZoom.push(map.getZoom());
+    this._prevCenter.push(map.getCenter());
+    
+    map.setZoom(parseInt(zoom));
+    map.setCenter(latLng);
+    
+    this._drillDownTitle.push(title);
+    this.setDrillDownTitle(title);
+    
+    zenInvokeCallbackMethod(this.ondrilldown, this, 'ondrilldown', 'data', data);
 ]]></Implementation>
 </Method>
 
@@ -1726,38 +1728,38 @@ Set title to drillUp-button </Description>
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var du = document.getElementById(this.id + '_drillUpActionComponent')
-	du.innerHTML = '';
-	
-	if (!title)	return;
-	
-	var divBtn = document.createElement('div');
-	var portlet = this;
-	divBtn.onclick = function(){portlet.drillUp()};
-	divBtn.appendChild(document.createTextNode('<<  ' + 'Назад'));
-	divBtn.className = 'btnYandex';
-	divBtn.style.display = 'initial';
-	divBtn.style.borderRadius = '2px 0 0 2px';
-	divBtn.style.cursor = 'pointer';
-	
-	var divTitle = document.createElement('div');
-	divTitle.appendChild(document.createTextNode(title));
-	divTitle.className = 'btnYandex';
-	divTitle.style.display = 'initial';
-	divTitle.style.borderRadius = '0 2px 2px 0';
-	divTitle.style.background = 'none';
-	
-	if (navigator.userAgent.indexOf("MSIE")>=0){
-		divTitle.style.backgroundColor = 'white';
-		divBtn.style.display = 'inline';
-		divTitle.style.display = 'inline';
-	}
-	else{
-		divTitle.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
-	}
-	
-	du.appendChild(divBtn);
-	du.appendChild(divTitle);
+    var du = document.getElementById(this.id + '_drillUpActionComponent')
+    du.innerHTML = '';
+    
+    if (!title) return;
+    
+    var divBtn = document.createElement('div');
+    var portlet = this;
+    divBtn.onclick = function(){portlet.drillUp()};
+    divBtn.appendChild(document.createTextNode('<<  ' + 'Назад'));
+    divBtn.className = 'btnYandex';
+    divBtn.style.display = 'initial';
+    divBtn.style.borderRadius = '2px 0 0 2px';
+    divBtn.style.cursor = 'pointer';
+    
+    var divTitle = document.createElement('div');
+    divTitle.appendChild(document.createTextNode(title));
+    divTitle.className = 'btnYandex';
+    divTitle.style.display = 'initial';
+    divTitle.style.borderRadius = '0 2px 2px 0';
+    divTitle.style.background = 'none';
+    
+    if (navigator.userAgent.indexOf("MSIE")>=0){
+        divTitle.style.backgroundColor = 'white';
+        divBtn.style.display = 'inline';
+        divTitle.style.display = 'inline';
+    }
+    else{
+        divTitle.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+    }
+    
+    du.appendChild(divBtn);
+    du.appendChild(divTitle);
 ]]></Implementation>
 </Method>
 
@@ -1768,25 +1770,25 @@ Restores map parameters (center, zoom and "drilldown title") to their state befo
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	var map = this.getMapObject();
-	if (!map) return;
-	
-	if (this._drillDownTitle.length > 0){
-		this._drillDownTitle.pop();
-		this.setDrillDownTitle(this._drillDownTitle[this._drillDownTitle.length - 1]);
-	}
-	
-	if (this._prevZoom.length > 0){
-		map.setZoom(this._prevZoom[this._prevZoom.length - 1]);
-		this._prevZoom.pop();
-	}
-		
-	if (this._prevCenter.length > 0){
-		map.setCenter(this._prevCenter[this._prevCenter.length - 1]);
-		this._prevCenter.pop();
-	}
-	
-	zenInvokeCallbackMethod(this.ondrillup, this, 'ondrillup');
+    var map = this.getMapObject();
+    if (!map) return;
+    
+    if (this._drillDownTitle.length > 0){
+        this._drillDownTitle.pop();
+        this.setDrillDownTitle(this._drillDownTitle[this._drillDownTitle.length - 1]);
+    }
+    
+    if (this._prevZoom.length > 0){
+        map.setZoom(this._prevZoom[this._prevZoom.length - 1]);
+        this._prevZoom.pop();
+    }
+        
+    if (this._prevCenter.length > 0){
+        map.setCenter(this._prevCenter[this._prevCenter.length - 1]);
+        this._prevCenter.pop();
+    }
+    
+    zenInvokeCallbackMethod(this.ondrillup, this, 'ondrillup');
 ]]></Implementation>
 </Method>
 
@@ -1797,9 +1799,9 @@ Beat any number on three-digit numbers (123131413.45 => 123 131 413.45)]]></Desc
 <Language>javascript</Language>
 <ClientMethod>1</ClientMethod>
 <Implementation><![CDATA[
-	if (num == undefined) return '';
-	
-	return num.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+    if (num == undefined) return '';
+    
+    return num.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 ]]></Implementation>
 </Method>
 
@@ -1810,16 +1812,16 @@ Get proxy object with addition information for object by id</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <ZenMethod>1</ZenMethod>
 <Implementation><![CDATA[
-	set data = ""
-	
-	try{
-		set data = $CLASSMETHOD($P(..getAdditionInfoForObjectById,";",1),$P(..getAdditionInfoForObjectById,";",2), id)
-	}
-	catch(ex){
-		set data = ##class(%ZEN.proxyObject).%New()
-	}
-	
-	quit data
+    set data = ""
+    
+    try{
+        set data = $CLASSMETHOD($P(..getAdditionInfoForObjectById,";",1),$P(..getAdditionInfoForObjectById,";",2), id)
+    }
+    catch(ex){
+        set data = ##class(%ZEN.proxyObject).%New()
+    }
+    
+    quit data
 ]]></Implementation>
 </Method>
 
@@ -1828,36 +1830,36 @@ Get proxy object with addition information for object by id</Description>
 <style type="text/css">
 
 .clusterItemLink {
-	font-size: 12px;
-	font-family: arial;
-	color: rgb(42, 42, 42);
-	text-decoration: none;
-	border-bottom: 1px dashed rgb(42, 42, 42);
+    font-size: 12px;
+    font-family: arial;
+    color: rgb(42, 42, 42);
+    text-decoration: none;
+    border-bottom: 1px dashed rgb(42, 42, 42);
 }
 
 .clusterItemLink:hover{
-	color: black;
-	border-bottom: 1px dashed black;
+    color: black;
+    border-bottom: 1px dashed black;
 }
 
 
 .clusterList{
-	padding-left: 20px;
-	font-family: Arial;
-	font-size: 12px;
+    padding-left: 20px;
+    font-family: Arial;
+    font-size: 12px;
 }
 
 /* Custom slider CSS */
 #divSlider{
-	width: 500px;
+    width: 500px;
 }
 
 #btnOpenSlider{
-	display: inline;
+    display: inline;
 }
 
 #btnCloseSlider{
-	display: none;
+    display: none;
 }
 
 #btnOpenSlider, #btnCloseSlider, .btnYandex{
@@ -1884,53 +1886,53 @@ margin: 0px;
 }
 
 #divSliderButtonsPart{
-	display: inline;
-	width: 100%;
-	float: right;
-	text-align: right;
+    display: inline;
+    width: 100%;
+    float: right;
+    text-align: right;
 }
 
 #divSliderRangesPart{
-	display: none;
-	background-color: white;
-	box-shadow: rgb(127, 127, 127) 2px 2px 7px;
-	border: 1px solid gray;
-	padding: 5px 20px 10px 20px;
-	border-radius: 2px;
-	float: left;
-	margin-left: 10px;
+    display: none;
+    background-color: white;
+    box-shadow: rgb(127, 127, 127) 2px 2px 7px;
+    border: 1px solid gray;
+    padding: 5px 20px 10px 20px;
+    border-radius: 2px;
+    float: left;
+    margin-left: 10px;
 }
 
 #slider-range{
-	margin-top: 8px;
+    margin-top: 8px;
 }
 
 #slider-range:hover, .ui-slider-handle:hover, #btnOpenSlider:hover, #btnCloseSlider:hover{
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #inputSliderMinValue, #inputSliderMaxValue, #inputSliderValues{
-	border: none;
-	padding: 0;
-	margin: 0;
-	width: 33%;
-	color: #333;
-	font-family: Arial, sans-serif;
-	font-size: 13px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 33%;
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
 }
 
 #inputSliderMinValue{
-	text-align: left;
+    text-align: left;
 }
 
 #inputSliderMaxValue{
-	text-align: right;
-	margin-left: -4px;
+    text-align: right;
+    margin-left: -4px;
 }
 
 #inputSliderValues{
-	text-align: center;
-	margin-left: -4px;
+    text-align: center;
+    margin-left: -4px;
 }
 
 
@@ -1939,107 +1941,107 @@ margin: 0px;
 
 /* Standart slider CSS */
 .ui-slider {
-	position: relative;
-	text-align: left;
+    position: relative;
+    text-align: left;
 }
 
 .ui-slider .ui-slider-handle {
-	position: absolute;
-	z-index: 2;
-	width: 1.2em;
-	height: 1.2em;
-	cursor: default;
+    position: absolute;
+    z-index: 2;
+    width: 1.2em;
+    height: 1.2em;
+    cursor: default;
 }
 
 .ui-slider .ui-slider-range {
-	position: absolute;
-	z-index: 1;
-	font-size: .7em;
-	display: block;
-	border: 0;
-	background-position: 0 0;
+    position: absolute;
+    z-index: 1;
+    font-size: .7em;
+    display: block;
+    border: 0;
+    background-position: 0 0;
 }
 
 /* For IE8 - See #6727 */
 .ui-slider.ui-state-disabled .ui-slider-handle,
 .ui-slider.ui-state-disabled .ui-slider-range {
-	filter: inherit;
+    filter: inherit;
 }
 
 .ui-slider-horizontal {
-	height: .8em;
+    height: .8em;
 }
 
 .ui-slider-horizontal .ui-slider-handle {
-	top: -.3em;
-	margin-left: -.6em;
+    top: -.3em;
+    margin-left: -.6em;
 }
 
 .ui-slider-horizontal .ui-slider-range {
-	top: 0;
-	height: 100%;
+    top: 0;
+    height: 100%;
 }
 
 .ui-slider-horizontal .ui-slider-range-min {
-	left: 0;
+    left: 0;
 }
 
 .ui-slider-horizontal .ui-slider-range-max {
-	right: 0;
+    right: 0;
 }
 
 .ui-widget {
-	font-family: Verdana,Arial,sans-serif;
-	font-size: 1.1em;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 1.1em;
 }
 
 .ui-widget .ui-widget {
-	font-size: 1em;
+    font-size: 1em;
 }
 
 .ui-widget input,
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-	font-family: Verdana,Arial,sans-serif;
-	font-size: 1em;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 1em;
 }
 
 .ui-widget-content {
-	border: 1px solid #aaaaaa;
-	background: #ffffff 50% 50% repeat-x;
-	color: #222222;
+    border: 1px solid #aaaaaa;
+    background: #ffffff 50% 50% repeat-x;
+    color: #222222;
 }
 
 .ui-widget-content a {
-	color: #222222;
+    color: #222222;
 }
 
 .ui-widget-header {
-	border: 1px solid #aaaaaa;
-	background-color: #cccccc;
-	color: #222222;
-	font-weight: bold;
+    border: 1px solid #aaaaaa;
+    background-color: #cccccc;
+    color: #222222;
+    font-weight: bold;
 }
 
 .ui-widget-header a {
-	color: #222222;
+    color: #222222;
 }
 
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-	border: 1px solid #d3d3d3;
-	background: #e6e6e6 50% 50% repeat-x;
-	font-weight: normal;
-	color: #555555;
+    border: 1px solid #d3d3d3;
+    background: #e6e6e6 50% 50% repeat-x;
+    font-weight: normal;
+    color: #555555;
 }
 
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
-	color: #555555;
-	text-decoration: none;
+    color: #555555;
+    text-decoration: none;
 }
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
@@ -2047,88 +2049,88 @@ margin: 0px;
 .ui-state-focus,
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus {
-	border: 1px solid #999999;
-	background: #dadada 50% 50% repeat-x;
-	font-weight: normal;
-	color: #212121;
+    border: 1px solid #999999;
+    background: #dadada 50% 50% repeat-x;
+    font-weight: normal;
+    color: #212121;
 }
 
 .ui-state-hover a,.ui-state-hover a:hover,.ui-state-hover a:link,.ui-state-hover a:visited {
-	color: #212121;
-	text-decoration: none;
+    color: #212121;
+    text-decoration: none;
 }
 
 .ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active {
-	border: 1px solid #aaaaaa;
-	background: #ffffff 50% 50% repeat-x;
-	font-weight: normal;
-	color: #212121;
+    border: 1px solid #aaaaaa;
+    background: #ffffff 50% 50% repeat-x;
+    font-weight: normal;
+    color: #212121;
 }
 
 .ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
-	color: #212121;
-	text-decoration: none;
+    color: #212121;
+    text-decoration: none;
 }
 
 .ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight {
-	border: 1px solid #fcefa1;
-	background: #fbf9ee 50% 50% repeat-x;
-	color: #363636;
+    border: 1px solid #fcefa1;
+    background: #fbf9ee 50% 50% repeat-x;
+    color: #363636;
 }
 
 .ui-state-highlight a,.ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a {
-	color: #363636;
+    color: #363636;
 }
 
 .ui-state-error,.ui-widget-content .ui-state-error,.ui-widget-header .ui-state-error {
-	border: 1px solid #cd0a0a;
-	background: #fef1ec 50% 50% repeat-x;
-	color: #cd0a0a;
+    border: 1px solid #cd0a0a;
+    background: #fef1ec 50% 50% repeat-x;
+    color: #cd0a0a;
 }
 
 .ui-state-error a,.ui-widget-content .ui-state-error a,.ui-widget-header .ui-state-error a {
-	color: #cd0a0a;
+    color: #cd0a0a;
 }
 
 .ui-state-error-text,.ui-widget-content .ui-state-error-text,.ui-widget-header .ui-state-error-text {
-	color: #cd0a0a;
+    color: #cd0a0a;
 }
 
 .ui-priority-primary,.ui-widget-content .ui-priority-primary,.ui-widget-header .ui-priority-primary {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary,.ui-widget-header .ui-priority-secondary {
-	opacity: .7;
-	filter:Alpha(Opacity=70);
-	font-weight: normal;
+    opacity: .7;
+    filter:Alpha(Opacity=70);
+    font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled,.ui-widget-header .ui-state-disabled {
-	opacity: .35;
-	filter:Alpha(Opacity=35);
-	background-image: none;
+    opacity: .35;
+    filter:Alpha(Opacity=35);
+    background-image: none;
 }
 
 .ui-state-disabled .ui-icon {
-	filter:Alpha(Opacity=35); /* For IE8 - See #6059 */
+    filter:Alpha(Opacity=35); /* For IE8 - See #6059 */
 }
 
 /* Corner radius */
 .ui-corner-all,.ui-corner-top,.ui-corner-left,.ui-corner-tl {
-	border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
 }
 
 .ui-corner-all,.ui-corner-top,.ui-corner-right,.ui-corner-tr {
-	border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .ui-corner-all,.ui-corner-bottom,.ui-corner-left,.ui-corner-bl {
-	border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 
 .ui-corner-all,.ui-corner-bottom,.ui-corner-right,.ui-corner-br {
-	border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 </style>

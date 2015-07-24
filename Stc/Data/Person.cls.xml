@@ -85,11 +85,11 @@ Check delete privilege</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	SET SQLCODE=""
-	&sql(%CHECKPRIV DELETE ON Stc_Data.Person)
-	if (SQLCODE = 100) quit ##class(Stc.Utils.Msg).GetErrorStatus("NoPrivilege", " USERNAME="_$USERNAME)
-	
-	quit $$$OK
+    SET SQLCODE=""
+    &sql(%CHECKPRIV DELETE ON Stc_Data.Person)
+    if (SQLCODE = 100) quit ##class(Stc.Utils.Msg).GetErrorStatus("NoPrivilege", " USERNAME="_$USERNAME)
+    
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
@@ -98,18 +98,18 @@ Check delete privilege</Description>
 Convert to proxyObject (for JSON)</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set proxy = ##class(%ZEN.proxyObject).%New()
-	set proxy.id = ..%Id()
-	set proxy.lastName = ..LastName.Value
-	set proxy.firstName = ..FirstName.Value
-	set proxy.middleName = ..MiddleName.Value
-	set proxy.email = ..Email
-	set proxy.phone = ..Phone
-	set proxy.skype = ..Skype
-	
-	set proxy.company = ..Company.ConvertToProxyObject(1)
-	
-	quit proxy
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    set proxy.id = ..%Id()
+    set proxy.lastName = ..LastName.Value
+    set proxy.firstName = ..FirstName.Value
+    set proxy.middleName = ..MiddleName.Value
+    set proxy.email = ..Email
+    set proxy.phone = ..Phone
+    set proxy.skype = ..Skype
+    
+    set proxy.company = ..Company.ConvertToProxyObject(1)
+    
+    quit proxy
 ]]></Implementation>
 </Method>
 
@@ -120,38 +120,38 @@ Create or save modified person</Description>
 <FormalSpec><![CDATA[data:%RegisteredObject,&status]]></FormalSpec>
 <ReturnType>Stc.Data.Person</ReturnType>
 <Implementation><![CDATA[
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
-	"ID="_data.id_
-	"; LastName="_$ZCONVERT(data.lastName, "I","UTF8")_
-	"; FirstName="_$ZCONVERT(data.firstName, "I","UTF8")_
-	"; MiddleName="_$ZCONVERT(data.middleName, "I","UTF8")_
-	"; Email="_data.email_
-	"; Phone="_data.phone)
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", 
+    "ID="_data.id_
+    "; LastName="_$ZCONVERT(data.lastName, "I","UTF8")_
+    "; FirstName="_$ZCONVERT(data.firstName, "I","UTF8")_
+    "; MiddleName="_$ZCONVERT(data.middleName, "I","UTF8")_
+    "; Email="_data.email_
+    "; Phone="_data.phone)
 
-	if (data.id '= ""){
-		set person = ..%OpenId(data.id,3,.status)
-		set person.LastName.Value = $ZCONVERT(data.lastName, "I","UTF8")
-		set person.FirstName.Value = $ZCONVERT(data.firstName, "I","UTF8")
-		set person.MiddleName.Value = $ZCONVERT(data.middleName, "I","UTF8")
-	}
-	else{
-		set person = ..%New()
-		set person.LastName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
-		set person.FirstName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
-		set person.MiddleName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
-	}
-	
-	set person.Email = $ZCONVERT(data.email, "I","UTF8")
-	set person.Phone = $ZCONVERT(data.phone, "I","UTF8")
-	set person.Skype = $ZCONVERT(data.skype, "I","UTF8")
-	
-	if (data.company.exist) set data.company.id = data.company.exist.id
-	
-	set person.Company = ##class(Stc.Data.Company).%OpenId(data.company.id,3,.status)
-	
-	set status = person.%Save()
+    if (data.id '= ""){
+        set person = ..%OpenId(data.id,3,.status)
+        set person.LastName.Value = $ZCONVERT(data.lastName, "I","UTF8")
+        set person.FirstName.Value = $ZCONVERT(data.firstName, "I","UTF8")
+        set person.MiddleName.Value = $ZCONVERT(data.middleName, "I","UTF8")
+    }
+    else{
+        set person = ..%New()
+        set person.LastName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
+        set person.FirstName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
+        set person.MiddleName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I","UTF8"), "Stc.Data.Localization.Translation;PersonLTextValue")
+    }
+    
+    set person.Email = $ZCONVERT(data.email, "I","UTF8")
+    set person.Phone = $ZCONVERT(data.phone, "I","UTF8")
+    set person.Skype = $ZCONVERT(data.skype, "I","UTF8")
+    
+    if (data.company.exist) set data.company.id = data.company.exist.id
+    
+    set person.Company = ##class(Stc.Data.Company).%OpenId(data.company.id,3,.status)
+    
+    set status = person.%Save()
 
-	quit person
+    quit person
 ]]></Implementation>
 </Method>
 
@@ -162,23 +162,23 @@ Delete person if it is available</Description>
 <FormalSpec>personId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set person = ..%OpenId(personId, 4)
+    set person = ..%OpenId(personId, 4)
 
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_personId_"; LastName="_person.LastName.Value_"; FirstName="_person.FirstName.Value_"; Email="_person.Email)
-	
-	set st = ##class(Stc.Data.Localization.LText).Delete(person.LastName.%Id())
-	quit:$$$ISERR(st) st
-		
-	set st = ##class(Stc.Data.Localization.LText).Delete(person.FirstName.%Id())
-	quit:$$$ISERR(st) st
-		
-	set st = ##class(Stc.Data.Localization.LText).Delete(person.MiddleName.%Id())
-	quit:$$$ISERR(st) st
-	
-	set st = ..%DeleteId(personId,4)
-	quit:$$$ISERR(st) ##class(Stc.Utils.Msg).GetErrorStatus("deletePerson", " | "_st) 
-	
-	quit $$$OK
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_personId_"; LastName="_person.LastName.Value_"; FirstName="_person.FirstName.Value_"; Email="_person.Email)
+    
+    set st = ##class(Stc.Data.Localization.LText).Delete(person.LastName.%Id())
+    quit:$$$ISERR(st) st
+        
+    set st = ##class(Stc.Data.Localization.LText).Delete(person.FirstName.%Id())
+    quit:$$$ISERR(st) st
+        
+    set st = ##class(Stc.Data.Localization.LText).Delete(person.MiddleName.%Id())
+    quit:$$$ISERR(st) st
+    
+    set st = ..%DeleteId(personId,4)
+    quit:$$$ISERR(st) ##class(Stc.Utils.Msg).GetErrorStatus("deletePerson", " | "_st) 
+    
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
@@ -189,37 +189,37 @@ Checking before deletion</Description>
 <FormalSpec>personId:%String,checkForDelete:%Boolean=0</FormalSpec>
 <ReturnType>%Boolean</ReturnType>
 <Implementation><![CDATA[
-	set id = ""
-	set countId = ""
-	
-	// Checking: if is contact person of organization	
-	&sql(SELECT ID INTO:id FROM Stc_Data.Company WHERE Contact = :personId)
-	if (id = ""){
-		// Checking: if in subgroup of training
-		&sql(SELECT ID INTO:id FROM Stc_Data.SubGroup_Students WHERE Students = :personId)
-		
-		if (id = ""){
-			// Checking: if is teacher
-			&sql(SELECT ID INTO:id FROM Stc_Data.Course_Teachers WHERE Teachers = :personId)	
+    set id = ""
+    set countId = ""
+    
+    // Checking: if is contact person of organization   
+    &sql(SELECT ID INTO:id FROM Stc_Data.Company WHERE Contact = :personId)
+    if (id = ""){
+        // Checking: if in subgroup of training
+        &sql(SELECT ID INTO:id FROM Stc_Data.SubGroup_Students WHERE Students = :personId)
+        
+        if (id = ""){
+            // Checking: if is teacher
+            &sql(SELECT ID INTO:id FROM Stc_Data.Course_Teachers WHERE Teachers = :personId)    
 
-			if (id = ""){
-				// Checking: if has certificates
-				&sql(SELECT ID INTO:id FROM Stc_Data.Certificate WHERE Student = :personId)	
-			}
-		}
-	}
-	
- 	// Check for modification access (checkForDelete=0):
- 	// Not used in other tables and in one app only => can modify
- 	
- 	// Check for deleting access (checkForDelete=1):
- 	// Not used in other tables => can delete
- 	
- 	set maxOrderCount = 2
- 	if (checkForDelete = 1) set maxOrderCount = 1
-	if (id = "") && (countId < maxOrderCount) quit 1
-	
-	quit 0
+            if (id = ""){
+                // Checking: if has certificates
+                &sql(SELECT ID INTO:id FROM Stc_Data.Certificate WHERE Student = :personId) 
+            }
+        }
+    }
+    
+    // Check for modification access (checkForDelete=0):
+    // Not used in other tables and in one app only => can modify
+    
+    // Check for deleting access (checkForDelete=1):
+    // Not used in other tables => can delete
+    
+    set maxOrderCount = 2
+    if (checkForDelete = 1) set maxOrderCount = 1
+    if (id = "") && (countId < maxOrderCount) quit 1
+    
+    quit 0
 ]]></Implementation>
 </Method>
 
@@ -228,13 +228,17 @@ Checking before deletion</Description>
 <FormalSpec>id</FormalSpec>
 <ReturnType>%String</ReturnType>
 <Implementation><![CDATA[
-	set (lastName, firstName) = ""
-	
-	&sql(SELECT LastName->Value, FirstName->Value INTO :lastName, :firstName
-	     FROM Stc_Data.Person
-	     WHERE ID = :id)
-	
-	quit lastName_" "_firstName
+    set (lastName, firstName) = ""
+    
+    &sql(SELECT LastName->Value, FirstName->Value INTO :lastName, :firstName
+         FROM Stc_Data.Person
+         WHERE ID = :id)
+         
+    if ($$$SessionLanguage = "en") || ($$$SessionLanguage = "en-US"){
+        quit firstName_" "_lastName
+    }
+    
+    quit lastName_" "_firstName
 ]]></Implementation>
 </Method>
 

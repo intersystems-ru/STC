@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/CourseCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/CourseCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dddddfd
 
@@ -31,6 +31,7 @@ controllersModule.controller('CourseCtrl', function($scope, $routeParams, $windo
         CourseTeacherSrvc.get($routeParams.id).then(
             function(data){
                 $scope.courseForm.course = data;
+                $scope.courseForm.course.isPublic = data.isPublic == 1;
             },
             function(response){
                  $scope.courseForm.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
@@ -41,12 +42,12 @@ controllersModule.controller('CourseCtrl', function($scope, $routeParams, $windo
     $scope.courseForm.submit = function(){
         CourseTeacherSrvc.save($scope.courseForm.course).then(
             function(data){
-	            if (!$scope.courseForm.course.id){
-                	$scope.courseForm.alert = UtilsSrvc.getAlert('Готово!', 'Курс создан.', 'success', true);
-                	$scope.courseForm.course = {};
-	            }
+                if (!$scope.courseForm.course.id){
+                    $scope.courseForm.alert = UtilsSrvc.getAlert('Готово!', 'Курс создан.', 'success', true);
+                    $scope.courseForm.course = {isPublic: true};
+                }
                 else{
-                	$scope.courseForm.alert = UtilsSrvc.getAlert('Готово!', 'Изменения сохранены.', 'success', true);
+                    $scope.courseForm.alert = UtilsSrvc.getAlert('Готово!', 'Изменения сохранены.', 'success', true);
                 }
                 
                 $scope.cForm.$setPristine();

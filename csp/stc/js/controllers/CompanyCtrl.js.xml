@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/CompanyCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/CompanyCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dddddddfd
 
@@ -11,8 +11,9 @@
 controllersModule.controller('CompanyCtrl', function($scope, $routeParams, $window, $route, $timeout, $location, OrderSrvc, PersonSrvc, CompanySrvc, UtilsSrvc){
     if ($scope.menu.active) $scope.menu.active.css = "menuAfterActive";
 
-	$scope.searchForm = {visible: true, persons: [], person:''};
+    $scope.searchForm = {visible: true, persons: [], person:''};
     $scope.compForm = {form: {}, company: {}, contact: {}, visible: true};
+    $scope.compForm.caption = "Создание организации";
    
     $scope.compForm.init = function(){
         if ($routeParams.id){
@@ -90,7 +91,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, $wind
                     $scope.compForm.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
                 });
         }
-        if ($routeParams.ordernewstudent){
+        else if ($routeParams.ordernewstudent){
             CompanySrvc.saveFromOrderNewStudent($scope.compForm.company, $routeParams.ordernewstudent).then(
                 function(data){
                     $window.history.back();
@@ -101,7 +102,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, $wind
                 });
         }
         else if ($routeParams.id){
-	        CompanySrvc.save($scope.compForm.company).then(
+            CompanySrvc.save($scope.compForm.company).then(
                 function(data){
                     $scope.compForm.alert = UtilsSrvc.getAlert('Готово!', 'Изменения сохранены.', 'success', true);
                     $scope.compForm_form.$setPristine();
@@ -110,23 +111,45 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, $wind
                     $scope.compForm.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
                     
                 });
-	    }       
+        }
+        else {
+            console.log($scope.compForm.company);
+            CompanySrvc.save($scope.compForm.company).then(
+                function(data){
+                    $scope.compForm.alert = UtilsSrvc.getAlert('Готово!', 'Создание завершено.', 'success', true);
+                    $location.path('/company/' + data.id);
+                },
+                function(response){
+                    $scope.compForm.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+                    
+                });
+        }       
     };
     
     // Загрузить компанию
     $scope.compForm.loadCompany = function(id){
-		CompanySrvc.get(id).then(
+        CompanySrvc.get(id).then(
                 function(data){
-	                data.status = data.status == 1; 
-	                data.isUnknownCity = data.isUnknownCity == 1; 
+                    data.status = data.status == 1; 
+                    data.isUnknownCity = data.isUnknownCity == 1; 
                     $scope.compForm.company = data;
                 },
                 function(response){
                     $scope.compForm.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
                     
                 });
-	};
+    };
 
+
+    $scope.compForm.addContact = function(){
+        if (!$scope.compForm.company.id){
+            UtilsSrvc.openMessageBox("Внимание!", "Сначала создайте организацию.");
+            return;
+        }
+        
+        $location.path('/company/' + $scope.compForm.company.id + '/person');
+    };
+    
     // Редактировать контакт - переход
     $scope.compForm.editContact = function(){
         $location.path('/person/' + $scope.compForm.company.contact.id);
@@ -134,7 +157,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, $wind
 
     // Сменить контакт - переход
     $scope.compForm.changeContact = function(){
-		CompanySrvc.changeContact({contact: $scope.searchForm.person, companyId: $routeParams.id, isReplace: 1}).then(
+        CompanySrvc.changeContact({contact: $scope.searchForm.person, companyId: $routeParams.id, isReplace: 1}).then(
             function(data){
                 $route.reload();
             },

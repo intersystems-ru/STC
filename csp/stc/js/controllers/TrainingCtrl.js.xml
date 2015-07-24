@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/TrainingCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/TrainingCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //
 
@@ -10,10 +10,10 @@
 
 controllersModule.controller('TrainingCtrl', function($scope, $route, $location, $filter, $routeParams, UtilsSrvc, OrderSrvc, ReportSrvc, TrainingSrvc, CompanySrvc, PersonSrvc, CertificateSrvc){    
     if ($scope.menu.admin){
-    	$scope.menu.brandCaption = 'Система учёта курсов';
-    	$scope.menu.appTitle = 'Система учёта курсов';
+        $scope.menu.brandCaption = 'Система учёта курсов';
+        $scope.menu.appTitle = 'Система учёта курсов';
     }
-    	
+        
     $scope.training = {};
     $scope.sgroup = {contract:{}, grid: {}};
     $scope.cert = {};
@@ -33,11 +33,11 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
 
     $scope.other.init = function(){
         //============================== ПОДГРУППЫ ==========================================================================
-		    $scope.sgroup.columns = [
+            $scope.sgroup.columns = [
                           {name: 'Плательщик', sqlName: 'SubGroups->Payer->ShortName->Value', isSorted: true,  isSortable: true, isDown: true, isSearched: true,  isSearchable: true},
                           {name: 'Слушатели', sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '80px'}},
                           {name: 'Сумма к оплате',sqlName: '', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: false, captionStyle: {textAlign: 'center', width: '140px'}},
-                          {name: 'Валюта', sqlName: 'SubGroups->Currency->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, captionStyle: {textAlign: 'center', width: '70px'}}];
+                          {name: 'Валюта', sqlName: 'SubGroups->Currency->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, captionStyle: {textAlign: 'center', width: '150px'}}];
                           
         $scope.sgroup.properties = [
                           {name:'payer.shortName'}, 
@@ -52,7 +52,7 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
         $scope.sgroup.forciblyUpdate = 0;
 
         //$scope.sgroup.loadCurrencies();
-		
+        
         //============================== СЕРТИФИКАТЫ ==========================================================================
         $scope.cert.columns = [
                           {name: 'Курс', sqlName: 'Training->Course->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
@@ -63,14 +63,14 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
                           {name: 'Статус', sqlName: 'isPrinted', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, captionStyle: {textAlign: 'center', width: '100px'}}];
         
         $scope.cert.properties = [{name:'training.course.nameString', 
-        						  calculate: function(item){
-	        						  			item.training.course.nameString = item.training.course.name;
-	        						  			
-	        					  				if (item.training.course.name.length >= 30){
-	        					  					item.training.course.nameString = item.training.course.nameString.substring(0,30) + '...';
-	        					  				}
-	        					  			 }
-	        					  }, 
+                                  calculate: function(item){
+                                                item.training.course.nameString = item.training.course.name;
+                                                
+                                                if (item.training.course.name.length >= 30){
+                                                    item.training.course.nameString = item.training.course.nameString.substring(0,30) + '...';
+                                                }
+                                             }
+                                  }, 
                                   {name:'number', cellStyle: {textAlign: 'center'}},
                                   {name:'student.fullName', 
                                   calculate: function(item){
@@ -78,13 +78,13 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
                                   }}, 
                                   {name:'student.company.shortNameString', 
                                   calculate: function(item){
-	        						  			item.student.company.shortNameString = item.student.company.shortName;
-	        						  			
-	        					  				if (item.student.company.shortName.length >= 40){
-	        					  					item.student.company.shortNameString = item.student.company.shortNameString.substring(0,40) + '...';
-	        					  				}
-	        					  			 }
-	        					  },
+                                                item.student.company.shortNameString = item.student.company.shortName;
+                                                
+                                                if (item.student.company.shortName.length >= 40){
+                                                    item.student.company.shortNameString = item.student.company.shortNameString.substring(0,40) + '...';
+                                                }
+                                             }
+                                  },
                                   {name:'date', filter: 'date', filterParam: $filter('localize')('d MMMM y')}, 
                                   {name:'status', cellStyle: {textAlign: 'center'},
                                   getCssClass: function(item){
@@ -197,19 +197,20 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
                 $scope.training.data = data;
                 $scope.training.data.notCorrectAddress = data.address.title;
 
-        		$scope.training.dateStart = data.dateStart;
-        		$scope.training.dateFinish = data.dateFinish;
-        		$scope.training.data.isCertificatesDone = data.isCertificatesDone == 1;
-        		
+                $scope.training.dateStart = data.dateStart;
+                $scope.training.dateFinish = data.dateFinish;
+                $scope.training.data.isCertificatesDone = data.isCertificatesDone == 1;
+                $scope.training.data.isPublic = data.isPublic == 1;
+                
                 if (data.isCompleted == 0){
                     $scope.training.btnAdditionName = 'Завершить';
-                	  $scope.training.btnAdditionVisible = true;
+                      $scope.training.btnAdditionVisible = true;
                 }
                 else{
                     $scope.training.btnAdditionVisible = false;
                 }
-				
-				$scope.training.btnAdditionAction = $scope.training.complete;  
+                
+                $scope.training.btnAdditionAction = $scope.training.complete;  
             },
             function(response){
                 $scope.other.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
@@ -218,7 +219,7 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
 
     // Обновить данные обучения
     $scope.training.save = function(){
-	    TrainingSrvc.save($scope.training.data).then(
+        TrainingSrvc.save($scope.training.data).then(
             function(data){
                 $scope.other.alert = UtilsSrvc.getAlert('Готово!', 'Изменения сохранены.', 'success', true);
                 $scope.trainingForm.$setPristine();
@@ -337,9 +338,9 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
     // Отслеживание выбранной подгруппы
     $scope.$watch('sgroup.selectedItems[0].id', function(){
         if ($scope.sgroup.selectedItems.length != 0){
-        	$scope.sgroup.contract = $scope.sgroup.selectedItems[0].contract;
-        	$scope.sgroup.dateSt = $scope.sgroup.contract.dateStart;
-        	$scope.sgroup.dateFn = $scope.sgroup.contract.dateFinish;
+            $scope.sgroup.contract = $scope.sgroup.selectedItems[0].contract;
+            $scope.sgroup.dateSt = $scope.sgroup.contract.dateStart;
+            $scope.sgroup.dateFn = $scope.sgroup.contract.dateFinish;
 
             if ($scope.sgroup.selectedItems[0].amount == $scope.training.data.cost.price && $scope.sgroup.selectedItems[0].currency.id == $scope.training.data.cost.currency.id){
                 $scope.sgroup.selectedItems[0].discount = 0;
@@ -356,8 +357,8 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
     // При изменении валюты в выбранной подгруппе
     $scope.$watch('sgroup.selectedItems[0].currency.id', function(){ 
         if (!$scope.sgroup.selectedItems[0])
-        	return;
-        	
+            return;
+            
         var idx = UtilsSrvc.getIndexes($scope.sgroup.currencies, 'id', $scope.sgroup.selectedItems[0].currency.id)
         
         if (idx.length == 0)
@@ -373,7 +374,7 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
         function deleteSGroup(){
             TrainingSrvc.deleteSubGroup($scope.training.data.id, item.id).then(
                 function(data){
-	                $scope.sgroup.selectedItems = [];
+                    $scope.sgroup.selectedItems = [];
                     $scope.sgroup.forciblyUpdate++;
                     $scope.allstud.forciblyUpdate++;
                     $scope.other.alert = UtilsSrvc.getAlert('Готово!', 'Подгруппа удалена.', 'success', true);
@@ -782,37 +783,37 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
             $scope.mailing.selectedGroup.contacts.splice(idx[0], 1);
     };
 
-	 // Send email to training students or custom student (single email)
-	$scope.mailing.sendEmail = function(isSingleEmail){
-		var contacts = [];
+     // Send email to training students or custom student (single email)
+    $scope.mailing.sendEmail = function(isSingleEmail){
+        var contacts = [];
 
-		if (isSingleEmail){
-			contacts = [{name: '', email: $scope.mailing.single}];
-		}
-		else{
-			contacts = $scope.mailing.selectedGroup.contacts;
-		}
+        if (isSingleEmail){
+            contacts = [{name: '', email: $scope.mailing.single}];
+        }
+        else{
+            contacts = $scope.mailing.selectedGroup.contacts;
+        }
 
-		if (contacts.length == 0){
-			$scope.other.alert = UtilsSrvc.getAlert('Внимание!', 'Выберите получателей письма.', 'error', true);
-			return;
-		}
+        if (contacts.length == 0){
+            $scope.other.alert = UtilsSrvc.getAlert('Внимание!', 'Выберите получателей письма.', 'error', true);
+            return;
+        }
 
-		var promise = TrainingSrvc.sendEmail({
-			isSubscribers: $scope.mailing.selectedGroup.isSubscribers,
-			contacts: contacts,
-			subject: $scope.mailing.selectedGroup.mail.subject,
-			message: $scope.mailing.selectedGroup.mail.message.replace(/\n/g, "<br>")
-		});
-	
-		promise.then(
-			function(data){
-				$scope.other.alert = UtilsSrvc.getAlert('Готово!', 'Письма добавлены в очередь, проверьте журнал рассылок', 'success', true);
-			},
-			function(response){
-				$scope.other.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
-			});
-	};
+        var promise = TrainingSrvc.sendEmail({
+            isSubscribers: $scope.mailing.selectedGroup.isSubscribers,
+            contacts: contacts,
+            subject: $scope.mailing.selectedGroup.mail.subject,
+            message: $scope.mailing.selectedGroup.mail.message.replace(/\n/g, "<br>")
+        });
+    
+        promise.then(
+            function(data){
+                $scope.other.alert = UtilsSrvc.getAlert('Готово!', 'Письма добавлены в очередь, проверьте журнал рассылок', 'success', true);
+            },
+            function(response){
+                $scope.other.alert = UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+            });
+    };
 
  
     // Off\On Automailing for training 
@@ -856,24 +857,24 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
                     $scope.mailing.groups[i].mail.message = $scope.mailing.groups[i].mail.message.replace(/<br>/g, "\n");
                     
                     var contacts = $scope.mailing.groups[i].contacts;
-                  	
-                  	if (contacts.length > 30){
-		            	$scope.mailing.groups[i].contactsStyle = {
-			            	height: '130px', 
-		            		overflowX: 'auto',
-		            		border: '1px dashed rgb(158, 158, 158)',
-							padding: '4px'
-						};
-		            }
-		            
+                    
+                    if (contacts.length > 30){
+                        $scope.mailing.groups[i].contactsStyle = {
+                            height: '130px', 
+                            overflowX: 'auto',
+                            border: '1px dashed rgb(158, 158, 158)',
+                            padding: '4px'
+                        };
+                    }
+                    
                     for (var c=0; c < contacts.length; c++){
-	                	if (contacts[c].name.length > 20){
-	                		contacts[c].nameShort = contacts[c].name.substring(0, 17) + '...'
-	                	}
-	                	else{
-		                	contacts[c].nameShort = contacts[c].name;
-		            	}
-	            	}
+                        if (contacts[c].name.length > 20){
+                            contacts[c].nameShort = contacts[c].name.substring(0, 17) + '...'
+                        }
+                        else{
+                            contacts[c].nameShort = contacts[c].name;
+                        }
+                    }
                 }
             },
             function(response){
@@ -930,10 +931,10 @@ controllersModule.controller('TrainingCtrl', function($scope, $route, $location,
     $scope.training.loadData($routeParams.id);
     
     if (!$scope.menu.admin){
-	    $scope.menu.brandCaption = 'Система учёта курсов';
-    	$scope.menu.appTitle = 'Система учёта курсов';
-	    console.log('training $scope.menu.login();')
-    	$scope.menu.login(); 
+        $scope.menu.brandCaption = 'Система учёта курсов';
+        $scope.menu.appTitle = 'Система учёта курсов';
+        console.log('training $scope.menu.login();')
+        $scope.menu.login(); 
     };
 });
 

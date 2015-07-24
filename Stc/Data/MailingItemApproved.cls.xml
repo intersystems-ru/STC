@@ -13,6 +13,34 @@ MailingItem - Approved, not spam</Description>
 <SqlComputed>1</SqlComputed>
 </Property>
 
+<Property name="ItemEmail">
+<Type>%String</Type>
+<Calculated>1</Calculated>
+<SqlComputeCode>set {ItemEmail} = ##class({%%CLASSNAME}).GetItemEmailById({%%ID})</SqlComputeCode>
+<SqlComputed>1</SqlComputed>
+</Property>
+
+<Property name="ItemCity">
+<Type>%String</Type>
+<Calculated>1</Calculated>
+<SqlComputeCode>set {ItemCity} = ##class({%%CLASSNAME}).GetItemCityById({%%ID})</SqlComputeCode>
+<SqlComputed>1</SqlComputed>
+</Property>
+
+<Property name="ItemCompany">
+<Type>%String</Type>
+<Calculated>1</Calculated>
+<SqlComputeCode>set {ItemCompany} = ##class({%%CLASSNAME}).GetItemCompanyById({%%ID})</SqlComputeCode>
+<SqlComputed>1</SqlComputed>
+</Property>
+
+<Property name="ItemPosition">
+<Type>%String</Type>
+<Calculated>1</Calculated>
+<SqlComputeCode>set {ItemPosition} = ##class({%%CLASSNAME}).GetItemPositionById({%%ID})</SqlComputeCode>
+<SqlComputed>1</SqlComputed>
+</Property>
+
 <Index name="AccessCodeIdx">
 <Properties>AccessCode</Properties>
 <Unique>1</Unique>
@@ -26,6 +54,53 @@ MailingItem - Approved, not spam</Description>
 	set item = ##class(MailingItemApproved).%OpenId(itemId)
 	quit $CASE($CLASSNAME(item), "Stc.Data.MailingItemApprovedSubscriber": item.FullName,
 								 "Stc.Data.MailingItemApprovedStudent": item.Student.FullName,
+								 : "-")
+]]></Implementation>
+</Method>
+
+<Method name="GetItemEmailById">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>itemId:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set item = ##class(MailingItemApproved).%OpenId(itemId)
+	quit $CASE($CLASSNAME(item), "Stc.Data.MailingItemApprovedSubscriber": item.Email,
+								 "Stc.Data.MailingItemApprovedStudent": item.Student.Email,
+								 : "-")
+]]></Implementation>
+</Method>
+
+<Method name="GetItemCityById">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>itemId:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set item = ##class(MailingItemApproved).%OpenId(itemId)
+	quit $CASE($CLASSNAME(item), "Stc.Data.MailingItemApprovedSubscriber": item.City,
+								 "Stc.Data.MailingItemApprovedStudent": item.City.Name.Value,
+								 : "-")
+]]></Implementation>
+</Method>
+
+<Method name="GetItemCompanyById">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>itemId:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set item = ##class(MailingItemApproved).%OpenId(itemId)
+	quit $CASE($CLASSNAME(item), "Stc.Data.MailingItemApprovedSubscriber": item.Company,
+								 "Stc.Data.MailingItemApprovedStudent": item.Student.Company.ShortName.Value,
+								 : "-")
+]]></Implementation>
+</Method>
+
+<Method name="GetItemPositionById">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>itemId:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set item = ##class(MailingItemApproved).%OpenId(itemId)
+	quit $CASE($CLASSNAME(item), "Stc.Data.MailingItemApprovedSubscriber": item.Position,
 								 : "-")
 ]]></Implementation>
 </Method>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/feedback.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/feedback.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid">
 	<div class="span10 offset1">
 		<accordion close-others="false">
@@ -13,7 +13,7 @@
 					</div>
 					<div class="span6">
 						<p><span ng-bind="'Город'|localize"></span>: <span ng-bind="page.training.city.name + ', ' + page.training.city.parentName + ', ' + page.training.city.greatParentName"></span></p>
-						<p><span ng-bind="'Адрес'|localize"></span>: <span ng-bind="page.training.address.title"></span></p>
+						<p><span ng-bind="'Адрес'|localize"></span>: <span ng-bind="page.training.street"></span></p>
 						<p><span ng-bind="'Аудитория'|localize"></span>: <span ng-bind="page.training.room"></span></p>
 					</div>
 				</div>
@@ -51,7 +51,7 @@
 					</div>
 					<div class="row-fluid">
 						<button class="btn btn-small btn-success" type="submit" ng-bind="('Отправить'|localize)" ng-disabled="page.feedBack.rating==0"></button>	
-						<input type="text" class="span2" style="margin: 0 0 0 12px;" ng-model="page.feedBack.author" placeholder="{{'Подпись'}}" title="{{'Фамилия И.О. (поле не обязательно для заполнения)'}}"/>
+						<input type="text" class="span2" style="margin: 0 0 0 12px;" ng-model="page.feedBack.author" placeholder="{{'Подпись'|localize}}" title="{{'Фамилия И.О. (поле не обязательно для заполнения)'|localize}}"/>
 					</div>
 				</form>   			
 		    </accordion-group>

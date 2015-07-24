@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/index.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/index.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <!doctype html>
 
 <html ng-app="mainModule" ng-controller="MainCtrl">
@@ -9,15 +9,15 @@
     <link rel="shortcut icon" href="img/icon.ico" type="image/x-icon">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	
-	<script language="javascript"  src="js/common.js"></script>  
-	
+    
+    <script language="javascript"  src="js/common.js"></script>  
+    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
   
    
-   	<script language="javascript"  src="lib/jquery-1.7.2.min.js"></script>
+    <script language="javascript"  src="lib/jquery-1.7.2.min.js"></script>
     <script language="javascript"  src="lib/bootstrap.min.js"></script>
      
     <script language="javascript"  src="lib/angular/angular.min.js"></script>
@@ -25,21 +25,21 @@
     <script language="javascript"  src="lib/angular/angular-cookies.min.js"></script>
     <script language="javascript"  src="lib/angular/angular-sanitize.min.js"></script>
     
-    <script language="javascript"  src="js/app.js"></script>  	
-   	<script language="javascript">       	
-       	// Настройки приложения. Имена веб-приложений для REST, google календарь, язык
-        StcAppSetting.defaultApp = '#(##class(Stc.Data.Settings).GetWebAppNamespace())#',
-	    StcAppSetting.admin = '#(##class(Stc.Data.Settings).GetWebAppAdmin())#',
-        StcAppSetting.user = '#(##class(Stc.Data.Settings).GetWebAppUser())#',
+    <script language="javascript"  src="js/app.js"></script>    
+    <script language="javascript">          
+        // Настройки приложения. Имена веб-приложений для REST, google календарь, язык
+        StcAppSetting.defaultApp = '#(##class(Stc.Data.Settings).GetWebAppNamespace())#';
+        StcAppSetting.admin = '#(##class(Stc.Data.Settings).GetWebAppAdmin())#';
+        StcAppSetting.user = '#(##class(Stc.Data.Settings).GetWebAppUser())#';
         StcAppSetting.lang = StcAppSetting.getLang();
 
         document.write('<script language="javascript" src="js/localization/locale_' + StcAppSetting.lang + '.js"><\/script>'); 
-    	console.log('loading...');
+        console.log('loading...');
     </script>
   </head>
   <body> 
     <div id="divLoader">
-  		<i class="icon-spinner icon-spin icon-2x" style="position: absolute; top: 70px; left: 48%; color: rgb(204, 204, 204);"></i>
+        <i class="icon-spinner icon-spin icon-2x" style="position: absolute; top: 70px; left: 48%; color: rgb(204, 204, 204);"></i>
     </div>
     <div id="divContainer" style="display: none;" class="container-fluid">
         <div class="navbar"  ng-hide="menu.hideNavBar">
@@ -47,9 +47,9 @@
             <div class="container">
               
               <a class="brand" href="" style="font-size: 18px;" ng-bind="menu.brandCaption|localize"></a>
-              <div class="nav-responsive-collapse" ng-hide="menu.hide">
+              <div class="nav-responsive-collapse">
 
-                <ul class="nav">
+                <ul class="nav" ng-hide="menu.hide">
                   <li ng-show="menu.admin" ng-class="menu.createOrder.css" ><a href="#/createorder"  ng-bind="menu.createOrder.name|localize"></a></li>
                   <li ng-show="menu.admin" ng-class="menu.orders.css"      ><a href="#/orders"       ng-bind="menu.orders.name|localize"></a></li>
                   <li ng-show="menu.admin" ng-class="menu.trainings.css"   ><a href="#/trainings"    ng-bind="menu.trainings.name|localize"></a></li>
@@ -70,14 +70,14 @@
           
                   <li ng-show="menu.admin" class="dropdown" ng-class="{'dropdown': true, 'active': (menu.companies.css=='active' || menu.persons.css=='active' || menu.certificates.css=='active' || menu.courses.css=='active' || menu.mailingSubscription.css=='active' || menu.settings.css=='active')}">
                     <a href="#/companies"><span ng-bind="(menu.other.name|localize) + ' '"></span><b class="caret"></b></a>
-                     	<ul class="dropdown-menu">
-                      		<li ng-class="{aSelected: menu.companies.css=='active'}"    ><a href="#/companies" ng-bind="menu.companies.name|localize"></a></li>
-                      		<li ng-class="{aSelected: menu.persons.css=='active'}"      ><a href="#/persons" ng-bind="menu.persons.name|localize"></a></li>
-                      		<li ng-class="{aSelected: menu.certificates.css=='active'}" ><a href="#/certificates" ng-bind="menu.certificates.name|localize"></a></li>
-                      		<li ng-class="{aSelected: menu.courses.css=='active'}"      ><a href="#/courses" ng-bind="menu.courses.name|localize"></a></li>
-                      		<li ng-class="{aSelected: menu.mailingSubscription.css=='active'}"><a href="#/mailing/subscription" ng-bind="menu.mailingSubscription.name|localize"></a></li>
-                      		<li ng-class="{aSelected: menu.settings.css=='active'}"     ><a href="#/settings" ng-bind="menu.settings.name|localize"></a></li>
-                      	</ul>
+                        <ul class="dropdown-menu">
+                            <li ng-class="{aSelected: menu.companies.css=='active'}"    ><a href="#/companies" ng-bind="menu.companies.name|localize"></a></li>
+                            <li ng-class="{aSelected: menu.persons.css=='active'}"      ><a href="#/persons" ng-bind="menu.persons.name|localize"></a></li>
+                            <li ng-class="{aSelected: menu.certificates.css=='active'}" ><a href="#/certificates" ng-bind="menu.certificates.name|localize"></a></li>
+                            <li ng-class="{aSelected: menu.courses.css=='active'}"      ><a href="#/courses" ng-bind="menu.courses.name|localize"></a></li>
+                            <li ng-class="{aSelected: menu.mailingSubscription.css=='active'}"><a href="#/mailing/subscription" ng-bind="menu.mailingSubscription.name|localize"></a></li>
+                            <li ng-class="{aSelected: menu.settings.css=='active'}"     ><a href="#/settings" ng-bind="menu.settings.name|localize"></a></li>
+                        </ul>
                   </li>
                 </ul>
 
@@ -86,11 +86,25 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" title="{{'Язык системы'|localize}} " href=""><img style="margin-bottom: 2px; margin-left: -12px;" ng-src="{{menu.lang.flag}}"/> {{menu.lang.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <li ng-repeat="lang in menu.languages">
-                      	<a ng-class="{aSelected: menu.lang==lang}" ng-click="menu.switchLang(lang.id)" href=""><img style="margin-bottom: 2px" ng-src="{{lang.flag}}"/> {{lang.name}}</a>
+                        <a ng-class="{aSelected: menu.lang==lang}" ng-click="menu.switchLang(lang.id)" href=""><img style="margin-bottom: 2px" ng-src="{{lang.flag}}"/> {{lang.name}}</a>
                       </li>
                     </ul>
                   </li>
-                  <li><a ng-click="menu.login()" href="" ng-bind="menu.loginCaption|localize"></a></li>   
+                  
+                  <li ng-show="menu.user" title="{{((menu.admin && !menu.readOnlyMode) ? ('Администратор'|localize) : ('Гость'|localize)) + ': ' + menu.user}}" style="cursor: default;" >
+                      <a>
+                        <i class="icon-cogs" ng-show="menu.admin && !menu.readOnlyMode"></i>
+                        <i class="icon-user" ng-show="menu.admin && menu.readOnlyMode"></i>
+                        &nbsp;
+                        {{menu.user}}
+                      </a>
+                  </li>
+                  <li>
+                    <a ng-click="menu.login()" href="" title="{{menu.loginCaption|localize}}">
+                        <i class="icon-signin" ng-hide="menu.user"></i>
+                        <i class="icon-signout" ng-show="menu.user"></i>
+                    </a>
+                  </li>
                  </ul>    
               </div>
 
@@ -105,42 +119,43 @@
 
     </div>
     
-<!--	<script language="javascript"  src="js/combine.js"></script>-->
+<!--    <script language="javascript"  src="js/combine.js"></script>-->
 <!-- -->   
 
     <script language="javascript"  src="js/controllers/MainCtrl.js"></script>
     <script language="javascript"  src="js/controllers/ScheduleFrameCtrl.js"></script>
     <script language="javascript">
     if (window.location.href.indexOf('/scheduleframe') == -1){
-	    document.write('<script language="javascript"  src="js/controllers/TrainingCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllTrainingsCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllTrainingFeedBacksCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/CreateTrainingCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/CreateOrderCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/OrderNewStudentCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllOrdersCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllCompaniesCtrl.js"><\/script>');
-		document.write('<script language="javascript"  src="js/controllers/CompanyCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllCertificatesCtrl.js"><\/script>');
-		document.write('<script language="javascript"  src="js/controllers/PersonCtrl.js"><\/script>');
-		document.write('<script language="javascript"  src="js/controllers/PersonTeacherCtrl.js"><\/script>');
-		document.write('<script language="javascript"  src="js/controllers/PersonStudentCtrl.js"><\/script>');
-		document.write('<script language="javascript"  src="js/controllers/AllPersonsCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllCoursesCtrl.js"><\/script>');    
-	    document.write('<script language="javascript"  src="js/controllers/CourseCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/TrainingStudentsCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/FeedBackCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/DeepSeeCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/SettingsCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllMailingGroupsCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/MailingGroupCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/MailingGroupMailCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/MailingItemCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/MailingSubscriptionCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/AllLogsCtrl.js"><\/script>');
-	    document.write('<script language="javascript"  src="js/controllers/MailingJournalCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/TrainingCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllTrainingsCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllTrainingFeedBacksCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/CreateTrainingCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/CreateOrderCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/OrderNewStudentCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllOrdersCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllCompaniesCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/CompanyCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllCertificatesCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/PersonCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/PersonTeacherCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/PersonStudentCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/PersonCompanyContactCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllPersonsCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllCoursesCtrl.js"><\/script>');    
+        document.write('<script language="javascript"  src="js/controllers/CourseCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/TrainingStudentsCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/FeedBackCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/DeepSeeCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/SettingsCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllMailingGroupsCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/MailingGroupCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/MailingGroupMailCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/MailingItemCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/MailingSubscriptionCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/AllLogsCtrl.js"><\/script>');
+        document.write('<script language="javascript"  src="js/controllers/MailingJournalCtrl.js"><\/script>');
     }
-	</script>
+    </script>
 
     <script language="javascript"  src="js/services/DALSrvc.js"></script>
     <script language="javascript"  src="js/services/YandexSrvc.js"></script>
@@ -153,11 +168,11 @@
     <script language="javascript"  src="js/services/PersonSrvc.js"></script>
     <script language="javascript"  src="js/services/UtilsSrvc.js"></script>
     <script language="javascript"  src="js/services/ReportSrvc.js"></script>
-	<script language="javascript"  src="js/services/SettingsSrvc.js"></script>
-	<script language="javascript"  src="js/services/MailingSrvc.js"></script>
+    <script language="javascript"  src="js/services/SettingsSrvc.js"></script>
+    <script language="javascript"  src="js/services/MailingSrvc.js"></script>
   
-	<script language="javascript"  src="js/directives/stcalert.js"></script> 
-	<script language="javascript"  src="js/directives/stcalertlabel.js"></script> 
+    <script language="javascript"  src="js/directives/stcalert.js"></script> 
+    <script language="javascript"  src="js/directives/stcalertlabel.js"></script> 
     <script language="javascript"  src="js/directives/stctraining.js"></script> 
     <script language="javascript"  src="js/directives/stcgrid.js"></script> 
     <script language="javascript"  src="js/directives/stcperson.js"></script> 
@@ -177,19 +192,19 @@
      <script language="javascript">
         
         $('ul.nav li.dropdown').hover(function() {
-	          $(this).find('.dropdown-menu').stop(true, true).delay(250).show(200);
+              $(this).find('.dropdown-menu').stop(true, true).delay(250).show(200);
             }, function() {
               $(this).find('.dropdown-menu').stop(true, true).delay(50).hide(50);
          });
             
         $('#divContainer')
-  		    .delay(500)
-  		    .queue( function(next){ 
-    		   	$('#divLoader').hide();
-    		    $(this).css('display','block'); 
-   			    next(); 
-  		  });  
-  		  
+            .delay(500)
+            .queue( function(next){ 
+                $('#divLoader').hide();
+                $(this).css('display','block'); 
+                next(); 
+          });  
+          
    </script>
   </body>
 </html>

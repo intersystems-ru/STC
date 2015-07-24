@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/services/CompanySrvc.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/services/CompanySrvc.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dddв
 
@@ -9,9 +9,9 @@
 ===========================================================================================*/
 
 servicesModule.factory('CompanySrvc', function(DALSrvc) {
-	
-	return {
-	    /* Получить короткую информацию о компаниях */
+    
+    return {
+        /* Получить короткую информацию о компаниях */
         getAll: function(){
             return DALSrvc.getPromise('get', StcAppSetting.user + '/json/company', null);
         },
@@ -50,8 +50,10 @@ servicesModule.factory('CompanySrvc', function(DALSrvc) {
         },
         changeContact: function(data){
             return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/company/contact/change', data);
+        },
+        createContact: function(data){
+            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/company/contact/new', data);
         }
-
     }
 });
   

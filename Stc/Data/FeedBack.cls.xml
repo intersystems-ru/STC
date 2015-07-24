@@ -63,6 +63,10 @@ Date time feedback creation </Description>
 <Required>1</Required>
 </Property>
 
+<Index name="TrainingIdx">
+<Properties>Training</Properties>
+</Index>
+
 <Method name="ConvertToProxyObject">
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[

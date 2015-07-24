@@ -122,52 +122,60 @@ All employees</Description>
 <Type>Region</Type>
 </Property>
 
+<Property name="ISISID">
+<Description>
+Integrated student information system</Description>
+<Type>%String</Type>
+</Property>
+
 <Method name="ConvertToProxyObject">
 <Description>
 Convert to proxyObject (for JSON)</Description>
 <FormalSpec>shortInfo:%Boolean=0</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	set proxy = ##class(%ZEN.proxyObject).%New()
-	
-	set proxy.id = ..%Id()
-	set proxy.shortName = ..ShortName.Value
-	set proxy.site = ..WebSite
-	
-	if (shortInfo = 1) quit proxy
-	
-	set proxy.fullName = ..FullName.Value
-	set proxy.settlementAccount = ..SettlementAccount
-	set proxy.correspondentAccount = ..CorrespondentAccount
-	set proxy.bic = ..BIC
-	set proxy.kpp= ..KPP
-	set proxy.inn = ..INN
-	set proxy.ogrn = ..OGRN
-	set proxy.legalAddress = ..LegalAddress.Value
-	set proxy.mailAddress = ..MailAddress.Value
-	set proxy.otherInfo = ..OtherInfo.Value
-	
-	set proxy.isUnknownCity = $$$NO
-	if $ISOBJECT(..City){
-		set proxy.city = ..City.ConvertToProxyObject()
-	}
-	else{
-		set proxy.isUnknownCity = $$$YES
-	}
-	
-	
-	set proxy.contact = ..Contact.ConvertToProxyObject()
-	
-	set proxy.employeesNumber = ..Employees.Count()
-	
-	if (..Type.Code = "Univer"){
-		set proxy.status = 1
-	}
-	else{
-		set proxy.status = 0
-	}
-	
-	quit proxy
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    
+    set proxy.id = ..%Id()
+    set proxy.shortName = ..ShortName.Value
+    set proxy.site = ..WebSite
+    
+    if (shortInfo = 1) quit proxy
+    
+    set proxy.fullName = ..FullName.Value
+    set proxy.settlementAccount = ..SettlementAccount
+    set proxy.correspondentAccount = ..CorrespondentAccount
+    set proxy.isisID = ..ISISID
+    set proxy.bic = ..BIC
+    set proxy.kpp= ..KPP
+    set proxy.inn = ..INN
+    set proxy.ogrn = ..OGRN
+    set proxy.legalAddress = ..LegalAddress.Value
+    set proxy.mailAddress = ..MailAddress.Value
+    set proxy.otherInfo = ..OtherInfo.Value
+    
+    set proxy.isUnknownCity = $$$NO
+    if $ISOBJECT(..City){
+        set proxy.city = ..City.ConvertToProxyObject()
+    }
+    else{
+        set proxy.isUnknownCity = $$$YES
+    }
+    
+    if $ISOBJECT(..Contact){
+        set proxy.contact = ..Contact.ConvertToProxyObject()
+    }
+    
+    set proxy.employeesNumber = ..Employees.Count()
+    
+    if (..Type.Code = "Univer"){
+        set proxy.status = 1
+    }
+    else{
+        set proxy.status = 0
+    }
+    
+    quit proxy
 ]]></Implementation>
 </Method>
 
@@ -178,52 +186,53 @@ Create or save modified organization</Description>
 <FormalSpec><![CDATA[data:%RegisteredObject,&status]]></FormalSpec>
 <ReturnType>Company</ReturnType>
 <Implementation><![CDATA[
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", "ID="_data.id_"; ShortName="_$ZCONVERT(data.shortName, "I","UTF8"))
-	
-	if (data.id '= ""){
-		set company = ..%OpenId(data.id,3,.status)
-		set company.FullName.Value = $ZCONVERT(data.fullName, "I","UTF8")
-		set company.ShortName.Value = $ZCONVERT(data.shortName, "I","UTF8")
-		set company.LegalAddress.Value = $ZCONVERT(data.legalAddress, "I","UTF8")
-		set company.MailAddress.Value = $ZCONVERT(data.mailAddress, "I","UTF8")
-		set company.OtherInfo.Value = $ZCONVERT(data.otherInfo, "I","UTF8")	
-	}
-	else{
-		set company = ..%New()
-		set company.FullName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I","UTF8"))
-		set company.ShortName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I","UTF8"))
-		set company.LegalAddress = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.legalAddress, "I","UTF8"))
-		set company.MailAddress = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.mailAddress, "I","UTF8"))
-		set company.OtherInfo = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.otherInfo, "I","UTF8"))
-	}
-	
-	
-	
-	if (data.isUnknownCity = $$$NO) && $ISOBJECT(data.city){
-		set company.City = ##class(Region).%OpenId(data.city.id)
-	}
-	else{
-		set company.City = $$$NULLOREF
-	}
-	
-	set company.BIC = $ZCONVERT(data.bic, "I","UTF8")
-	set company.OGRN = $ZCONVERT(data.ogrn, "I","UTF8")
-	set company.INN = $ZCONVERT(data.inn, "I","UTF8")
-	set company.SettlementAccount = $ZCONVERT(data.settlementAccount, "I","UTF8")
-	set company.CorrespondentAccount = $ZCONVERT(data.correspondentAccount, "I","UTF8")	
-	set company.KPP = $ZCONVERT(data.kpp, "I","UTF8")
-	set company.WebSite = $REPLACE($REPLACE($ZCONVERT(data.site, "I","UTF8"),"http://",""), "https://","")
-	
-	if (data.status = 1){
-		set company.Type = ##class(CompanyType).CodeIdxOpen("Univer")
-	}
-	else{
-		set company.Type = ##class(CompanyType).CodeIdxOpen("Partner")
-	}
-	
-	set status = company.%Save()
-	
-	quit company
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Save", "ID="_data.id_"; ShortName="_$ZCONVERT(data.shortName, "I","UTF8"))
+    
+    if (data.id '= ""){
+        set company = ..%OpenId(data.id,3,.status)
+        set company.FullName.Value = $ZCONVERT(data.fullName, "I","UTF8")
+        set company.ShortName.Value = $ZCONVERT(data.shortName, "I","UTF8")
+        set company.LegalAddress.Value = $ZCONVERT(data.legalAddress, "I","UTF8")
+        set company.MailAddress.Value = $ZCONVERT(data.mailAddress, "I","UTF8")
+        set company.OtherInfo.Value = $ZCONVERT(data.otherInfo, "I","UTF8") 
+    }
+    else{
+        set company = ..%New()
+        set company.FullName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I","UTF8"))
+        set company.ShortName = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I","UTF8"))
+        set company.LegalAddress = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.legalAddress, "I","UTF8"))
+        set company.MailAddress = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.mailAddress, "I","UTF8"))
+        set company.OtherInfo = ##class(Stc.Data.Localization.LText).Create($ZCONVERT(data.otherInfo, "I","UTF8"))
+    }
+    
+    
+    
+    if (data.isUnknownCity '= $$$YES) && $ISOBJECT(data.city){
+        set company.City = ##class(Region).%OpenId(data.city.id)
+    }
+    else{
+        set company.City = $$$NULLOREF
+    }
+    
+    set company.ISISID = data.isisID
+    set company.BIC = $ZCONVERT(data.bic, "I","UTF8")
+    set company.OGRN = $ZCONVERT(data.ogrn, "I","UTF8")
+    set company.INN = $ZCONVERT(data.inn, "I","UTF8")
+    set company.SettlementAccount = $ZCONVERT(data.settlementAccount, "I","UTF8")
+    set company.CorrespondentAccount = $ZCONVERT(data.correspondentAccount, "I","UTF8") 
+    set company.KPP = $ZCONVERT(data.kpp, "I","UTF8")
+    set company.WebSite = $REPLACE($REPLACE($ZCONVERT(data.site, "I","UTF8"),"http://",""), "https://","")
+    
+    if (data.status = 1){
+        set company.Type = ##class(CompanyType).CodeIdxOpen("Univer")
+    }
+    else{
+        set company.Type = ##class(CompanyType).CodeIdxOpen("Partner")
+    }
+    
+    set status = company.%Save()
+    
+    quit company
 ]]></Implementation>
 </Method>
 
@@ -234,93 +243,93 @@ Delete organization, if it is available</Description>
 <FormalSpec>id</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_id)
-	
-	set company = ..%OpenId(id,4,.status)
-	quit:$$$ISERR(status) ##class(Stc.Utils.Msg).GetErrorStatus("openCompany", "| "_status)
-	
-	set findId = ""
-	
-	// Checking: if in applications
-	&sql(SELECT ID INTO:findId FROM Stc_Data.Order WHERE Company = :id)
-	if (findId = ""){
-		// Checking: if has employees
-		&sql(SELECT ID INTO:findId FROM Stc_Data.Person WHERE Company = :id)
-		
-		if (findId = ""){
-			// Checking: if is payer for subgroup
-			&sql(SELECT ID INTO:findId FROM Stc_Data.SubGroup WHERE Payer = :id)
-			
-			if (findId = ""){
-				// Checking: in application from student
-				&sql(SELECT ID INTO:findId FROM Stc_Data.OrderNewStudent WHERE Company = :id)	
-			}	
-		}
-	}
-	
-	// Quit, if has links
-	quit:findId'="" ##class(Stc.Utils.Msg).GetErrorStatus("deleteCompanyImpossible")
-	
-	// Delete localization
-	set status = ##class(Stc.Data.Localization.LText).Delete(company.FullName.%Id())
-	quit:$$$ISERR(status) status
-		
-	set status = ##class(Stc.Data.Localization.LText).Delete(company.ShortName.%Id())
-	quit:$$$ISERR(status) status
-		
-	set status = ##class(Stc.Data.Localization.LText).Delete(company.LegalAddress.%Id())
-	quit:$$$ISERR(status) status
-	
-	set status = ##class(Stc.Data.Localization.LText).Delete(company.MailAddress.%Id())
-	quit:$$$ISERR(status) status
-	
-	set status = ##class(Stc.Data.Localization.LText).Delete(company.OtherInfo.%Id())
-	quit:$$$ISERR(status) status
-	
-	// Delete organization
-	set status = ..%DeleteId(id, 4)
-	quit:$$$ISERR(status) ##class(Stc.Utils.Msg).GetErrorStatus("deleteCompany", "| "_status)
-	
-	quit $$$OK
+    do ##class(Stc.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_id)
+    
+    set company = ..%OpenId(id,4,.status)
+    quit:$$$ISERR(status) ##class(Stc.Utils.Msg).GetErrorStatus("openCompany", "| "_status)
+    
+    set findId = ""
+    
+    // Checking: if in applications
+    &sql(SELECT ID INTO:findId FROM Stc_Data.Order WHERE Company = :id)
+    if (findId = ""){
+        // Checking: if has employees
+        &sql(SELECT ID INTO:findId FROM Stc_Data.Person WHERE Company = :id)
+        
+        if (findId = ""){
+            // Checking: if is payer for subgroup
+            &sql(SELECT ID INTO:findId FROM Stc_Data.SubGroup WHERE Payer = :id)
+            
+            if (findId = ""){
+                // Checking: in application from student
+                &sql(SELECT ID INTO:findId FROM Stc_Data.OrderNewStudent WHERE Company = :id)   
+            }   
+        }
+    }
+    
+    // Quit, if has links
+    quit:findId'="" ##class(Stc.Utils.Msg).GetErrorStatus("deleteCompanyImpossible")
+    
+    // Delete localization
+    set status = ##class(Stc.Data.Localization.LText).Delete(company.FullName.%Id())
+    quit:$$$ISERR(status) status
+        
+    set status = ##class(Stc.Data.Localization.LText).Delete(company.ShortName.%Id())
+    quit:$$$ISERR(status) status
+        
+    set status = ##class(Stc.Data.Localization.LText).Delete(company.LegalAddress.%Id())
+    quit:$$$ISERR(status) status
+    
+    set status = ##class(Stc.Data.Localization.LText).Delete(company.MailAddress.%Id())
+    quit:$$$ISERR(status) status
+    
+    set status = ##class(Stc.Data.Localization.LText).Delete(company.OtherInfo.%Id())
+    quit:$$$ISERR(status) status
+    
+    // Delete organization
+    set status = ..%DeleteId(id, 4)
+    quit:$$$ISERR(status) ##class(Stc.Utils.Msg).GetErrorStatus("deleteCompany", "| "_status)
+    
+    quit $$$OK
 ]]></Implementation>
 </Method>
 
 <Method name="UpdateCity">
 <ClassMethod>1</ClassMethod>
 <Implementation><![CDATA[
-	&sql(DECLARE CmpCur CURSOR FOR 
-	 	 SELECT ID
-	 	 FROM Stc_Data.Company
-	 	 WHERE LegalAddress->Value <> '')	
-	
-	&sql(OPEN CmpCur)
-	for  
-	{	
-		&sql(FETCH CmpCur INTO :cmpId) 
-		quit:(SQLCODE '= 0)
-		
-		set cmp = ..%OpenId(cmpId)
-		w !,!,"Company ID=",cmpId," Name=",cmp.ShortName.Value
-		w !,"LegalAddress = ",cmp.LegalAddress.Value
-		
-		set cityName = $P(cmp.LegalAddress.Value, ",", 2)
-		set cityId = ""
-		&sql(SELECT ID INTO :cityId FROM Stc_Data.Region WHERE HLevel = 2 AND Name->Value = TRIM(BOTH ' ' FROM :cityName))
-		
-		set newCity = ##class(Region).%OpenId(cityId, , .st)
-		if $$$ISERR(st){
-			w !,"City not found = ",cityName
-			continue
-		}
-		
-		w !,"CityName     = "_$REPLACE(cityName, " ", "")
-		w !,"Founded city = "_newCity.Name.Value,", ",newCity.ParentRegion.Name.Value,", ",newCity.ParentRegion.ParentRegion.Name.Value 	
-	
-		set cmp.City = newCity
-		do cmp.%Save()
-	}
-	
-	&sql(CLOSE CmpCur)
+    &sql(DECLARE CmpCur CURSOR FOR 
+         SELECT ID
+         FROM Stc_Data.Company
+         WHERE LegalAddress->Value <> '')   
+    
+    &sql(OPEN CmpCur)
+    for  
+    {   
+        &sql(FETCH CmpCur INTO :cmpId) 
+        quit:(SQLCODE '= 0)
+        
+        set cmp = ..%OpenId(cmpId)
+        w !,!,"Company ID=",cmpId," Name=",cmp.ShortName.Value
+        w !,"LegalAddress = ",cmp.LegalAddress.Value
+        
+        set cityName = $P(cmp.LegalAddress.Value, ",", 2)
+        set cityId = ""
+        &sql(SELECT ID INTO :cityId FROM Stc_Data.Region WHERE HLevel = 2 AND Name->Value = TRIM(BOTH ' ' FROM :cityName))
+        
+        set newCity = ##class(Region).%OpenId(cityId, , .st)
+        if $$$ISERR(st){
+            w !,"City not found = ",cityName
+            continue
+        }
+        
+        w !,"CityName     = "_$REPLACE(cityName, " ", "")
+        w !,"Founded city = "_newCity.Name.Value,", ",newCity.ParentRegion.Name.Value,", ",newCity.ParentRegion.ParentRegion.Name.Value     
+    
+        set cmp.City = newCity
+        do cmp.%Save()
+    }
+    
+    &sql(CLOSE CmpCur)
 ]]></Implementation>
 </Method>
 
@@ -383,6 +392,9 @@ Delete organization, if it is available</Description>
 </Value>
 <Value name="17">
 <Value>City</Value>
+</Value>
+<Value name="18">
+<Value>ISISID</Value>
 </Value>
 </Data>
 </Storage>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/partials/mailinggroups.csp" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/partials/mailinggroups.csp" application="/csp/stc_loc/" default="1"><![CDATA[
 <div class="row-fluid">
 	<div class="span10 offset1">
 		<stcgrid
@@ -130,7 +130,7 @@
 				<div id="fileNameReal"    ng-hide="groupTable.selectedItems[0].code=='Students'" style="padding: 5px 0 0 10px; display: none;"></div>
 			</div>
 			<div class="row-fluid" ng-hide="groupTable.selectedItems[0].code=='Students'" style="font-size: 0.9em; padding-top: 5px;">
-				<i ng-bind="'* Формат файла .csv, 1 запись: ФИО;Email;Город;Организация;Должность'"></i>
+				<i ng-bind="'* Формат файла .csv, 1 запись: ФИО;Email;Город;Организация;Должность'|localize"></i>
 			</div>
 			
 		</form>

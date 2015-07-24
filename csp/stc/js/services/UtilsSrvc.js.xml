@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/services/UtilsSrvc.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/services/UtilsSrvc.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //ddвddddв
 
@@ -9,36 +9,36 @@ Utils
 ===========================================================================================*/
 
 servicesModule.factory('UtilsSrvc', function($dialog, $filter, DALSrvc) {
-	
-	return {
-		openMessageBox: function(title, msg, func){
-    		var btns = [{result: true, label: 'Ок', cssClass: 'btn-primary btn-small'}, 
+    
+    return {
+        openMessageBox: function(title, msg, func){
+            var btns = [{result: true, label: 'Ок', cssClass: 'btn-primary btn-small'}, 
                         {result: false, label: $filter('localize')('Отмена'), cssClass: 'btn-small'}];
 
-    		$dialog.messageBox($filter('localize')(title), $filter('localize')(msg), btns).open().then(function(result){
-    		 	if (result && func)
-    		 		func(); 
-    		 });
-    	},
-    	openCustomMessageBox: function(title, msg, btns){
-    		$dialog.messageBox($filter('localize')(title), $filter('localize')(msg), btns).open().then(function(result){
-    		 	for (var i=0; i < btns.length; i++){
-	    			if (result == btns[i].result && btns[i].func)
-	    				btns[i].func();
-	    		}
-    		 });
-    	},
-    	getAlert: function(title, msg, eventType, visible){
-        	return {title: $filter('localize')(title),
+            $dialog.messageBox($filter('localize')(title), $filter('localize')(msg), btns).open().then(function(result){
+                if (result && func)
+                    func(); 
+             });
+        },
+        openCustomMessageBox: function(title, msg, btns){
+            $dialog.messageBox($filter('localize')(title), $filter('localize')(msg), btns).open().then(function(result){
+                for (var i=0; i < btns.length; i++){
+                    if (result == btns[i].result && btns[i].func)
+                        btns[i].func();
+                }
+             });
+        },
+        getAlert: function(title, msg, eventType, visible){
+            return {title: $filter('localize')(title),
                     msg: $filter('localize')(msg),
                     cssClass: 'alert alert-' + eventType,
                     visible: visible};
-    	},
-    	getAlertLabel: function(msg, eventType){
-        	return {msg: $filter('localize')(msg),
+        },
+        getAlertLabel: function(msg, eventType){
+            return {msg: $filter('localize')(msg),
                     cssClass: eventType,
                     visible: true};
-    	},
+        },
         getIndexes: function(array, objField, valueField){
             var indexes = [];
             
@@ -51,23 +51,24 @@ servicesModule.factory('UtilsSrvc', function($dialog, $filter, DALSrvc) {
             return indexes;
         },
         getValidDate: function(str){
-	        var date = new Date(str);
-	        if (isNaN(date))
-	        	return "";
-	        	
-	        return $filter('date')(date, 'dd-MM-y');
-	    },
-	    getTwoDate: function(start, finish){
-	    	var startText = $filter('convertCacheDate')(start, $filter('localize')('d MMMM y'));
+            var date = new Date(str);
+            if (isNaN(date))
+                return "";
+                
+            //return $filter('date')(date, 'dd-MM-y');
+            return $filter('date')(date, 'y-MM-dd');
+        },
+        getTwoDate: function(start, finish){
+            var startText = $filter('convertCacheDate')(start, $filter('localize')('d MMMM y'));
             var finishText = $filter('convertCacheDate')(finish, $filter('localize')('d MMMM y'));
-				
-			var startYearBorder = startText.indexOf(" ", 3);
-			if (startYearBorder > 0){
-				startText = startText.substring(0, startYearBorder); 	
-			}
-				
+                
+            var startYearBorder = startText.indexOf(" ", 3);
+            if (startYearBorder > 0){
+                startText = startText.substring(0, startYearBorder);    
+            }
+                
             return startText + ' - ' +  finishText;
-	    },
+        },
         getMailPattern: function(type){
             return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/mail/pattern/' + type, null);
         },
@@ -84,6 +85,16 @@ servicesModule.factory('UtilsSrvc', function($dialog, $filter, DALSrvc) {
                        searchText: searchText};
 
             return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/log/grid', obj);
+        },
+        getFullNameForCurLang: function(lastName, firstName, middleName){
+            // У русских - фамилия имя, а у англичан - имя фамилия
+            
+            if (StcAppSetting.lang == 'ru-RU' || StcAppSetting.lang == 'ru'){
+                return lastName + ' ' + firstName + (middleName ? ' ' + middleName : '');
+            }
+            else {
+                return firstName + (middleName ? ' ' + middleName : '') + ' ' + lastName;
+            }
         },
         getPropertyValue: function (item, propertyStr, defaultValue){
             var value;

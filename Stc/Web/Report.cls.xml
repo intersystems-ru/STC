@@ -20,52 +20,52 @@ Report, certificates of training</Description>
 <FormalSpec>lang:%String,trainingId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set %response.ContentType = ..#ContentType
-	set %response.CharSet = ..#CharSet
-	
-	set status = $$$OK
-	
-	try{
-		set training = ##class(Stc.Data.Training).%OpenId(trainingId)
-		$$$THROWONERROR(status, status)
-		
-		set course = ##class(Stc.Data.Localization.LTextValue).GetValue(training.Course.Name.%Id(), lang)
-		set city = ##class(Stc.Data.Localization.LTextValue).GetValue(training.City.Name.%Id(), lang)
-		set date = $ZDATE($NOW(),3)
-		
-		set fileName = ##class(%MessageDictionary).FormatText($G(^CacheMsg("Stc", lang, "certificatesReport"),"---"), course, city, date)_".csv"
+    set %response.ContentType = ..#ContentType
+    set %response.CharSet = ..#CharSet
+    
+    set status = $$$OK
+    
+    try{
+        set training = ##class(Stc.Data.Training).%OpenId(trainingId)
+        $$$THROWONERROR(status, status)
+        
+        set course = ##class(Stc.Data.Localization.LTextValue).GetValue(training.Course.Name.%Id(), lang)
+        set city = ##class(Stc.Data.Localization.LTextValue).GetValue(training.City.Name.%Id(), lang)
+        set date = $ZDATE($NOW(),3)
+        
+        set fileName = ##class(%MessageDictionary).FormatText($G(^CacheMsg("Stc", lang, "certificatesReport"),"---"), course, city, date)_".csv"
 
-		if ($FIND(%request.UserAgent, "Firefox") '= 0) {
-			set fileName = $REPLACE(fileName, " ", "_")
-		}		
-		
-		do %response.SetHeader("Content-Disposition","attachment;filename="_fileName)
+        if ($FIND(%request.UserAgent, "Firefox") '= 0) {
+            set fileName = $REPLACE(fileName, " ", "_")
+        }       
+        
+        do %response.SetHeader("Content-Disposition","attachment;filename="_fileName)
 
-		&sql(DECLARE CertCur CURSOR FOR 
-		 	 SELECT Number, Student->LastName, Student->FirstName, Student->MiddleName
-		 	 FROM Stc_Data.Certificate
-		 	 WHERE Training = :trainingId)	
-		
-		&sql(OPEN CertCur)
-		for  
-		{	
-			&sql(FETCH CertCur INTO :number, :lnameId, :fnameId, :mnameId) 
-			quit:(SQLCODE '= 0)
-			
-			set lname = ##class(Stc.Data.Localization.LTextValue).GetValue(lnameId, lang)
-			set fname = ##class(Stc.Data.Localization.LTextValue).GetValue(fnameId, lang)
-			set mname = ##class(Stc.Data.Localization.LTextValue).GetValue(mnameId, lang)
-			
-			w number_";"_lname_";"_fname_";"_mname,!
-		}
-		
-		&sql(CLOSE CertCur)
-	}
-	catch ex{
-		set status = ex.AsStatus()	
-	}
-	
-	q status
+        &sql(DECLARE CertCur CURSOR FOR 
+             SELECT Number, Student->LastName, Student->FirstName, Student->MiddleName
+             FROM Stc_Data.Certificate
+             WHERE Training = :trainingId)  
+        
+        &sql(OPEN CertCur)
+        for  
+        {   
+            &sql(FETCH CertCur INTO :number, :lnameId, :fnameId, :mnameId) 
+            quit:(SQLCODE '= 0)
+            
+            set lname = ##class(Stc.Data.Localization.LTextValue).GetValue(lnameId, lang)
+            set fname = ##class(Stc.Data.Localization.LTextValue).GetValue(fnameId, lang)
+            set mname = ##class(Stc.Data.Localization.LTextValue).GetValue(mnameId, lang)
+            
+            w number_";"_lname_";"_fname_";"_mname,!
+        }
+        
+        &sql(CLOSE CertCur)
+    }
+    catch ex{
+        set status = ex.AsStatus()  
+    }
+    
+    q status
 ]]></Implementation>
 </Method>
 
@@ -76,60 +76,124 @@ Report, students of training</Description>
 <FormalSpec>lang:%String,trainingAccessCode:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	set %response.ContentType = ..#ContentType
-	set %response.CharSet = ..#CharSet
-	
-	set status = $$$OK
-	
-	try{
-		set training = ##class(Stc.Data.Training).AccessCodeIdxOpen(trainingAccessCode)
-		$$$THROWONERROR(status, status)
-		
-		set course = ##class(Stc.Data.Localization.LTextValue).GetValue(training.Course.Name.%Id(), lang)
-		set city = ##class(Stc.Data.Localization.LTextValue).GetValue(training.City.Name.%Id(), lang)
-		set date = $ZDATE(training.DateStart,3)
-		
-		set fileName = ##class(%MessageDictionary).FormatText($G(^CacheMsg("Stc", lang, "studentsReport"),"---"), course, city, date)_".csv"
+    set %response.ContentType = ..#ContentType
+    set %response.CharSet = ..#CharSet
+    
+    set status = $$$OK
+    
+    try{
+        set training = ##class(Stc.Data.Training).AccessCodeIdxOpen(trainingAccessCode)
+        $$$THROWONERROR(status, status)
+        
+        set course = ##class(Stc.Data.Localization.LTextValue).GetValue(training.Course.Name.%Id(), lang)
+        set city = ##class(Stc.Data.Localization.LTextValue).GetValue(training.City.Name.%Id(), lang)
+        set date = $ZDATE(training.DateStart,3)
+        
+        set fileName = ##class(%MessageDictionary).FormatText($G(^CacheMsg("Stc", lang, "studentsReport"),"---"), course, city, date)_".csv"
 
-		if ($FIND(%request.UserAgent, "Firefox") '= 0) {
-			set fileName = $REPLACE(fileName, " ", "_")
-		}		
-		
-		do %response.SetHeader("Content-Disposition","attachment;filename="_fileName)
+        if ($FIND(%request.UserAgent, "Firefox") '= 0) {
+            set fileName = $REPLACE(fileName, " ", "_")
+        }       
+        
+        do %response.SetHeader("Content-Disposition","attachment;filename="_fileName)
 
-		&sql(DECLARE StudCur CURSOR FOR 
-		 	 SELECT Students->LastName,
-		 	 Students->FirstName,
-		 	 Students->MiddleName,
-		 	 Students->Company->ShortName,
-		 	 Students->Email,
-		 	 Students->Phone,
-		 	 Students->Skype 
-		 	 FROM Stc_Data.SubGroup_Students
-		 	 WHERE SubGroup IN (SELECT SubGroups FROM Stc_Data.Training_SubGroups WHERE Training->AccessCode = :trainingAccessCode)
-		 	 ORDER BY Students->Company->ShortName)	
-		
-		&sql(OPEN StudCur)
-		for  
-		{	
-			&sql(FETCH StudCur INTO :lnameId, :fnameId, :mnameId, :compNameId, :email, :phone, :skype) 
-			quit:(SQLCODE '= 0)
-			
-			set lname = ##class(Stc.Data.Localization.LTextValue).GetValue(lnameId, lang)
-			set fname = ##class(Stc.Data.Localization.LTextValue).GetValue(fnameId, lang)
-			set mname = ##class(Stc.Data.Localization.LTextValue).GetValue(mnameId, lang)
-			set compName = ##class(Stc.Data.Localization.LTextValue).GetValue(compNameId, lang)
-			
-			w lname_";"_fname_";"_mname_";"_compName_";"_email_";"_phone_";"_skype,!
-		}
-		
-		&sql(CLOSE StudCur)
-	}
-	catch ex{
-		set status = ex.AsStatus()	
-	}
-	
-	q status
+        &sql(DECLARE StudCur CURSOR FOR 
+             SELECT Students->LastName,
+             Students->FirstName,
+             Students->MiddleName,
+             Students->Company->ShortName,
+             Students->Email,
+             Students->Phone,
+             Students->Skype 
+             FROM Stc_Data.SubGroup_Students
+             WHERE SubGroup IN (SELECT SubGroups FROM Stc_Data.Training_SubGroups WHERE Training->AccessCode = :trainingAccessCode)
+             ORDER BY Students->Company->ShortName) 
+        
+        &sql(OPEN StudCur)
+        for  
+        {   
+            &sql(FETCH StudCur INTO :lnameId, :fnameId, :mnameId, :compNameId, :email, :phone, :skype) 
+            quit:(SQLCODE '= 0)
+            
+            set lname = ##class(Stc.Data.Localization.LTextValue).GetValue(lnameId, lang)
+            set fname = ##class(Stc.Data.Localization.LTextValue).GetValue(fnameId, lang)
+            set mname = ##class(Stc.Data.Localization.LTextValue).GetValue(mnameId, lang)
+            set compName = ##class(Stc.Data.Localization.LTextValue).GetValue(compNameId, lang)
+            
+            w lname_";"_fname_";"_mname_";"_compName_";"_email_";"_phone_";"_skype,!
+        }
+        
+        &sql(CLOSE StudCur)
+    }
+    catch ex{
+        set status = ex.AsStatus()  
+    }
+    
+    q status
+]]></Implementation>
+</Method>
+
+<Method name="OrderNewStudents">
+<Description>
+Report, ordernewstudents of training</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>lang:%String,trainingAccessCode:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set %response.ContentType = ..#ContentType
+    set %response.CharSet = ..#CharSet
+    
+    set status = $$$OK
+    
+    try{
+        set training = ##class(Stc.Data.Training).AccessCodeIdxOpen(trainingAccessCode,,.status)
+        $$$THROWONERROR(status, status)
+        
+        set course = ##class(Stc.Data.Localization.LTextValue).GetValue(training.Course.Name.%Id(), lang)
+        set city = ##class(Stc.Data.Localization.LTextValue).GetValue(training.City.Name.%Id(), lang)
+        set date = $ZDATE(training.DateStart,3)
+        
+        set fileName = ##class(%MessageDictionary).FormatText($G(^CacheMsg("Stc", lang, "ordernewstudentsReport"),"--ordernewstudentsReport--"), course, city, date)_".csv"
+        
+        if ($FIND(%request.UserAgent, "Firefox") '= 0) {
+            set fileName = $REPLACE(fileName, " ", "_")
+        }       
+        
+        do %response.SetHeader("Content-Disposition","attachment;filename="_fileName)
+    
+        &sql(DECLARE OrdNewStudCur CURSOR FOR 
+             SELECT 
+             LastName,
+             FirstName,
+             MiddleName,
+             CompanyString,
+             Email,
+             Phone,
+             Skype 
+             FROM Stc_Data.OrderNewStudent
+             WHERE Training->AccessCode = :trainingAccessCode
+             ORDER BY CompanyString) 
+        
+        &sql(OPEN OrdNewStudCur)
+        for  
+        {   
+            &sql(FETCH OrdNewStudCur INTO :lnameId, :fnameId, :mnameId, :compName, :email, :phone, :skype) 
+            quit:(SQLCODE '= 0)
+            
+            set lname = ##class(Stc.Data.Localization.LTextValue).GetValue(lnameId, lang)
+            set fname = ##class(Stc.Data.Localization.LTextValue).GetValue(fnameId, lang)
+            set mname = ##class(Stc.Data.Localization.LTextValue).GetValue(mnameId, lang)
+            
+            w lname_";"_fname_";"_mname_";"_compName_";"_email_";"_phone_";"_skype,!
+        }
+        
+        &sql(CLOSE OrdNewStudCur)
+    }
+    catch ex{
+        set status = ex.AsStatus()  
+    }
+    
+    q status
 ]]></Implementation>
 </Method>
 </Class>

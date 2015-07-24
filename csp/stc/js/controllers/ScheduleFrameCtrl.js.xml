@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/controllers/ScheduleFrameCtrl.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/controllers/ScheduleFrameCtrl.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //d
 
@@ -46,7 +46,7 @@ controllersModule.controller('ScheduleFrameCtrl', function($scope, $window, $fil
 					
                         training.dates = UtilsSrvc.getTwoDate(training.dateStart, training.dateFinish);
 
-                        training.address = training.address.title;
+                        training.address = training.street;
                         if (training.room != "" && training.room != "-"){
                             training.address += ', ауд. ' + training.room;
                         }
@@ -56,15 +56,15 @@ controllersModule.controller('ScheduleFrameCtrl', function($scope, $window, $fil
                             training.curatorInfo += ', ' + training.curator.phone;
                         }
 
-                        if (training.curator.email != ""){
-                            training.curatorInfo += ', ' + training.curator.email;
-                        }
+                        //if (training.curator.email != ""){
+                        //    training.curatorInfo += ', ' + training.curator.email;
+                        //}
     
                         training.urlJoin = 'http://' + host_appName + '/stc/index.csp#/training/' + training.id + '/order';
                         training.urlAddGoogleCalendarEvent = TrainingSrvc.getUrlForCreateGoogleCalendarEvent(
                                         course.name + '. '+ training.city.name,
                                         training.dateGoogleCalendar,
-                                        training.city.name + ', ' + training.address.title,
+                                        training.city.name + ', ' + training.street,
                                         {
 	                                        trainingId: training.id,
                                             courseProgramUrl: course.programUrl,

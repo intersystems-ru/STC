@@ -1,0 +1,7 @@
+
+.fnt-plus:before { content: '\e800'; } /* '' */
+.fnt-minus:before { content: '\e801'; } /* '' */
+.fnt-dollar:before { content: '\e802'; } /* '' */
+.fnt-euro:before { content: '\e803'; } /* '' */
+.fnt-pound:before { content: '\e804'; } /* '' */
+.fnt-rouble:before { content: '\e805'; } /* '' */

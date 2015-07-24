@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="stc/js/services/TrainingSrvc.js" application="/csp/stc/" default="1"><![CDATA[
+<CSP name="stc/js/services/TrainingSrvc.js" application="/csp/stc_loc/" default="1"><![CDATA[
 'use strict';
 //dddddde
 
@@ -8,8 +8,8 @@
 Обучения
 ===========================================================================================*/
 
-servicesModule.factory('TrainingSrvc', function(DALSrvc) {
-	return {
+servicesModule.factory('TrainingSrvc', function(DALSrvc, $filter) {
+    return {
         /* Добавить слушателя из заявки в обучение */
         addNewStudentIntoTraining: function(trainingData){
            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/orderNewStudent', trainingData);
@@ -52,8 +52,8 @@ servicesModule.factory('TrainingSrvc', function(DALSrvc) {
             return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/certificate/grid', obj);
         },
         createCertificates: function(trainingId){
-	        return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/' + trainingId + '/certificate', null);
-	      },
+            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/' + trainingId + '/certificate', null);
+          },
         /* Получить все обучения для таблицы */
         getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
@@ -106,6 +106,19 @@ servicesModule.factory('TrainingSrvc', function(DALSrvc) {
 
             return DALSrvc.getPromise('save', StcAppSetting.user + '/json/training/' + code + '/student', obj);
         },
+        /* Все заявки на присоединение  */
+        getOrderStudentsByAccessCodeForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, code){
+            var first = pageSize * (pageCurr - 1) + 1;
+            var obj = {sqlName: sqlName, 
+                       isDown: isDown, 
+                       first: first, 
+                       last: first + pageSize - 1,
+                       searchSqlName: searchSqlName, 
+                       searchText: searchText
+                     };
+
+            return DALSrvc.getPromise('save', StcAppSetting.user + '/json/training/' + code + '/ordernewstudent', obj);
+        },
         deleteSubGroupStudent: function(sgroupId, studentId){
             return DALSrvc.getPromise('delete', StcAppSetting.admin + '/json/training/subgroup/' + sgroupId + '/student/' + studentId, null);
         },
@@ -140,13 +153,13 @@ servicesModule.factory('TrainingSrvc', function(DALSrvc) {
             return DALSrvc.getPromise('delete', StcAppSetting.admin + '/json/training/' + trainingId + '/subgroup/' +  sgroupId, null);  
         },
         doEvent: function(data){
-	        return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/trainingEvent', data);
-	      },
+            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/trainingEvent', data);
+          },
         getEmailContacts: function(trainingId){
-          	return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/training/' + trainingId + '/student/email', null);
+            return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/training/' + trainingId + '/student/email', null);
         },
         changeStatusAutoMailing: function(data){
-          	return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/automailing/status', data);
+            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/automailing/status', data);
         },
         saveFeedBack: function(data, trId, code){
             return DALSrvc.getPromise('save', StcAppSetting.user + '/json/training/' + trId + '/feedback/' + code, data);
@@ -185,29 +198,34 @@ servicesModule.factory('TrainingSrvc', function(DALSrvc) {
             return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/training/' + trId + '/mailing/group', null);
         },
         sendEmail: function(data){
-	        return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/mail/send', data);
+            return DALSrvc.getPromise('save', StcAppSetting.admin + '/json/training/mail/send', data);
+        },
+        createQuestion: function(trId, data){
+            return DALSrvc.getPromise('save', StcAppSetting.user + '/json/training/' + trId + '/question', data);
+        },
+        getTeacherPayout: function(trainingId, teacherId){
+            return DALSrvc.getPromise('get', StcAppSetting.admin + '/json/training/' + trainingId + '/teacher/' + teacherId + '/payout', null);
         },
         getUrlForCreateGoogleCalendarEvent: function(text, dates, location, details){
-	    	console.log(details);
-	    	return 'https://www.google.com/calendar/render?action=TEMPLATE&hl=ru' + 
-                                    '&text=' + text +
-                                    '&dates=' + dates +
-                                    '&location=' + location +
-                                    '&details=' +  
-                                                '<a href="' + details.courseProgramUrl + '" target="_blank">Программа курса</a>%0A%0A' +
-                                                '<a href="' + 'http://' + window.location.host + StcAppSetting.defaultApp + '/stc/index.csp%23/training/' + details.trainingId + '/order" target="_blank">Присоединиться</a>%0A%0A' +
-                                                'Место проведения:' + '%0A' + 
-                                                details.city + '%0A' +
-                                                details.address + '%0A%0A' +
-                                                'Время:' + '%0A' + 
-                                                details.time + '%0A%0A' +
-                                                'Преподаватель:' + '%0A' +
-                                                details.teacher + '%0A%0A' + 
-                                                'Контактное лицо:' + '%0A' +
-                                                details.curator +
-                                                (details.otherInfo == "" ? "" : '%0A%0AПримечание: %0A' + details.otherInfo) 
-                                                '&sf=true&output=xml';
-	    }
+                return 'https://www.google.com/calendar/render?action=TEMPLATE&hl=ru' + 
+                                        '&text=' + text +
+                                        '&dates=' + dates +
+                                        '&location=' + location +
+                                        '&details=' +  
+                                                    '<a href="' + details.courseProgramUrl + '" target="_blank">Программа курса</a>%0A%0A' +
+                                                    '<a href="' + 'http://' + window.location.host + StcAppSetting.defaultApp + '/stc/index.csp%23/training/' + details.trainingId + '/order" target="_blank">' + $filter('localize')('Присоединиться') + '</a>%0A%0A' +
+                                                    $filter('localize')('Место проведения') + ':' + '%0A' + 
+                                                    details.city + '%0A' +
+                                                    details.address + '%0A%0A' +
+                                                    $filter('localize')('Время') + ':' + '%0A' + 
+                                                    details.time + '%0A%0A' +
+                                                    $filter('localize')('Преподаватель') + ':' + '%0A' +
+                                                    details.teacher + '%0A%0A' + 
+                                                    $filter('localize')('Контактное лицо') + ':' + '%0A' +
+                                                    details.curator +
+                                                    (details.otherInfo == "" ? "" : '%0A%0A' +  $filter('localize')('Примечание') + ':' + ' %0A' + details.otherInfo) 
+                                                    '&sf=true&output=xml';
+        }
         
     }
 });
